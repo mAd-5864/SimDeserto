@@ -1,0 +1,10 @@
+# ninja log v5
+3	432	7524384824500447	build.ninja	e8acef376487ec66
+581	741	7523495528188064	CMakeFiles/SimDeserto.dir/src/Cidade.cpp.obj	4a2f23c01102a717
+4	631	7523501957914134	CMakeFiles/SimDeserto.dir/src/main.cpp.obj	e131fa9a8e746b
+24	580	7523495526342901	CMakeFiles/SimDeserto.dir/src/Item.cpp.obj	f3ee332b8564cf04
+30	595	7523495526440001	CMakeFiles/SimDeserto.dir/src/Barbaro.cpp.obj	4680ff18d0f5016f
+5	589	7523495526322790	CMakeFiles/SimDeserto.dir/src/Caravana.cpp.obj	832b4f3b97e5c728
+16	819	7523499835389960	CMakeFiles/SimDeserto.dir/src/Utils.cpp.obj	a63f7c6dc50303db
+11	1103	7523499838241085	CMakeFiles/SimDeserto.dir/src/Deserto.cpp.obj	63bd181ce580ea66
+631	796	7523501959500180	SimDeserto.exe	1fcd5f17b5369346
