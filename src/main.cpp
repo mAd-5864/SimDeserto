@@ -35,5 +35,6 @@ int main() {
     cout << "\nMapa apos modificar 5 posicoes aleatorias:" << endl;
     deserto.displayMap();
 
+    cout << "Tiagao é massudo" << endl;
     return 0;
 }
