@@ -7,6 +7,7 @@
 
 
 class Item {
+    int moedas, instantes_entre_novos_itens, duracao_item, max_itens;
 
 };
 

@@ -7,7 +7,7 @@
 
 
 class Barbaro {
-
+    int instanteNew, duracao;
 };
 
 
