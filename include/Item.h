@@ -7,8 +7,9 @@
 
 
 class Item {
-    int moedas, instantes_entre_novos_itens, duracao_item, max_itens;
-
+    int moedas, instantesNew, duracao, max;
+public:
+    ~Item();
 };
 
 

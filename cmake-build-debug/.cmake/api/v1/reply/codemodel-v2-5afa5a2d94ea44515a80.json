@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Pedro/Desktop/ISEC/TP-POO/SimDeserto/cmake-build-debug",
-		"source" : "C:/Users/Pedro/Desktop/ISEC/TP-POO/SimDeserto"
+		"build" : "C:/Users/Tiago/Desktop/Trabalho POO/SimDeserto/cmake-build-debug",
+		"source" : "C:/Users/Tiago/Desktop/Trabalho POO/SimDeserto"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 5
+		"minor" : 6
 	}
 }

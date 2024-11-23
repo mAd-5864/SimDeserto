@@ -8,7 +8,12 @@
 
 class Barbaro {
     int instanteNew, duracao;
+
+public:
+    ~Barbaro();
 };
+
+
 
 
 #endif //SIMDESERTO_BARBARO_H

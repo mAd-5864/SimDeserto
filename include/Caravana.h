@@ -7,7 +7,10 @@
 
 
 class Caravana {
+    int precoVenda, precoCompra, precoCaravana;
 
+public:
+    ~Caravana();
 };
 
 
