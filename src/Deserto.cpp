@@ -4,60 +4,68 @@
 
 #include "../include/Deserto.h"
 
-// Construtor
-// Inicializa a matriz com pontos (.) para representar o deserto vazio
-Deserto::Deserto(int linha, int coluna) : linha(linha), coluna(coluna) {
-    map.resize(linha, std::vector<char>(coluna, '.'));
+// Construtor: inicializa o mapa com pontos (.)
+Deserto::Deserto(int linhas, int colunas)
+        : linhas(linhas), colunas(colunas), mapa(linhas * colunas, '.') {}
+
+// Calcula o índice no vetor com base na linha e coluna
+int Deserto::calcularIndice(int linha, int coluna) const {
+    return (linha * colunas) + coluna;
 }
 
-// Destrutor da classe
-Deserto::~Deserto() {
-    // Limpeza, se necessário (por exemplo, desalocar memória dinâmica, se aplicada futuramente)
+void Deserto::setLinhas(int linhas) {
+    this->linhas = linhas;
 }
 
-bool Deserto::loadMap(const std::string &filename) {
+void Deserto::setColunas(int colunas) {
+    this->colunas = colunas;
+}
+
+// Lê o mapa de um ficheiro
+bool Deserto::carregarMapa(const std::string &filename) {
     std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Erro ao abrir o ficheiro do mapa " << filename << std::endl;
+    if (!file) {
+        std::cerr << "Erro ao abrir o ficheiro: " << filename << std::endl;
         return false;
     }
+    int nLinhas, nColunas;
+    file >> nLinhas;
+    setLinhas(nLinhas);
+    file >> nColunas;
+    setColunas(nColunas);
 
-    // Redimensiona o mapa e inicializa com o deserto vazio ('.')
-    map.resize(linha, std::vector<char>(coluna, '.'));
 
-    // Lê o mapa do ficheiro e armazena-o na matriz
-    for (int i = 0; i < linha; ++i) {
+    for (int i = 0; i < linhas && !file.eof(); ++i) {
         std::string line;
-        if (std::getline(file, line)) {
-            for (int j = 0; j < std::min(coluna, static_cast<int>(line.size())); ++j) {
-                map[i][j] = line[j];
-            }
+        std::getline(file, line);
+
+        for (int j = 0; j < std::min(colunas, static_cast<int>(line.size())); ++j) {
+            mapa[calcularIndice(i, j)] = line[j];
         }
     }
-
-    file.close();
     return true;
 }
 
-void Deserto::displayMap() const {
-    for (const auto &row : map) {
-        for (char cell : row) {
-            std::cout << cell << ' ';
+// Mostra o mapa na consola
+void Deserto::mostrarMapa() const {
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            std::cout << mapa[calcularIndice(i, j)] << ' ';
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 }
 
-char Deserto::getTerrain(int linha, int coluna) const {
-    if (linha >= 0 && linha < this->linha && coluna >= 0 && coluna < this->coluna) {
-        return map[linha][coluna];
+char Deserto::getTerreno(int linha, int coluna) const {
+    if (linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas) {
+        return mapa[calcularIndice(linha, coluna)];
     }
-    return ' '; // Retorna espaço em branco se a posição é inválida
+    return ' '; // Posição inválida
 }
 
-void Deserto::setTerrain(int linha, int coluna, char terreno) {
-    if (linha >= 0 && linha < this->linha && coluna >= 0 && coluna < this->coluna) {
-        map[linha][coluna] = terreno;
+void Deserto::setTerreno(int linha, int coluna, char terreno) {
+    if (linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas) {
+        mapa[calcularIndice(linha, coluna)] = terreno;
     }
 }
 

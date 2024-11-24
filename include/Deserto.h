@@ -7,25 +7,25 @@
 
 #include "Utils.h"
 
-class Deserto {
+class Deserto
+{
 private:
-    int linha, coluna;                      // Dimensões do mapa
-    std::vector<std::vector<char>> map;     // Matriz bidimensional para o mapa
+    int linhas, colunas;    // Dimensões do mapa
+    std::vector<char> mapa; // Vetor para o mapa
+
+    int calcularIndice(int linha, int coluna) const; // Calcula o índice no vetor para linha e coluna
 
 public:
-    // Construtor
-    Deserto(int linha, int coluna);
-    ~Deserto();
+    Deserto(int linhas, int colunas); // Construtor
+    ~Deserto() = default;
 
-    bool loadMap(const std::string &filename);
-    void displayMap() const;
-    char getTerrain(int linha, int coluna) const;
+    bool carregarMapa(const std::string &filename); // Carrega o mapa de um ficheiro
+    void mostrarMapa() const;                       // Exibe o mapa na consola
 
-    // Define o tipo de terreno numa posição específica
-    void setTerrain(int linha, int coluna, char terreno);
-
-    int getLinha() const { return linha; }
-    int getColuna() const { return coluna; }
+    void setLinhas(int linhas);
+    void setColunas(int colunas);
+    char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
+    void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
 };
 
-#endif //SIMDESERTO_DESERTO_H
+#endif // SIMDESERTO_DESERTO_H
