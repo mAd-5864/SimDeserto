@@ -41,11 +41,10 @@ int lerComandos(int fase) {
     // Processar o comando
     // TODO processarComandosFase1
     if (fase == 1) {
-        processarComandosFase1(cmd, args);
+        return processarComandosFase1(cmd, args);
     } else {
-    processarComandosFase2(cmd, args);
+        return processarComandosFase2(cmd, args);
     }
-    return 1;
 }
 int comandoConfig(const vector<string>& args){
     Deserto novoDeserto(0,0);
@@ -69,7 +68,7 @@ int processarComandosFase1(const string& cmd, const vector<string>& args) {
     return 1;
 }
 
-void processarComandosFase2(const string& cmd, const vector<string>& args) {
+int processarComandosFase2(const string& cmd, const vector<string>& args) {
     if (cmd == "exec") comandoExec(args);
     else if (cmd == "prox") comandoProx(args);
     else if (cmd == "comprac") comandoComprac(args);
@@ -91,10 +90,11 @@ void processarComandosFase2(const string& cmd, const vector<string>& args) {
     else if (cmd == "dels") comandoDels(args);
     else if (cmd == "terminar") {
         cout << "Encerrando simulador...\n";
-        // Voltar á fase 1
+        return 1;
     } else {
         cout << "[ERRO] Comando nao implementado\n";
     }
+    return 2;
 }
 
 
