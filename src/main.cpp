@@ -9,9 +9,9 @@ using namespace std;
 
 int main() {
     int fase = 1;
-    while (1){
-
-    if (lerComandos(fase) == 0) fase = 2;
+    while (1) {
+        std::cout << "\nFase " << fase << std::endl;
+        fase = lerComandos(fase);
     }
 
     return 0;

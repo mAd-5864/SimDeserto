@@ -24,7 +24,7 @@ int lerComandos(int fase);
 
 // Processa o comando e chama a função correspondente
 int processarComandosFase1(const string& cmd, const vector<string>& args);
-void processarComandosFase2(const string& cmd, const vector<string>& args);
+int processarComandosFase2(const string& cmd, const vector<string>& args);
 
 
 // Funções para cada comando
