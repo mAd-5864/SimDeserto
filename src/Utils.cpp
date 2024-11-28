@@ -3,6 +3,7 @@
 //
 
 #include "../include/Utils.h"
+#include "../include/Deserto.h"
 
 // Verifica se uma string representa um número inteiro válido
 bool isNumber(const string& str) {
@@ -10,7 +11,7 @@ bool isNumber(const string& str) {
 }
 
 // Validar comandos
-void lerComandos() {
+int lerComandos(int fase) {
     cout << "Introduza um comando:\n";
 
     int x = 0;
@@ -23,7 +24,7 @@ void lerComandos() {
 
     if (linha.empty()) {
         cout << "[ERRO] Comando vazio\n";
-        return;
+        return -1;
     }
 
     // Separar comando e argumentos
@@ -39,7 +40,33 @@ void lerComandos() {
 
     // Processar o comando
     // TODO processarComandosFase1
+    if (fase == 1) {
+        processarComandosFase1(cmd, args);
+    } else {
     processarComandosFase2(cmd, args);
+    }
+    return 1;
+}
+int comandoConfig(const vector<string>& args){
+    Deserto novoDeserto(0,0);
+    if (args.size() != 1) {
+        cerr << "[ERRO] Sintaxe: config <nomeFicheiro>\n";
+        return 1;
+    }
+    if (novoDeserto.lerFicheiro(args[0])) return 2;
+
+    return 1;
+}
+
+int processarComandosFase1(const string& cmd, const vector<string>& args) {
+    if (cmd == "config") return comandoConfig(args);
+    else if (cmd == "sair") {
+        cout << "Encerrando programa...\n";
+        exit(1);
+    } else {
+        cout << "[ERRO] Comando inválido\n";
+    }
+    return 1;
 }
 
 void processarComandosFase2(const string& cmd, const vector<string>& args) {

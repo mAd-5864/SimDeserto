@@ -19,7 +19,7 @@ public:
     Deserto(int linhas, int colunas); // Construtor
     ~Deserto() = default;
 
-    bool carregarMapa(const std::string &filename); // Carrega o mapa de um ficheiro
+    bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro
     void mostrarMapa() const;                       // Exibe o mapa na consola
 
     void setLinhas(int linhas);

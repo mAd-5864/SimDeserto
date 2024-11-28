@@ -21,28 +21,45 @@ void Deserto::setColunas(int colunas) {
     this->colunas = colunas;
 }
 
-// Lê o mapa de um ficheiro
-bool Deserto::carregarMapa(const std::string &filename) {
-    std::ifstream file(filename);
+// Lê a config de um ficheiro
+bool Deserto::lerFicheiro(const std::string &filename) {
+    std::string folder = "../config/";
+    std::string path = folder + filename;
+
+    std::ifstream file(path);
     if (!file) {
         std::cerr << "Erro ao abrir o ficheiro: " << filename << std::endl;
         return false;
     }
+
+    std::string lixo;
     int nLinhas, nColunas;
-    file >> nLinhas;
+
+    // Ler as primeiras duas linhas com os tamanhos
+    file >> lixo >> nLinhas;
     setLinhas(nLinhas);
-    file >> nColunas;
+    std::cout << "Linhas: " << nLinhas << std::endl;
+
+    file >> lixo >> nColunas;
     setColunas(nColunas);
+    std::cout << "Colunas: " << nColunas << std::endl;
+
+    // Validar valores de linhas e colunas
+    if (nLinhas <= 0 || nColunas <= 0) {
+        std::cerr << "Erro: Configuração inválida para linhas ou colunas." << std::endl;
+        return false;
+    }
 
 
-    for (int i = 0; i < linhas && !file.eof(); ++i) {
-        std::string line;
-        std::getline(file, line);
-
-        for (int j = 0; j < std::min(colunas, static_cast<int>(line.size())); ++j) {
-            mapa[calcularIndice(i, j)] = line[j];
+    mapa.resize(nLinhas * nColunas, ' ');
+    // Ler cada linha do mapa
+    std::string line;
+    for (int i = 0; i <= nLinhas && std::getline(file, line); ++i) {
+        for (int j = 0; j < std::min(nColunas, static_cast<int>(line.size())); ++j) {
+            mapa[calcularIndice(i-1, j)] = line[j];
         }
     }
+    mostrarMapa();
     return true;
 }
 

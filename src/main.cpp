@@ -8,33 +8,11 @@
 using namespace std;
 
 int main() {
-    // Definimos as dimensões do deserto
-    int linhas = 10;
-    int colunas = 10;
+    int fase = 1;
+    while (1){
 
-    // Criamos o objeto Deserto
-    Deserto deserto(linhas, colunas);
-
-    // Carregamos o mapa a partir de um ficheiro de exemplo
-    /*if (!deserto.loadMap("config/default_map.txt")) {
-        std::cerr << "Falha ao carregar o mapa." << std::endl;
-        return 1;
-    }*/
-
-    // Exibimos o mapa carregado
-    deserto.displayMap();
-
-    // Modificar 5 posições aleatórias para o tipo de terreno montanha ('+')
-    for (int i = 0; i < 5; ++i) {
-        int linhaAleatoria = rand() % linhas;
-        int colunaAleatoria = rand() % colunas;
-        deserto.setTerrain(linhaAleatoria, colunaAleatoria, '+');
+    if (lerComandos(fase) == 0) fase = 2;
     }
 
-    // Exibir o mapa após as modificações
-    cout << "\nMapa apos modificar 5 posicoes aleatorias:" << endl;
-    deserto.displayMap();
-
-    cout << "Tiagao é massudo" << endl;
     return 0;
 }

@@ -20,12 +20,15 @@ using namespace std;
 bool isNumber(const string& str);
 
 // Função principal para ler comandos do usuário
-void lerComandos();
+int lerComandos(int fase);
 
 // Processa o comando e chama a função correspondente
+int processarComandosFase1(const string& cmd, const vector<string>& args);
 void processarComandosFase2(const string& cmd, const vector<string>& args);
 
+
 // Funções para cada comando
+int comandoConfig(const vector<string>& args);
 void comandoExec(const vector<string>& args);
 void comandoProx(const vector<string>& args);
 void comandoComprac(const vector<string>& args);
