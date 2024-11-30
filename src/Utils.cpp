@@ -39,7 +39,6 @@ int lerComandos(int fase) {
     }
 
     // Processar o comando
-    // TODO processarComandosFase1
     if (fase == 1) {
         return processarComandosFase1(cmd, args);
     } else {
