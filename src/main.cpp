@@ -8,6 +8,9 @@
 using namespace std;
 
 int main() {
+    // Set the global locale to UTF-8
+    std::locale::global(std::locale(""));
+
     int fase = 1;
     while (1) {
         std::cout << "\nFase " << fase << std::endl;
