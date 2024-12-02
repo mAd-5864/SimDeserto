@@ -5,9 +5,10 @@
 #ifndef SIMDESERTO_CARAVANA_H
 #define SIMDESERTO_CARAVANA_H
 
+#include "Utils.h";
 
 class Caravana {
-    int precoVenda, precoCompra, precoCaravana;
+    Position pos;
 
 public:
     ~Caravana();

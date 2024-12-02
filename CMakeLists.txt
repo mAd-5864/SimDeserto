@@ -27,4 +27,6 @@ add_executable(SimDeserto src/main.cpp
         include/Caravana.h
         include/Cidade.h
         include/Deserto.h
-        include/Item.h)
+        include/Item.h
+        include/Buffer.h
+        include/Buffer.cpp)

@@ -17,6 +17,10 @@
 
 using namespace std;
 
+class Position{
+    int x, y;
+};
+
 // Verifica se uma string representa um número inteiro válido
 bool isNumber(const string &str);
 
