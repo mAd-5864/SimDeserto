@@ -5,7 +5,6 @@
 #ifndef SIMDESERTO_DESERTO_H
 #define SIMDESERTO_DESERTO_H
 
-#include "Utils.h"
 #include "Buffer.h"
 
 class Deserto {
@@ -31,6 +30,7 @@ public:
     char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
     void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
     void setMoedas(int valor);
+    void ajustarMoedas(int valor);
 
     void setInstantesEntreNovosItems(int valor);
 

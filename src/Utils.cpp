@@ -3,7 +3,6 @@
 //
 
 #include "../include/Utils.h"
-#include "../include/Deserto.h"
 
 // Verifica se uma string representa um número inteiro válido
 bool isNumber(const string& str) {
@@ -42,7 +41,10 @@ int lerComandos(int fase, Deserto& deserto) {
     if (fase == 1) {
         return processarComandosFase1(cmd, args, deserto);
     } else {
-        if (deserto.getMoedas()<deserto.getPrecoCaravana() || !deserto.getNumCaravanas()) return 0;
+        if (deserto.getMoedas()<deserto.getPrecoCaravana() && !deserto.getNumCaravanas()) {
+            cout << "Ficou sem caravanas e sem moedas para adquirir mais alguma" << endl;
+            cmd = "terminar";
+        }
         return processarComandosFase2(cmd, args, deserto);
     }
 }
@@ -61,7 +63,7 @@ int processarComandosFase1(const string& cmd, const vector<string>& args, Desert
         cout << "Encerrando programa...\n";
         exit(1);
     } else {
-        cout << "[ERRO] Comando inválido\n";
+        cerr << "[ERRO] Comando inválido\n";
     }
     return 1;
 }
@@ -80,7 +82,7 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
     else if (cmd == "stop") comandoStop(args);
     else if (cmd == "barbaro") comandoBarbaro(args);
     else if (cmd == "areia") comandoAreia(args);
-    else if (cmd == "moedas") comandoMoedas(args);
+    else if (cmd == "moedas") comandoMoedas(args, deserto);
     else if (cmd == "tripul") comandoTripul(args);
     else if (cmd == "saves") comandoSaves(args);
     else if (cmd == "loads") comandoLoads(args);
@@ -90,11 +92,10 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
         cout << "Encerrando simulador...\n";
         return 1;
     } else {
-        cout << "[ERRO] Comando nao implementado\n";
+        cerr << "[ERRO] Comando nao implementado\n";
     }
     return 2;
 }
-
 
 // Comando: exec <nomeFicheiro>
 void comandoExec(const vector<string>& args) {
@@ -150,7 +151,7 @@ void comandoPrecos(const vector<string>& args) {
 // Comando: cidade <C>
 void comandoCidade(const vector<string>& args) {
     if (args.size() != 1 || !isalpha(args[0][0])) {
-        cerr << "[ERRO] Sintaxe: cidade <cidade>\n";
+        cerr << "[ERRO] Sintaxe: cidade <nome cidade>\n";
         return;
     }
     cout << "Listando conteúdo da cidade: " << args[0] << ".\n";
@@ -240,13 +241,12 @@ void comandoAreia(const vector<string>& args) {
 }
 
 // Comando: moedas <N>
-void comandoMoedas(const vector<string>& args) {
+void comandoMoedas(const vector<string>& args, Deserto& deserto) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: moedas <número>\n";
         return;
     }
-    cout << "Ajustando moedas em " << args[0] << ".\n";
-    // Implementar ajuste de moedas
+    deserto.ajustarMoedas(stoi(args[0]));
 }
 
 // Comando: tripul <N> <T>

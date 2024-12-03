@@ -5,16 +5,6 @@
 #ifndef SIMDESERTO_UTILS_H
 #define SIMDESERTO_UTILS_H
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <fstream>
-#include <cstdlib>
-#include <ctime>
-#include <sstream>
-#include <algorithm>
-#include <map>
-#include <locale>
 #include "Deserto.h"
 
 using namespace std;
@@ -64,7 +54,7 @@ void comandoBarbaro(const vector<string> &args);
 
 void comandoAreia(const vector<string> &args);
 
-void comandoMoedas(const vector<string> &args);
+void comandoMoedas(const vector<string> &args, Deserto& deserto);
 
 void comandoTripul(const vector<string> &args);
 

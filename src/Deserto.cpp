@@ -187,3 +187,8 @@ int Deserto::getMoedas() {
 int Deserto::getPrecoCaravana() {
     return precoCaravana;
 }
+
+void Deserto::ajustarMoedas(int valor) {
+    moedas += valor;
+    std::cout << valor <<" moedas adicionadas\nMoedas totais: " << moedas << std::endl;
+}

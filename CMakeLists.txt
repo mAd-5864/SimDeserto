@@ -21,12 +21,13 @@ add_executable(SimDeserto src/main.cpp
         src/Caravana.cpp
         src/Cidade.cpp
         src/Barbaro.cpp
+        src/Buffer.cpp
         src/Item.cpp
+        include/Buffer.h
         include/Utils.h
         include/Barbaro.h
         include/Caravana.h
         include/Cidade.h
         include/Deserto.h
         include/Item.h
-        include/Buffer.h
-        src/Buffer.cpp)
+)

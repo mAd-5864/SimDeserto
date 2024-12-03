@@ -5,7 +5,16 @@
 #ifndef SIMDESERTO_BUFFER_H
 #define SIMDESERTO_BUFFER_H
 
-#include "Utils.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
+#include <sstream>
+#include <algorithm>
+#include <map>
+#include <locale>
 
 class Buffer {
     char* data;                     // Área de armazenamento do buffer
