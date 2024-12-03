@@ -29,4 +29,4 @@ add_executable(SimDeserto src/main.cpp
         include/Deserto.h
         include/Item.h
         include/Buffer.h
-        include/Buffer.cpp)
+        src/Buffer.cpp)

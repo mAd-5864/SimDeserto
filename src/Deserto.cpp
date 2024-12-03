@@ -116,6 +116,17 @@ void Deserto::mostrarMapa() const {
     }
 }
 
+void Deserto::mostrarMapa(Buffer buffer) const {
+    const char* data = buffer.getData();
+
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            std::cout << data[i * colunas + j];
+        }
+        std::cout << '\n';
+    }
+}
+
 char Deserto::getTerreno(int linha, int coluna) const {
     if (linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas) {
         return mapa[calcularIndice(linha, coluna)];

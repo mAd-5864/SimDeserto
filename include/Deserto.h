@@ -6,9 +6,9 @@
 #define SIMDESERTO_DESERTO_H
 
 #include "Utils.h"
+#include "Buffer.h"
 
-class Deserto
-{
+class Deserto {
 private:
     int linhas, colunas;    // Dimensões do mapa
     std::vector<char> mapa; // Vetor para o mapa
@@ -21,10 +21,13 @@ public:
     ~Deserto() = default;
 
     bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro
-    void mostrarMapa() const;                       // Exibe o mapa na consola
+    void mostrarMapa() const;                   // Exibe o mapa na consola
+    void mostrarMapa(Buffer buffer) const;
 
     void setLinhas(int linhas);
+
     void setColunas(int colunas);
+
     char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
     void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
     void setMoedas(int valor);

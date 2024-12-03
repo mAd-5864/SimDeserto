@@ -5,7 +5,7 @@
 #ifndef SIMDESERTO_CARAVANA_H
 #define SIMDESERTO_CARAVANA_H
 
-#include "Utils.h";
+#include "Utils.h"
 
 class Caravana {
     Position pos;
