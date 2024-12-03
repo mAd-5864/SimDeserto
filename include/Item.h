@@ -6,8 +6,13 @@
 #define SIMDESERTO_ITEM_H
 
 
+#include "Utils.h"
+
 class Item {
-    int moedas, instantesNew, duracao, max;
+protected:
+    int tempoRestante;
+    Position pos;
+    string tipo;
 public:
     ~Item();
 };
