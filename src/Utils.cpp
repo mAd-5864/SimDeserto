@@ -298,3 +298,12 @@ void comandoDels(const vector<string>& args) {
     cout << "Excluindo estado visual com o nome: " << args[0] << ".\n";
     // Implementar exclusão de estado visual
 }
+
+std::string converterTipoCaravana(char tipo) {
+    switch (tipo) {
+        case 'C': return "Mercadoria";
+        case 'M': return "Militar";
+        case 'S': return "Secreta";
+        default: return ""; // Tipos inválidos
+    }
+}

@@ -13,6 +13,7 @@
 #include <ctime>
 #include <sstream>
 #include <algorithm>
+#include <map>
 #include <locale>
 #include "Deserto.h"
 
@@ -74,5 +75,7 @@ void comandoLoads(const vector<string> &args);
 void comandoLists(const vector<string> &args);
 
 void comandoDels(const vector<string> &args);
+
+std::string converterTipoCaravana(char tipo);
 
 #endif //SIMDESERTO_UTILS_H
