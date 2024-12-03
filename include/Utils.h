@@ -14,6 +14,7 @@
 #include <sstream>
 #include <algorithm>
 #include <locale>
+#include "Deserto.h"
 
 using namespace std;
 
@@ -25,20 +26,20 @@ class Position{
 bool isNumber(const string &str);
 
 // Função principal para ler comandos do usuário
-int lerComandos(int fase);
+int lerComandos(int fase, Deserto& deserto);
 
 // Processa o comando e chama a função correspondente
-int processarComandosFase1(const string &cmd, const vector<string> &args);
+int processarComandosFase1(const string &cmd, const vector<string> &args, Deserto& deserto);
 
-int processarComandosFase2(const string &cmd, const vector<string> &args);
+int processarComandosFase2(const string &cmd, const vector<string> &args, Deserto& deserto);
 
 
 // Funções para cada comando
-int comandoConfig(const vector<string> &args);
+int comandoConfig(const vector<string> &args, Deserto& deserto);
 
 void comandoExec(const vector<string> &args);
 
-void comandoProx(const vector<string> &args);
+void comandoProx(const vector<string> &args, Deserto& deserto);
 
 void comandoComprac(const vector<string> &args);
 

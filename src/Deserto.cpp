@@ -121,7 +121,7 @@ void Deserto::mostrarMapa(Buffer buffer) const {
 
     for (int i = 0; i < linhas; ++i) {
         for (int j = 0; j < colunas; ++j) {
-            std::cout << data[i * colunas + j];
+            std::cout << data[calcularIndice(i, j)];
         }
         std::cout << '\n';
     }
@@ -174,4 +174,16 @@ void Deserto::setInstantesEntreNovosBarbaros(int valor) {
 
 void Deserto::setDuracaoBarbaros(int valor) {
     this->duracaoBarbaros = valor;
+}
+
+int Deserto::getNumCaravanas() {
+    return numCaravanas;
+}
+
+int Deserto::getMoedas() {
+    return moedas;
+}
+
+int Deserto::getPrecoCaravana() {
+    return precoCaravana;
 }

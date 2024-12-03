@@ -15,7 +15,7 @@ private:
     int calcularIndice(int linha, int coluna) const; // Calcula o índice no vetor para linha e coluna
     // Valores Configuraveis
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
-    int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros;
+    int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros, numCaravanas = 0;
 public:
     Deserto(int linhas, int colunas); // Construtor
     ~Deserto() = default;
@@ -47,6 +47,12 @@ public:
     void setPrecoCaravana(int valor);
 
     void setInstantesEntreNovosBarbaros(int valor);
+
+    // Getters
+    int getNumCaravanas();
+    int getMoedas();
+    int getPrecoCaravana();
 };
+
 
 #endif // SIMDESERTO_DESERTO_H

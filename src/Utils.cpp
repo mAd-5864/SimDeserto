@@ -11,7 +11,7 @@ bool isNumber(const string& str) {
 }
 
 // Validar comandos
-int lerComandos(int fase) {
+int lerComandos(int fase, Deserto& deserto) {
     cout << "Introduza um comando:\n";
 
     int x = 0;
@@ -40,24 +40,23 @@ int lerComandos(int fase) {
 
     // Processar o comando
     if (fase == 1) {
-        return processarComandosFase1(cmd, args);
+        return processarComandosFase1(cmd, args, deserto);
     } else {
-        return processarComandosFase2(cmd, args);
+        if (deserto.getMoedas()<deserto.getPrecoCaravana() || !deserto.getNumCaravanas()) return 0;
+        return processarComandosFase2(cmd, args, deserto);
     }
 }
-int comandoConfig(const vector<string>& args){
-    Deserto novoDeserto(0,0);
+int comandoConfig(const vector<string>& args, Deserto& deserto){
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: config <nomeFicheiro>\n";
         return 1;
     }
-    if (novoDeserto.lerFicheiro(args[0])) return 2;
-
+    if (deserto.lerFicheiro(args[0])) return 2;
     return 1;
 }
 
-int processarComandosFase1(const string& cmd, const vector<string>& args) {
-    if (cmd == "config") return comandoConfig(args);
+int processarComandosFase1(const string& cmd, const vector<string>& args, Deserto& deserto) {
+    if (cmd == "config") return comandoConfig(args, deserto);
     else if (cmd == "sair") {
         cout << "Encerrando programa...\n";
         exit(1);
@@ -67,9 +66,9 @@ int processarComandosFase1(const string& cmd, const vector<string>& args) {
     return 1;
 }
 
-int processarComandosFase2(const string& cmd, const vector<string>& args) {
+int processarComandosFase2(const string& cmd, const vector<string>& args, Deserto& deserto) {
     if (cmd == "exec") comandoExec(args);
-    else if (cmd == "prox") comandoProx(args);
+    else if (cmd == "prox") comandoProx(args, deserto);
     else if (cmd == "comprac") comandoComprac(args);
     else if (cmd == "precos") comandoPrecos(args);
     else if (cmd == "cidade") comandoCidade(args);
@@ -108,7 +107,7 @@ void comandoExec(const vector<string>& args) {
 }
 
 // Comando: prox <n>
-void comandoProx(const vector<string>& args) {
+void comandoProx(const vector<string>& args, Deserto& deserto) {
     if (args.size() > 1 || (args.size() == 1 && !isNumber(args[0]))) {
         cerr << "[ERRO] Sintaxe: prox [<número de instantes>]\n";
         return;
