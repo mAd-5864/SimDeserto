@@ -61,6 +61,7 @@ int processarComandosFase1(const string& cmd, const vector<string>& args, Desert
     if (cmd == "config") return comandoConfig(args, deserto);
     else if (cmd == "sair") {
         cout << "Encerrando programa...\n";
+        deserto.~Deserto();
         exit(1);
     } else {
         cerr << "[ERRO] Comando inválido\n";
