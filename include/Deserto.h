@@ -9,14 +9,12 @@
 
 class Deserto {
 private:
-    int linhas, colunas;    // Dimensões do mapa
-    std::vector<char> mapa; // Vetor para o mapa
-    int calcularIndice(int linha, int coluna) const; // Calcula o índice no vetor para linha e coluna
     // Valores Configuraveis
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros, numCaravanas = 0;
+    Buffer buffer;
 public:
-    Deserto(int linhas, int colunas); // Construtor
+    Deserto(Buffer buffer); // Construtor
     ~Deserto() = default;
 
     bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro

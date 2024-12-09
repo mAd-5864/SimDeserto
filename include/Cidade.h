@@ -11,10 +11,11 @@ class Cidade {
 private:
     char nome;  // Nome da cidade
     std::map<std::string, bool> caravanasDisponiveis;  // Tipo de caravana e disponibilidade
+    int linha, coluna;
 
 public:
     // Construtor
-    explicit Cidade(char nome);
+    Cidade(char nome, int l, int c);
 
     // Mostra caravanas disponíveis
     void mostrarCaravanasDisponiveis() const;

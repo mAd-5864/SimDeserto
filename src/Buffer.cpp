@@ -5,6 +5,14 @@
 #include "../include/Buffer.h"
 
 
+void Buffer::setLinhas(int l) {
+    this->linhas = l;
+}
+
+void Buffer::setColunas(int c) {
+    this->colunas = c;
+}
+
 // Construtor
 Buffer::Buffer(int r, int c) : linhas(r), colunas(c), linhaCursor(0), colunaCursor(0) {
     data = new char[linhas * colunas]; // Aloca espaço para a "matriz" linear

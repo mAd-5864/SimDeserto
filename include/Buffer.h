@@ -26,6 +26,9 @@ public:
     Buffer(int r, int c);
     ~Buffer();
 
+    void setLinhas(int l);
+    void setColunas(int c);
+
     // Esvaziar o buffer
     void clear();
 
