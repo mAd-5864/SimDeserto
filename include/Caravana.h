@@ -12,7 +12,7 @@ protected:
     int ID, numTripulantes, qntAgua, qntMerc;
     const int cargaMaxima;
     int tipoMovimentacao; // 0-Sem tripulantes, 1-Utilizador, 2-Autónomo
-    Position pos;
+    int linha, coluna;
 
 public:
     ~Caravana();

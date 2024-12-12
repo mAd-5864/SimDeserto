@@ -6,7 +6,7 @@
 
 
 // Construtor: inicializa as caravanas disponíveis
-Cidade::Cidade(char nome) : nome(nome) {
+Cidade::Cidade(char nome, int l, int c) : nome(nome), linha(l), coluna(c) {
     caravanasDisponiveis = {
             {"Mercadoria", true},
             {"Militar",    true},
