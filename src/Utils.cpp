@@ -12,12 +12,9 @@ bool isNumber(const string& str) {
 // Validar comandos
 int lerComandos(int fase, Deserto& deserto) {
     cout << "Introduza um comando:\n";
-
-    int x = 0;
     string linha;
     getline(cin, linha);
 
-    // Remover espaços no início e final da string
     linha.erase(0, linha.find_first_not_of(' '));
     linha.erase(linha.find_last_not_of(' ') + 1);
 
@@ -26,22 +23,20 @@ int lerComandos(int fase, Deserto& deserto) {
         return -1;
     }
 
-    // Separar comando e argumentos
     istringstream sslinha(linha);
     string cmd;
     vector<string> args;
 
-    sslinha >> cmd; // Lê o comando
+    sslinha >> cmd;
     string arg;
     while (sslinha >> arg) {
-        args.push_back(arg); // Armazena os argumentos
+        args.push_back(arg);
     }
 
-    // Processar o comando
     if (fase == 1) {
         return processarComandosFase1(cmd, args, deserto);
     } else {
-        if (deserto.getMoedas()<deserto.getPrecoCaravana() && !deserto.getNumCaravanas()) {
+        if (deserto.getMoedas() < deserto.getPrecoCaravana() && !deserto.getNumCaravanas()) {
             cout << "Ficou sem caravanas e sem moedas para adquirir mais alguma" << endl;
             cmd = "terminar";
         }
@@ -62,8 +57,7 @@ int processarComandosFase1(const string& cmd, const vector<string>& args, Desert
     if (cmd == "config") return comandoConfig(args, deserto);
     else if (cmd == "sair") {
         cout << "Encerrando programa...\n";
-        deserto.~Deserto();
-        exit(1);
+        return 0;
     } else {
         cerr << "[ERRO] Comando inválido\n";
     }

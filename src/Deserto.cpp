@@ -2,17 +2,18 @@
 // Created by Pedro on 11/3/2024.
 //
 
+#include <limits>
 #include "../include/Deserto.h"
 
 // Construtor: inicializa o mapa com pontos (.)
+Deserto::Deserto(const Buffer& bufferInicial) : buffer(bufferInicial), moedas(0) {}
 
-Deserto::Deserto(Buffer buffer) : buffer(buffer) {}
 
 
 // Lê a config de um ficheiro
 bool Deserto::lerFicheiro(const std::string &filename) {
     std::string folder = "../config/";
-    std::string path = folder + filename;
+    std::string path = folder + filename + ".txt";
 
     std::ifstream file(path);
     if (!file) {
@@ -26,20 +27,14 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     // Ler as primeiras duas linhas com os tamanhos
     file >> lixo >> nLinhas;
     buffer.setLinhas(nLinhas);
-    std::cout << "Linhas: " << nLinhas << std::endl;
 
     file >> lixo >> nColunas;
     buffer.setColunas(nColunas);
-    std::cout << "Colunas: " << nColunas << std::endl;
 
-    // Validar valores de linhas e colunas
-    if (nLinhas <= 0 || nColunas <= 0) {
-        std::cerr << "Erro: Configuração inválida para linhas ou colunas." << std::endl;
-        return false;
-    }
+    std::cout << "Linhas: " << nLinhas << "\nColunas: " << nColunas << std::endl;
+    buffer.debugState();
 
 
-       //mapa.resize(nLinhas * nColunas, ' ');
     // Ler cada linha do mapa
     std::string line;
     for (int i = 0; i <= nLinhas && std::getline(file, line); ++i) {
@@ -50,6 +45,7 @@ bool Deserto::lerFicheiro(const std::string &filename) {
         }
 
     }
+    std::cout << "Mapa carregado:\n";
     buffer.print();
     //mostrarMapa();
 
@@ -98,15 +94,9 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     return true;
 }
 
-// Mostra o mapa na consola
-
-
-
-
-
-
 void Deserto::setTerreno(int linha, int coluna, char terreno) {
-
+    buffer.moveCursor(linha, coluna);
+    buffer.writeChar(terreno);
 }
 
 void Deserto::setMoedas(int valor) {
@@ -160,4 +150,8 @@ int Deserto::getPrecoCaravana() {
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
     std::cout << valor <<" moedas adicionadas\nMoedas totais: " << moedas << std::endl;
+}
+
+void Deserto::mostrarMapa() const {
+    buffer.print();
 }

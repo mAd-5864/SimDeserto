@@ -17,15 +17,15 @@
 #include <locale>
 
 class Buffer {
-    char* data;                     // Área de armazenamento do buffer
-    int linhas, colunas;            // Dimensões do buffer
-    int linhaCursor, colunaCursor;  // Posição atual do cursor
+private:
+    char* data;
+    int linhas, colunas;
+    int linhaCursor, colunaCursor;
 
 public:
     // Construtor e destrutor
-    Buffer(int r, int c);
+    Buffer(int linhas, int colunas);
     ~Buffer();
-
     void setLinhas(int l);
     void setColunas(int c);
 
@@ -44,12 +44,17 @@ public:
     // Escrever uma string
     void writeString(const char* str);
 
+    char* getData();
+
     // Sobrecarga do operador <<
     Buffer& operator<<(const char* str);
     Buffer& operator<<(char c);
     Buffer& operator<<(int num);
 
-    char *getData();
+    // Debugging helper
+    void debugState() const {
+        std::cout << "Buffer: " << linhas << "x" << colunas << " | Cursor: (" << linhaCursor << ", " << colunaCursor << ")\n";
+    }
 };
 
 #endif //SIMDESERTO_BUFFER_H

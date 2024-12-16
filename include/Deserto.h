@@ -14,7 +14,7 @@ private:
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros, numCaravanas = 0;
     Buffer buffer;
 public:
-    Deserto(Buffer buffer); // Construtor
+    Deserto(const Buffer& bufferInicial); // Construtor
     ~Deserto() = default;
 
     bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro

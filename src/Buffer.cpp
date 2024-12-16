@@ -6,11 +6,25 @@
 
 
 void Buffer::setLinhas(int l) {
-    this->linhas = l;
+    if (l <= 0) {
+        std::cerr << "[ERRO] Linhas inválidas: " << l << std::endl;
+        return;
+    }
+    linhas = l;
+    delete[] data;  // Release the old buffer
+    data = new char[linhas * colunas];  // Reallocate
+    clear();  // Clear the new buffer
 }
 
 void Buffer::setColunas(int c) {
-    this->colunas = c;
+    if (c <= 0) {
+        std::cerr << "[ERRO] Colunas inválidas: " << c << std::endl;
+        return;
+    }
+    colunas = c;
+    delete[] data;  // Release the old buffer
+    data = new char[linhas * colunas];  // Reallocate
+    clear();  // Clear the new buffer
 }
 
 // Construtor
