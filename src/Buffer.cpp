@@ -40,7 +40,7 @@ int Buffer::calcularIndice(int linha, int coluna) const {
 void Buffer::print() const {
     for (int i = 0; i < linhas; ++i) {
         for (int j = 0; j < colunas; ++j) {
-            std::cout << data[calcularIndice(i, j)]<<' ';
+            std::cout << data[calcularIndice(i, j)];
         }
         std::cout << std::endl;
     }
@@ -59,7 +59,7 @@ bool Buffer::moveCursor(int r, int c) {
 
 // Escrever um caractere
 void Buffer::writeChar(char c) {
-    if (linhaCursor >= 0 && linhaCursor < linhas && colunaCursor >= 0 && colunaCursor < colunas) {
+    if (linhaCursor >= 0 && linhaCursor <= linhas && colunaCursor >= 0 && colunaCursor < colunas) {
         data[calcularIndice(linhaCursor, colunaCursor)] = c;
 
         // Move o cursor para a próxima posição

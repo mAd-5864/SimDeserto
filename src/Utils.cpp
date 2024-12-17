@@ -33,11 +33,7 @@ int lerComandos(int fase, Deserto& deserto) {
         args.push_back(arg);
     }
 
-    if (fase == 1) {
-        fase = processarComandosFase1(cmd, args, deserto);
-        std::cout << "saiu do processarComandosFase1 com: " << fase << std::endl;
-        return fase;
-        }
+    if (fase == 1)return processarComandosFase1(cmd, args, deserto);
     else {
         if (deserto.getMoedas() < deserto.getPrecoCaravana() && !deserto.getNumCaravanas()) {
             cout << "Ficou sem caravanas e sem moedas para adquirir mais alguma" << endl;
@@ -51,10 +47,7 @@ int comandoConfig(const vector<string>& args, Deserto& deserto){
         cerr << "[ERRO] Sintaxe: config <nomeFicheiro>\n";
         return 1; // ERRO Continuar na mesma fase
     }
-    if (bool out = deserto.lerFicheiro(args[0])) {
-        std::cout << "saiu do lerFicheiro com: "<< out << std::endl;
-        return 2; // Sucesso Passar para fase 2
-    }
+    if (deserto.lerFicheiro(args[0]))return 2; // Sucesso Passar para fase 2
     return 1; // Falhou Continuar na fase 1
 }
 
