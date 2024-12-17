@@ -30,4 +30,7 @@ add_executable(SimDeserto src/main.cpp
         include/Cidade.h
         include/Deserto.h
         include/Item.h
+        src/Caravanas/CaravanaComercio.cpp
+        src/Caravanas/CaravanaMilitar.cpp
+        src/Caravanas/CaravanaSecreta.cpp
 )

@@ -4,7 +4,13 @@
 
 #include "../include/Caravana.h"
 
-//Destrutor da class
+// Constructor for base Caravana
+Caravana::Caravana(int cargaMax, int tipoMov, int linha, int coluna)
+        : cargaMaxima(cargaMax), tipoMovimentacao(tipoMov),
+          linha(linha), coluna(coluna),
+          numTripulantes(0), qntAgua(0), qntMerc(0) {}
+
+// Destructor
 Caravana::~Caravana() {
-    // Limpeza, se necessário (por exemplo, desalocar memória dinâmica, se aplicada futuramente)
+    // Any cleanup if necessary
 }
