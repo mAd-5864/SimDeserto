@@ -31,16 +31,16 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     file >> lixo >> nColunas;
     buffer.setColunas(nColunas);
 
-    std::cout << "Linhas: " << nLinhas << "\nColunas: " << nColunas << std::endl;
-    buffer.debugState();
-
 
     // Ler cada linha do mapa
     std::string line;
     for (int i = 0; i <= nLinhas && std::getline(file, line); ++i) {
         for (int j = 0; j < std::min(nColunas, static_cast<int>(line.size())); ++j) {
             //mapa[calcularIndice(i - 1, j)] = line[j];
-            buffer.moveCursor(i, j);
+            if (!buffer.moveCursor(i-1, j)) {
+                std::cerr << "[ERRO] Cursor fora dos limites ao carregar o mapa\n";
+                return false;
+            }
             buffer.writeChar(line[j]);
         }
 
@@ -50,7 +50,7 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     //mostrarMapa();
 
     // Ler valores configuráveis
-    while (std::getline(file, line)) {
+    while (std::getline(file, line)){
         std::istringstream iss(line);
         std::string chave;
         int valor;

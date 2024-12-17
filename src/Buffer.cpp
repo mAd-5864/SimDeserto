@@ -6,65 +6,61 @@
 
 
 void Buffer::setLinhas(int l) {
-    if (l <= 0) {
-        std::cerr << "[ERRO] Linhas inválidas: " << l << std::endl;
-        return;
-    }
-    linhas = l;
-    delete[] data;  // Release the old buffer
-    data = new char[linhas * colunas];  // Reallocate
-    clear();  // Clear the new buffer
+        linhas = l;
+        resizeBuffer();
 }
 
 void Buffer::setColunas(int c) {
-    if (c <= 0) {
-        std::cerr << "[ERRO] Colunas inválidas: " << c << std::endl;
-        return;
-    }
     colunas = c;
-    delete[] data;  // Release the old buffer
-    data = new char[linhas * colunas];  // Reallocate
-    clear();  // Clear the new buffer
+    resizeBuffer();
 }
 
 // Construtor
 Buffer::Buffer(int r, int c) : linhas(r), colunas(c), linhaCursor(0), colunaCursor(0) {
-    data = new char[linhas * colunas]; // Aloca espaço para a "matriz" linear
-    clear();                           // Inicializa o buffer vazio
+    data.resize(linhas * colunas, ' '); // Inicializar com espacos
 }
 
 // Destrutor
-Buffer::~Buffer() {
-    delete[] data; // Libera memória
-}
+//Buffer::~Buffer() {
+//    delete[] data; // Libera memória
+//}
 
 // Esvaziar o buffer
 void Buffer::clear() {
-    std::fill(data, data + linhas * colunas, ' '); // Preenche o buffer com espaços
+    std::fill(data.begin(), data.end(), ' ');
+    linhaCursor = colunaCursor = 0; // Reset cursor
+}
+
+// Calcula o índice no vetor com base na linha e coluna
+int Buffer::calcularIndice(int linha, int coluna) const {
+    return (linha * colunas) + coluna;
 }
 
 // Imprimir o buffer na consola
 void Buffer::print() const {
     for (int i = 0; i < linhas; ++i) {
         for (int j = 0; j < colunas; ++j) {
-            std::cout << data[i * colunas + j];
+            std::cout << data[calcularIndice(i, j)]<<' ';
         }
         std::cout << std::endl;
     }
 }
 
 // Mover o cursor
-void Buffer::moveCursor(int r, int c) {
+bool Buffer::moveCursor(int r, int c) {
     if (r >= 0 && r < linhas && c >= 0 && c < colunas) {
         linhaCursor = r;
         colunaCursor = c;
+        return true;
     }
+    std::cerr << "[ERRO] Cursor fora dos limites: (" << r << ", " << c << ")\n";
+    return false;
 }
 
 // Escrever um caractere
 void Buffer::writeChar(char c) {
     if (linhaCursor >= 0 && linhaCursor < linhas && colunaCursor >= 0 && colunaCursor < colunas) {
-        data[linhaCursor * colunas + colunaCursor] = c;
+        data[calcularIndice(linhaCursor, colunaCursor)] = c;
 
         // Move o cursor para a próxima posição
         if (++colunaCursor >= colunas) {
@@ -97,6 +93,8 @@ Buffer& Buffer::operator<<(int num) {
     return *this;
 }
 
-char *Buffer::getData() {
-    return data;
+void Buffer::resizeBuffer() {
+    data.clear();
+    data.resize(linhas * colunas, ' ');
+    linhaCursor = colunaCursor = 0;
 }

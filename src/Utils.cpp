@@ -11,7 +11,7 @@ bool isNumber(const string& str) {
 
 // Validar comandos
 int lerComandos(int fase, Deserto& deserto) {
-    cout << "Introduza um comando:\n";
+    cout << "Introduza um comando:" << endl;
     string linha;
     getline(cin, linha);
 
@@ -20,7 +20,7 @@ int lerComandos(int fase, Deserto& deserto) {
 
     if (linha.empty()) {
         cout << "[ERRO] Comando vazio\n";
-        return -1;
+        return fase;
     }
 
     istringstream sslinha(linha);
@@ -34,8 +34,11 @@ int lerComandos(int fase, Deserto& deserto) {
     }
 
     if (fase == 1) {
-        return processarComandosFase1(cmd, args, deserto);
-    } else {
+        fase = processarComandosFase1(cmd, args, deserto);
+        std::cout << "saiu do processarComandosFase1 com: " << fase << std::endl;
+        return fase;
+        }
+    else {
         if (deserto.getMoedas() < deserto.getPrecoCaravana() && !deserto.getNumCaravanas()) {
             cout << "Ficou sem caravanas e sem moedas para adquirir mais alguma" << endl;
             cmd = "terminar";
@@ -46,22 +49,24 @@ int lerComandos(int fase, Deserto& deserto) {
 int comandoConfig(const vector<string>& args, Deserto& deserto){
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: config <nomeFicheiro>\n";
-        return 1;
+        return 1; // ERRO Continuar na mesma fase
     }
-    if (deserto.lerFicheiro(args[0])) return 2;
-
-    return 1;
+    if (bool out = deserto.lerFicheiro(args[0])) {
+        std::cout << "saiu do lerFicheiro com: "<< out << std::endl;
+        return 2; // Sucesso Passar para fase 2
+    }
+    return 1; // Falhou Continuar na fase 1
 }
 
 int processarComandosFase1(const string& cmd, const vector<string>& args, Deserto& deserto) {
-    if (cmd == "config") return comandoConfig(args, deserto);
+    if (cmd == "config") return comandoConfig(args, deserto); // Ficheiro lido com sucesso passa para fase 2
     else if (cmd == "sair") {
         cout << "Encerrando programa...\n";
-        return 0;
+        return 0; // Retorna 0 para encerrar programa
     } else {
         cerr << "[ERRO] Comando inválido\n";
     }
-    return 1;
+    return 1; // Continuar na fase 1
 }
 
 int processarComandosFase2(const string& cmd, const vector<string>& args, Deserto& deserto) {

@@ -18,25 +18,29 @@
 
 class Buffer {
 private:
-    char* data;
+    std::vector<char> data;
     int linhas, colunas;
     int linhaCursor, colunaCursor;
+    void resizeBuffer();
 
 public:
     // Construtor e destrutor
     Buffer(int linhas, int colunas);
-    ~Buffer();
+    //~Buffer();
     void setLinhas(int l);
     void setColunas(int c);
 
     // Esvaziar o buffer
     void clear();
 
+    // Calcula o índice no vetor com base na linha e coluna
+    int calcularIndice(int linha, int coluna) const;
+
     // Imprimir o buffer na consola
     void print() const;
 
     // Mover o cursor
-    void moveCursor(int r, int c);
+    bool moveCursor(int r, int c);
 
     // Escrever um caracter
     void writeChar(char c);
@@ -44,7 +48,6 @@ public:
     // Escrever uma string
     void writeString(const char* str);
 
-    char* getData();
 
     // Sobrecarga do operador <<
     Buffer& operator<<(const char* str);

@@ -13,7 +13,8 @@ int main() {
     do {
         std::cout << "\nFase " << fase << std::endl;
         fase = lerComandos(fase, desertoInicial);
-    } while (fase);
+        std::cout << "saiu do lerComandos com: " << fase << std::endl;
+    } while (fase!=0);
 
     return 0;
 }
