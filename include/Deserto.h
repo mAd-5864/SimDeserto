@@ -6,20 +6,20 @@
 #define SIMDESERTO_DESERTO_H
 
 #include "Buffer.h"
-//#include "Caravana.h"
-//#include "Caravanas/CaravanaMilitar.h"
-//#include "Caravanas/CaravanaComercio.h"
-//#include "Caravanas/CaravanaSecreta.h"
+#include "Caravana.h"
+#include "Cidade.h"
 
 class Deserto {
 private:
     // Valores Configuraveis
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
-    int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros, numCaravanas = 0;
+    int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros;
+    int numCidades = 0, numCaravanas = 0;
     Buffer buffer;
-    //std::vector<Caravana> caravanas;
+    std::vector<Caravana> caravanas;
+    std::vector<Cidade> cidades;
 public:
-    Deserto(const Buffer& bufferInicial); // Construtor
+    Deserto(const Buffer &bufferInicial); // Construtor
     ~Deserto() = default;
 
     bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro
@@ -33,6 +33,7 @@ public:
     char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
     void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
     void setMoedas(int valor);
+
     void ajustarMoedas(int valor);
 
     void setInstantesEntreNovosItems(int valor);
@@ -53,8 +54,17 @@ public:
 
     // Getters
     int getNumCaravanas();
+
     int getMoedas();
+
     int getPrecoCaravana();
+
+
+    void processarBuffer();
+
+    void adicionaCidade(char nome, int linha, int coluna);
+
+    void adicionaCaravana(int tipo, int l, int c);
 };
 
 

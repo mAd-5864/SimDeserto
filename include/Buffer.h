@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <map>
 #include <locale>
+#include <ostream>
 
 class Buffer {
 private:
@@ -29,6 +30,13 @@ public:
     //~Buffer();
     void setLinhas(int l);
     void setColunas(int c);
+
+    int getLinhas(){
+        return this->linhas;
+    }
+    int getColunas(){
+        return this->colunas;
+    }
 
     // Esvaziar o buffer
     void clear();
@@ -48,6 +56,8 @@ public:
     // Escrever uma string
     void writeString(const char* str);
 
+    // Devolve char na posicao (l,c)
+    char getChar(int linha, int ccoluna);
 
     // Sobrecarga do operador <<
     Buffer& operator<<(const char* str);

@@ -6,8 +6,7 @@
 #include "../include/Deserto.h"
 
 // Construtor: inicializa o mapa com pontos (.)
-Deserto::Deserto(const Buffer& bufferInicial) : buffer(bufferInicial), moedas(0) {}
-
+Deserto::Deserto(const Buffer &bufferInicial) : buffer(bufferInicial), moedas(0) {}
 
 
 // Lê a config de um ficheiro
@@ -37,7 +36,7 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     for (int i = 0; i <= nLinhas && std::getline(file, line); ++i) {
         for (int j = 0; j < std::min(nColunas, static_cast<int>(line.size())); ++j) {
             //mapa[calcularIndice(i - 1, j)] = line[j];
-            if (!buffer.moveCursor(i-1, j)) {
+            if (!buffer.moveCursor(i - 1, j)) {
                 std::cerr << "[ERRO] Cursor fora dos limites ao carregar o mapa\n";
                 return false;
             }
@@ -50,7 +49,7 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     //mostrarMapa();
 
     // Ler valores configuráveis
-    while (std::getline(file, line)){
+    while (std::getline(file, line)) {
         std::istringstream iss(line);
         std::string chave;
         int valor;
@@ -89,8 +88,10 @@ bool Deserto::lerFicheiro(const std::string &filename) {
             }
         } else {
             std::cerr << "Erro ao ler linha de configuração: " << line << std::endl;
+            return false;
         }
     }
+    processarBuffer();
     return true;
 }
 
@@ -149,9 +150,36 @@ int Deserto::getPrecoCaravana() {
 
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
-    std::cout << valor <<" moedas adicionadas\nMoedas totais: " << moedas << std::endl;
+    std::cout << valor << " moedas adicionadas\nMoedas totais: " << moedas << std::endl;
 }
 
 void Deserto::mostrarMapa() const {
     buffer.print();
+}
+
+void Deserto::processarBuffer() {
+    for (int i = 0; i < buffer.getLinhas(); ++i) {
+        for (int j = 0; j < buffer.getColunas(); ++j) {
+            char c = buffer.getChar(i, j);
+
+            if (isalpha(c)) {   // Encontrou Cidade
+                adicionaCidade(c, i, j);
+            } else if (isdigit(c)) {  // Encontrou Caravana
+                adicionaCaravana('c', i, j); //Iniicalmente todas caravanas comerciais
+            }
+        }
+    }
+}
+
+// Instanciar cidade e adicionar ao vetor
+void Deserto::adicionaCidade(char nome, int l, int c) {
+    numCidades++;
+    cidades.emplace_back(nome, l, c);
+}
+
+// Instanciar caravana e adicionar ao vetor
+void Deserto::adicionaCaravana(int tipo, int l, int c) {
+    int ID = ++numCaravanas;
+    // TODO: modificar construtor das caravanas
+    //caravanas.emplace_back(ID,l,c);
 }

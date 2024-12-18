@@ -6,8 +6,8 @@
 
 
 void Buffer::setLinhas(int l) {
-        linhas = l;
-        resizeBuffer();
+    linhas = l;
+    resizeBuffer();
 }
 
 void Buffer::setColunas(int c) {
@@ -70,25 +70,29 @@ void Buffer::writeChar(char c) {
     }
 }
 
+char Buffer::getChar(int linha, int coluna) {
+    return data[calcularIndice(linha, coluna)];
+}
+
 // Escrever uma string
-void Buffer::writeString(const char* str) {
+void Buffer::writeString(const char *str) {
     while (*str) {
         writeChar(*str++);
     }
 }
 
 // Sobrecarga do operador <<
-Buffer& Buffer::operator<<(const char* str) {
+Buffer &Buffer::operator<<(const char *str) {
     writeString(str);
     return *this;
 }
 
-Buffer& Buffer::operator<<(char c) {
+Buffer &Buffer::operator<<(char c) {
     writeChar(c);
     return *this;
 }
 
-Buffer& Buffer::operator<<(int num) {
+Buffer &Buffer::operator<<(int num) {
     writeString(std::to_string(num).c_str());
     return *this;
 }
