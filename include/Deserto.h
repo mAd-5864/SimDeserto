@@ -6,6 +6,10 @@
 #define SIMDESERTO_DESERTO_H
 
 #include "Buffer.h"
+//#include "Caravana.h"
+//#include "Caravanas/CaravanaMilitar.h"
+//#include "Caravanas/CaravanaComercio.h"
+//#include "Caravanas/CaravanaSecreta.h"
 
 class Deserto {
 private:
@@ -13,6 +17,7 @@ private:
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros, numCaravanas = 0;
     Buffer buffer;
+    //std::vector<Caravana> caravanas;
 public:
     Deserto(const Buffer& bufferInicial); // Construtor
     ~Deserto() = default;

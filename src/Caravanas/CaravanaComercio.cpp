@@ -5,8 +5,9 @@
 
 // Constructor for CaravanaComercio
 CaravanaComercio::CaravanaComercio(int linha, int coluna)
-        : Caravana(40, 1, linha, coluna) { // 40T carga, movimentacao tipo 1
+        : Caravana(40, 200, 1, linha, coluna) { // 40T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
     numTripulantes = 20;
     qntAgua = 200;
     qntMerc = 0;
+    tipo = 'c';
 }
