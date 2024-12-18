@@ -5,7 +5,8 @@
 #ifndef SIMDESERTO_CIDADE_H
 #define SIMDESERTO_CIDADE_H
 
-#include "Utils.h"
+#include <iostream>
+#include <map>
 
 class Cidade {
 private:

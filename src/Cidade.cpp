@@ -3,6 +3,7 @@
 //
 
 #include "../include/Cidade.h"
+#include "../include/Caravana.h"
 
 
 // Construtor: inicializa as caravanas disponíveis
@@ -33,6 +34,7 @@ bool Cidade::comprarCaravana(char tipo) {
     auto it = caravanasDisponiveis.find(nomeCaravana);
     if (it != caravanasDisponiveis.end() && it->second) {
         it->second = false; // Marca a caravana como comprada
+        //chamar adicionaCaravana
         std::cout << "Caravana do tipo " << nomeCaravana << " comprada na cidade " << nome << std::endl;
         return true;
     }

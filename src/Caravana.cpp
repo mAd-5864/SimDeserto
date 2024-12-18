@@ -14,3 +14,12 @@ Caravana::Caravana(int cargaMax, int aguaMax, int tipoMov, int linha, int coluna
 Caravana::~Caravana() {
     // Any cleanup if necessary
 }
+
+std::string converterTipoCaravana(char tipo) {
+    switch (tipo) {
+        case 'C': return "Mercadoria";
+        case 'M': return "Militar";
+        case 'S': return "Secreta";
+        default: return ""; // Tipos inválidos
+    }
+}

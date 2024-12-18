@@ -11,7 +11,11 @@ int main() {
 
     int fase = 1;
     do {
-        std::cout << "\nFase " << fase << std::endl;
+        if (fase==2){
+            std::cout << "\nFase " << fase<< " - Moedas: "<< desertoInicial.getMoedas()<< "   Caravanas: "<< desertoInicial.getNumCaravanas()<<std::endl;
+        }else{
+            std::cout << "\nFase " << fase<< std::endl;
+        }
         fase = lerComandos(fase, desertoInicial);
     } while (fase!=0);
 

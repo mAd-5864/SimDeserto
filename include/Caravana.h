@@ -1,8 +1,7 @@
 #ifndef SIMDESERTO_CARAVANA_H
 #define SIMDESERTO_CARAVANA_H
 
-#include "Utils.h"
-
+#include <iostream>
 
 class Caravana {
 protected:
@@ -49,5 +48,8 @@ public:
                   << ", Posição: (" << linha << ", " << coluna << ")"
                   << ", Carga: " << qntMerc << "]\n";
     }
+
 };
+
+std::string converterTipoCaravana(char tipo);
 #endif //SIMDESERTO_CARAVANA_H

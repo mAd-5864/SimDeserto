@@ -67,6 +67,4 @@ void comandoLists(const vector<string> &args);
 
 void comandoDels(const vector<string> &args);
 
-std::string converterTipoCaravana(char tipo);
-
 #endif //SIMDESERTO_UTILS_H
