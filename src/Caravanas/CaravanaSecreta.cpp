@@ -5,9 +5,9 @@
 
 // Constructor for CaravanaSecreta
 CaravanaSecreta::CaravanaSecreta(int linha, int coluna)
-        : Caravana(10, 600, 1, linha, coluna) { // Exemplo: 10T cargaMaxima, 600 litrosMaximo, movimentacao tipo 1
-    numTripulantes = 10;
-    qntAgua = 100;
+        : Caravana(5, 200, 10, 1, linha, coluna) { // Exemplo: 5T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
+    numTripulantes = tripulantesMax;
+    qntAgua = aguaMax;
     qntMerc = 0;
-    tipo = 's';
+    tipo = 'S';
 }

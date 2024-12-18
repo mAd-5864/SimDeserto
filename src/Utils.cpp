@@ -68,7 +68,7 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
     else if (cmd == "comprac") comandoComprac(args);
     else if (cmd == "precos") comandoPrecos(args, deserto);
     else if (cmd == "cidade") comandoCidade(args);
-    else if (cmd == "caravana") comandoCaravana(args);
+    else if (cmd == "caravana") comandoCaravana(args, deserto.getCaravanas());
     else if (cmd == "compra") comandoCompra(args);
     else if (cmd == "vende") comandoVende(args);
     else if (cmd == "move") comandoMove(args);
@@ -152,14 +152,22 @@ void comandoCidade(const vector<string>& args) {
 }
 
 // Comando: caravana <C>
-void comandoCaravana(const vector<string>& args) {
+void comandoCaravana(const vector<string>& args, const std::vector<std::unique_ptr<Caravana>>& caravanas) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: caravana <número>\n";
         return;
     }
-    cout << "Mostrando detalhes da caravana: " << args[0] << ".\n";
-    // Implementar detalhes da caravana
+    int id = stoi(args[0]);
+
+    // Procurar caravana com ID lido
+    for (const auto& caravana : caravanas) {
+        if (caravana->getId() == id) {
+            caravana->detalhes();
+            return;
+        }
+    }
 }
+
 
 // Comando: compra <N> <M>
 void comandoCompra(const vector<string>& args) {

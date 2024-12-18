@@ -3,11 +3,11 @@
 //
 #include "../../include/Caravanas/CaravanaComercio.h"
 
-// Constructor for CaravanaComercio
+// Constructor
 CaravanaComercio::CaravanaComercio(int linha, int coluna)
-        : Caravana(40, 200, 1, linha, coluna) { // 40T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
-    numTripulantes = 20;
-    qntAgua = 200;
+        : Caravana(40, 200, 20, 1, linha, coluna) { // 40T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
+    qntAgua = aguaMax;
     qntMerc = 0;
-    tipo = 'c';
+    numTripulantes = tripulantesMax;
+    tipo = 'C';
 }

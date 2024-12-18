@@ -39,7 +39,7 @@ void comandoPrecos(const vector<string> &args, Deserto &deserto);
 
 void comandoCidade(const vector<string> &args);
 
-void comandoCaravana(const vector<string> &args);
+void comandoCaravana(const vector<string>& args, const std::vector<std::unique_ptr<Caravana>>& caravanas);
 
 void comandoCompra(const vector<string> &args);
 

@@ -5,14 +5,15 @@
 
 class Caravana {
 protected:
+    static int nextID; // Para gerar IDs únicos
     int ID, numTripulantes, qntAgua, qntMerc;
-    const int cargaMaxima, aguaMax;
+    const int cargaMaxima, aguaMax, tripulantesMax;
     int tipoMovimentacao; // 0-Sem tripulantes, 1-Utilizador, 2-Autónomo
     int linha, coluna;
     char tipo; // c -> comercio, m -> militar, s -> secreto
 
 public:
-    Caravana(int cargaMax, int aguaMax, int tipoMov, int linha, int coluna);
+    Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int linha, int coluna);
     virtual ~Caravana();
 
     // Common methods (add getters, setters, or virtual methods here if needed)
@@ -21,6 +22,8 @@ public:
     int getColuna() const { return coluna; }
     char getTipo() const { return tipo; }
     int getCarga() const { return qntMerc; }
+
+    void detalhes() const;
 
     void mover(int novaLinha, int novaColuna) {
         linha = novaLinha;

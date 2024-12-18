@@ -4,11 +4,15 @@
 
 #include "../include/Caravana.h"
 
+// Static ID generator
+int Caravana::nextID = 1;
+
 // Constructor for base Caravana
-Caravana::Caravana(int cargaMax, int aguaMax, int tipoMov, int linha, int coluna)
-        : cargaMaxima(cargaMax), aguaMax(aguaMax), tipoMovimentacao(tipoMov),
-          linha(linha), coluna(coluna),
-          numTripulantes(0), qntAgua(0), qntMerc(0) {}
+Caravana::Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int linha, int coluna)
+        : ID(nextID++), cargaMaxima(cargaMax), aguaMax(aguaMax), tripulantesMax(tripulantesMax),
+          tipoMovimentacao(tipoMov), linha(linha), coluna(coluna) {
+    // Os valores numTripulantes, qntAgua, e qntMerc já são inicializados implicitamente como 0
+}
 
 // Destructor
 Caravana::~Caravana() {
@@ -16,10 +20,17 @@ Caravana::~Caravana() {
 }
 
 std::string converterTipoCaravana(char tipo) {
-    switch (tipo) {
+    switch (toupper(tipo)) {
         case 'C': return "Mercadoria";
         case 'M': return "Militar";
         case 'S': return "Secreta";
         default: return ""; // Tipos inválidos
     }
+}
+
+void Caravana::detalhes() const{
+    std::cout << "ID: " << ID
+              << " | Caravana " << converterTipoCaravana(tipo)
+              << " | Posicao(" << linha << ", " <<coluna << ")\n"<<
+              numTripulantes<<" Tripulantes | "<<qntAgua<< "L Agua | "<<qntMerc<< "T Mercadoria"<< std::endl;
 }

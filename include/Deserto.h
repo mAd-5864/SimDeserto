@@ -4,10 +4,15 @@
 
 #ifndef SIMDESERTO_DESERTO_H
 #define SIMDESERTO_DESERTO_H
+#include <memory>
+#include <limits>
 
 #include "Buffer.h"
 #include "Caravana.h"
 #include "Cidade.h"
+#include "Caravanas/CaravanaSecreta.h"
+#include "Caravanas/CaravanaMilitar.h"
+#include "Caravanas/CaravanaComercio.h"
 
 class Deserto {
 private:
@@ -16,7 +21,7 @@ private:
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros;
     int numCidades = 0, numCaravanas = 0;
     Buffer buffer;
-    std::vector<Caravana> caravanas;
+    std::vector<std::unique_ptr<Caravana>> caravanas;
     std::vector<Cidade> cidades;
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
@@ -65,7 +70,9 @@ public:
     void adicionaCidade(char nome, int linha, int coluna);
     void printCidades() const;
 
-    void adicionaCaravana(int tipo, int l, int c);
+    void adicionaCaravana(char tipo, int l, int c);
+    void printCaravanas() const;
+    const std::vector<std::unique_ptr<Caravana>>& getCaravanas() const;
 };
 
 

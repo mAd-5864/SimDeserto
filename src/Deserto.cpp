@@ -2,8 +2,8 @@
 // Created by Pedro on 11/3/2024.
 //
 
-#include <limits>
 #include "../include/Deserto.h"
+
 
 // Construtor: inicializa o mapa com pontos (.)
 Deserto::Deserto(const Buffer &bufferInicial) : buffer(bufferInicial), moedas(0) {}
@@ -154,6 +154,7 @@ void Deserto::printPrecos() {
 
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
+    if (moedas<0) moedas = 0;
     std::cout << valor << " moedas adicionadas"<< std::endl;
 }
 
@@ -182,10 +183,23 @@ void Deserto::adicionaCidade(char nome, int l, int c) {
 }
 
 // Instanciar caravana e adicionar ao vetor
-void Deserto::adicionaCaravana(int tipo, int l, int c) {
+void Deserto::adicionaCaravana(char tipo, int l, int c) {
     int ID = ++numCaravanas;
     // TODO: modificar construtor das caravanas
-    //caravanas.emplace_back(ID,l,c);
+    switch (toupper(tipo)) {
+        case 'C': // Comercio
+            caravanas.emplace_back(std::make_unique<CaravanaComercio>(l, c));
+            break;
+        case 'M': // Militar
+            caravanas.emplace_back(std::make_unique<CaravanaMilitar>(l, c));
+            break;
+        case 'S': // Secreta
+            caravanas.emplace_back(std::make_unique<CaravanaSecreta>(l, c));
+            break;
+        default:
+            std::cerr << "[ERRO] Tipo de caravana inválido: " << tipo << std::endl;
+            return;
+    }
 }
 
 void Deserto::printCidades() const {
@@ -193,5 +207,15 @@ void Deserto::printCidades() const {
     for (const auto& cidade : cidades) {
         std::cout << "Cidade: " << cidade.getNome()
                   << " | Posicao: (" << cidade.getLinha() << ", " << cidade.getColuna() << ")" << std::endl;
+    }
+}
+
+const std::vector<std::unique_ptr<Caravana>>& Deserto::getCaravanas() const {
+    return caravanas;
+}
+
+void Deserto::printCaravanas() const {
+    for (const auto& caravana : caravanas) {
+        caravana->detalhes();
     }
 }
