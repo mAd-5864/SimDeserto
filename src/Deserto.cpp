@@ -150,7 +150,7 @@ int Deserto::getPrecoCaravana() {
 
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
-    std::cout << valor << " moedas adicionadas\nMoedas totais: " << moedas << std::endl;
+    std::cout << valor << " moedas adicionadas"<< std::endl;
 }
 
 void Deserto::mostrarMapa() const {
