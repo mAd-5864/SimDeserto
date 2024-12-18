@@ -174,7 +174,7 @@ void Deserto::processarBuffer() {
 // Instanciar cidade e adicionar ao vetor
 void Deserto::adicionaCidade(char nome, int l, int c) {
     numCidades++;
-    cidades.emplace_back(nome, l, c);
+    cidades.emplace_back(toupper(nome), l, c);
 }
 
 // Instanciar caravana e adicionar ao vetor
@@ -182,4 +182,12 @@ void Deserto::adicionaCaravana(int tipo, int l, int c) {
     int ID = ++numCaravanas;
     // TODO: modificar construtor das caravanas
     //caravanas.emplace_back(ID,l,c);
+}
+
+void Deserto::printCidades() const {
+    std::cout << "Cidades no mapa:" << std::endl;
+    for (const auto& cidade : cidades) {
+        std::cout << "Cidade: " << cidade.getNome()
+                  << " | Posicao: (" << cidade.getLinha() << ", " << cidade.getColuna() << ")" << std::endl;
+    }
 }

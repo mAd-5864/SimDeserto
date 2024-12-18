@@ -63,6 +63,7 @@ public:
     void processarBuffer();
 
     void adicionaCidade(char nome, int linha, int coluna);
+    void printCidades() const;
 
     void adicionaCaravana(int tipo, int l, int c);
 };

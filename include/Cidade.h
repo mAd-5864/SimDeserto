@@ -19,6 +19,10 @@ public:
     // Construtor
     Cidade(char nome, int l, int c);
 
+    char getNome() const { return nome; }
+    int getLinha() const { return linha; }
+    int getColuna() const { return coluna; }
+
     // Mostra caravanas disponíveis
     void mostrarCaravanasDisponiveis() const; // CORRIGIR: mostrar caravanas estacionadas
 
