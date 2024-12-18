@@ -10,6 +10,7 @@
 class CaravanaComercio : public Caravana {
 public:
     CaravanaComercio(int linha, int coluna); // Valores: 20 Tripulantes, 200L Agua, 40T CargaMaxima
+
 };
 
 #endif //SIMDESERTO_CARAVANACOMERCIO_H

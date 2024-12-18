@@ -5,8 +5,8 @@
 #include "../include/Caravana.h"
 
 // Constructor for base Caravana
-Caravana::Caravana(int cargaMax, int tipoMov, int linha, int coluna)
-        : cargaMaxima(cargaMax), tipoMovimentacao(tipoMov),
+Caravana::Caravana(int cargaMax, int aguaMax, int tipoMov, int linha, int coluna)
+        : cargaMaxima(cargaMax), aguaMax(aguaMax), tipoMovimentacao(tipoMov),
           linha(linha), coluna(coluna),
           numTripulantes(0), qntAgua(0), qntMerc(0) {}
 
