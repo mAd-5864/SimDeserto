@@ -148,6 +148,10 @@ int Deserto::getPrecoCaravana() {
     return precoCaravana;
 }
 
+void Deserto::printPrecos() {
+    std::cout<< "Comprar mercadoria - "<< this->precoCompraMerc<< " Moedas\nVender mercadoria - "<< this->precoVendaMerc<<" Moedas"<< std::endl;
+}
+
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
     std::cout << valor << " moedas adicionadas"<< std::endl;

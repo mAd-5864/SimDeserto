@@ -58,7 +58,7 @@ public:
     int getMoedas();
 
     int getPrecoCaravana();
-
+    void printPrecos();
 
     void processarBuffer();
 

@@ -66,7 +66,7 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
     if (cmd == "exec") comandoExec(args);
     else if (cmd == "prox") comandoProx(args, deserto);
     else if (cmd == "comprac") comandoComprac(args);
-    else if (cmd == "precos") comandoPrecos(args);
+    else if (cmd == "precos") comandoPrecos(args, deserto);
     else if (cmd == "cidade") comandoCidade(args);
     else if (cmd == "caravana") comandoCaravana(args);
     else if (cmd == "compra") comandoCompra(args);
@@ -133,13 +133,12 @@ void comandoComprac(const vector<string>& args) {
 }
 
 // Comando: precos
-void comandoPrecos(const vector<string>& args) {
+void comandoPrecos(const vector<string>& args, Deserto &deserto) {
     if (!args.empty()) {
         cerr << "[ERRO] Sintaxe: precos\n";
         return;
     }
-    cout << "Listando preços das mercadorias.\n";
-    // Implementar listagem de preços
+    deserto.printPrecos();
 }
 
 // Comando: cidade <C>

@@ -35,7 +35,7 @@ void comandoProx(const vector<string> &args, Deserto& deserto);
 
 void comandoComprac(const vector<string> &args);
 
-void comandoPrecos(const vector<string> &args);
+void comandoPrecos(const vector<string> &args, Deserto &deserto);
 
 void comandoCidade(const vector<string> &args);
 
