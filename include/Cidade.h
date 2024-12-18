@@ -12,13 +12,14 @@ private:
     char nome;  // Nome da cidade
     std::map<std::string, bool> caravanasDisponiveis;  // Tipo de caravana e disponibilidade
     int linha, coluna;
+    //TODO: array id de caravanas
 
 public:
     // Construtor
     Cidade(char nome, int l, int c);
 
     // Mostra caravanas disponíveis
-    void mostrarCaravanasDisponiveis() const;
+    void mostrarCaravanasDisponiveis() const; // CORRIGIR: mostrar caravanas estacionadas
 
     // Compra uma caravana
     bool comprarCaravana(char tipo);

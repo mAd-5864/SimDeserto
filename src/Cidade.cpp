@@ -18,8 +18,7 @@ Cidade::Cidade(char nome, int l, int c) : nome(nome), linha(l), coluna(c) {
 void Cidade::mostrarCaravanasDisponiveis() const {
     std::cout << "Caravanas disponíveis na cidade " << nome << ":\n";
     for (const auto &caravana: caravanasDisponiveis) {
-        std::cout << "  " << caravana.first << " - "
-                  << (caravana.second ? "Disponível" : "Indisponível") << '\n';
+        std::cout << "  " << caravana.first << " - " << (caravana.second ? "Disponível" : "Indisponível") << '\n';
     }
 }
 
