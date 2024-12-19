@@ -37,7 +37,7 @@ void comandoComprac(const vector<string> &args, Deserto &deserto);
 
 void comandoPrecos(const vector<string> &args, Deserto &deserto);
 
-void comandoCidade(const vector<string> &args, const std::vector<Cidade>& cidades);
+void comandoCidade(const vector<string> &args, Deserto &deserto);
 
 void comandoCaravana(const vector<string>& args, const std::vector<std::unique_ptr<Caravana>>& caravanas);
 

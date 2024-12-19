@@ -16,7 +16,7 @@ Cidade::Cidade(char nome, int l, int c) : nome(nome), linha(l), coluna(c) {
 }
 // Mostra as caravanas disponíveis na cidade
 void Cidade::mostrarCaravanasDisponiveis() const {
-    std::cout << "Caravanas para compra na cidade " << nome << ":\n";
+    std::cout << "\nCaravanas para compra na cidade " << nome << ":\n";
     for (const auto &caravana: caravanasDisponiveis) {
         if (caravana.second)
             std::cout << "\tCaravana  " << converterTipoCaravana(caravana.first) << '\n';

@@ -29,8 +29,8 @@ std::string converterTipoCaravana(char tipo) {
 }
 
 void Caravana::detalhes() const{
-    std::cout << "ID: " << ID
+    std::cout << "\tID: " << ID
               << " | Caravana " << converterTipoCaravana(tipo)
-              << " | Posicao(" << linha << ", " <<coluna << ")\n"<<
+              << " | Posicao(" << linha << ", " <<coluna << ")\n\t"<<
               numTripulantes<<" Tripulantes | "<<qntAgua<< "L Agua | "<<qntMerc<< "T Mercadoria"<< std::endl;
 }

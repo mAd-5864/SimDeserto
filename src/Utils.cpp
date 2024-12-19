@@ -67,7 +67,7 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
     else if (cmd == "prox") comandoProx(args, deserto);
     else if (cmd == "comprac") comandoComprac(args, deserto);
     else if (cmd == "precos") comandoPrecos(args, deserto);
-    else if (cmd == "cidade") comandoCidade(args, deserto.getCidades());
+    else if (cmd == "cidade") comandoCidade(args, deserto);
     else if (cmd == "caravana") comandoCaravana(args, deserto.getCaravanas());
     else if (cmd == "compra") comandoCompra(args);
     else if (cmd == "vende") comandoVende(args);
@@ -149,16 +149,28 @@ void comandoPrecos(const vector<string>& args, Deserto &deserto) {
 }
 
 // Comando: cidade <C>
-void comandoCidade(const vector<string>& args, const vector<Cidade>& cidades) {
+void comandoCidade(const vector<string>& args, Deserto &deserto) {
     char nomeCidade = toupper(args[0][0]);
     if (args.size() != 1 || !isalpha(nomeCidade)) {
         cerr << "[ERRO] Sintaxe: cidade <nome cidade>\n";
         return;
     }
+    auto& cidades = deserto.getCidades();
+    auto& caravanas = deserto.getCaravanas();
 
     // Procurar cidade com nome recebido
     for (const auto& cidade : cidades) {
         if (cidade.getNome() == nomeCidade) {
+
+            //check if any caravana is in the same position as the city (lin,col)
+            std::cout << "Caravanas estacionadas na cidade "<< cidade.getNome()<<":";
+            for (const auto& caravana : caravanas) {
+                if (caravana->getLinha() == cidade.getLinha() &&
+                    caravana->getColuna() == cidade.getColuna()) {
+                    std::cout<<"\n";
+                    caravana->detalhes();
+                }
+            }
             cidade.mostrarCaravanasDisponiveis();
             return;
         }
