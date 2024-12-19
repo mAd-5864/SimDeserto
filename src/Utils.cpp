@@ -65,9 +65,9 @@ int processarComandosFase1(const string& cmd, const vector<string>& args, Desert
 int processarComandosFase2(const string& cmd, const vector<string>& args, Deserto& deserto) {
     if (cmd == "exec") comandoExec(args);
     else if (cmd == "prox") comandoProx(args, deserto);
-    else if (cmd == "comprac") comandoComprac(args);
+    else if (cmd == "comprac") comandoComprac(args, deserto);
     else if (cmd == "precos") comandoPrecos(args, deserto);
-    else if (cmd == "cidade") comandoCidade(args);
+    else if (cmd == "cidade") comandoCidade(args, deserto.getCidades());
     else if (cmd == "caravana") comandoCaravana(args, deserto.getCaravanas());
     else if (cmd == "compra") comandoCompra(args);
     else if (cmd == "vende") comandoVende(args);
@@ -117,19 +117,26 @@ void comandoProx(const vector<string>& args, Deserto& deserto) {
 }
 
 // Comando: comprac <C> <T>
-void comandoComprac(const vector<string>& args) {
+void comandoComprac(const vector<string>& args, Deserto& deserto) {
     if (args.size() != 2) {
         cerr << "[ERRO] Sintaxe: comprac <cidade> <tipo>\n";
         return;
     }
-    char cidade = args[0][0];
-    char tipo = args[1][0];
-    if (!isalpha(cidade) || (tipo != 'C' && tipo != 'M' && tipo != 'S')) {
+    char nomeCidade = toupper(args[0][0]);
+    char tipo = toupper(args[1][0]);
+    if (!isalpha(nomeCidade) || (tipo != 'C' && tipo != 'M' && tipo != 'S')) {
         cerr << "[ERRO] Cidade deve ser uma letra, tipo deve ser C, M ou S.\n";
         return;
     }
-    cout << "Comprando caravana do tipo " << tipo << " na cidade " << cidade << ".\n";
-    // Implementar compra de caravana
+// Procurar cidade com nome recebido
+    for (auto& cidade : deserto.getCidades()) {
+        if (cidade.getNome() == nomeCidade) {
+            if(cidade.comprarCaravana(tipo))
+                deserto.adicionaCaravana(tipo, cidade.getLinha(), cidade.getColuna()); // Add caravana na mesma posicao da cidade
+            return;
+        }
+    }
+    std::cerr << "[ERRO] Cidade " << nomeCidade << " não encontrada.\n";
 }
 
 // Comando: precos
@@ -142,13 +149,20 @@ void comandoPrecos(const vector<string>& args, Deserto &deserto) {
 }
 
 // Comando: cidade <C>
-void comandoCidade(const vector<string>& args) {
-    if (args.size() != 1 || !isalpha(args[0][0])) {
+void comandoCidade(const vector<string>& args, const vector<Cidade>& cidades) {
+    char nomeCidade = toupper(args[0][0]);
+    if (args.size() != 1 || !isalpha(nomeCidade)) {
         cerr << "[ERRO] Sintaxe: cidade <nome cidade>\n";
         return;
     }
-    cout << "Listando conteúdo da cidade: " << args[0] << ".\n";
-    // Implementar listagem de conteúdo da cidade
+
+    // Procurar cidade com nome recebido
+    for (const auto& cidade : cidades) {
+        if (cidade.getNome() == nomeCidade) {
+            cidade.mostrarCaravanasDisponiveis();
+            return;
+        }
+    }
 }
 
 // Comando: caravana <C>

@@ -9,17 +9,17 @@
 // Construtor: inicializa as caravanas disponíveis
 Cidade::Cidade(char nome, int l, int c) : nome(nome), linha(l), coluna(c) {
     caravanasDisponiveis = {
-            {"Mercadoria", true},
-            {"Militar",    true},
-            {"Secreta",    true}
+            {'C', true},
+            {'M', true},
+            {'S', true}
     };
 }
-
 // Mostra as caravanas disponíveis na cidade
 void Cidade::mostrarCaravanasDisponiveis() const {
-    std::cout << "Caravanas disponíveis na cidade " << nome << ":\n";
+    std::cout << "Caravanas para compra na cidade " << nome << ":\n";
     for (const auto &caravana: caravanasDisponiveis) {
-        std::cout << "  " << caravana.first << " - " << (caravana.second ? "Disponível" : "Indisponível") << '\n';
+        if (caravana.second)
+            std::cout << "\tCaravana  " << converterTipoCaravana(caravana.first) << '\n';
     }
 }
 
@@ -31,15 +31,16 @@ bool Cidade::comprarCaravana(char tipo) {
         return false;
     }
 
-    auto it = caravanasDisponiveis.find(nomeCaravana);
+    auto it = caravanasDisponiveis.find(tipo); // Procura pelo tipo (chave do map)
     if (it != caravanasDisponiveis.end() && it->second) {
         it->second = false; // Marca a caravana como comprada
-        //chamar adicionaCaravana
-        std::cout << "Caravana do tipo " << nomeCaravana << " comprada na cidade " << nome << std::endl;
+
+        std::cout << "Caravana " << nomeCaravana
+                  << " comprada na cidade " << nome << std::endl;
         return true;
     }
 
-    std::cerr << "[ERRO] Caravana do tipo " << nomeCaravana
+    std::cerr << "[ERRO] Caravana " << nomeCaravana
               << " não está disponível na cidade " << nome << std::endl;
     return false;
 }

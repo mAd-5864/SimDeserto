@@ -21,7 +21,7 @@ Caravana::~Caravana() {
 
 std::string converterTipoCaravana(char tipo) {
     switch (toupper(tipo)) {
-        case 'C': return "Mercadoria";
+        case 'C': return "de Comercio";
         case 'M': return "Militar";
         case 'S': return "Secreta";
         default: return ""; // Tipos inválidos

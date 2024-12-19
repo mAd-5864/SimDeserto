@@ -69,6 +69,8 @@ public:
 
     void adicionaCidade(char nome, int linha, int coluna);
     void printCidades() const;
+    const std::vector<Cidade>& getCidades() const; // Const
+    std::vector<Cidade>& getCidades(); //Nao const, para poder fazer alteracoes
 
     void adicionaCaravana(char tipo, int l, int c);
     void printCaravanas() const;

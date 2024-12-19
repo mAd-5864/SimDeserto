@@ -214,6 +214,13 @@ const std::vector<std::unique_ptr<Caravana>>& Deserto::getCaravanas() const {
     return caravanas;
 }
 
+const std::vector<Cidade>& Deserto::getCidades() const {
+    return cidades;
+}
+std::vector<Cidade>& Deserto::getCidades() {
+    return cidades;
+}
+
 void Deserto::printCaravanas() const {
     for (const auto& caravana : caravanas) {
         caravana->detalhes();

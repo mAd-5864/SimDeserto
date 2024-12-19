@@ -33,11 +33,11 @@ void comandoExec(const vector<string> &args);
 
 void comandoProx(const vector<string> &args, Deserto& deserto);
 
-void comandoComprac(const vector<string> &args);
+void comandoComprac(const vector<string> &args, Deserto &deserto);
 
 void comandoPrecos(const vector<string> &args, Deserto &deserto);
 
-void comandoCidade(const vector<string> &args);
+void comandoCidade(const vector<string> &args, const std::vector<Cidade>& cidades);
 
 void comandoCaravana(const vector<string>& args, const std::vector<std::unique_ptr<Caravana>>& caravanas);
 

@@ -11,7 +11,7 @@
 class Cidade {
 private:
     char nome;  // Nome da cidade
-    std::map<std::string, bool> caravanasDisponiveis;  // Tipo de caravana e disponibilidade
+    std::map<char, bool> caravanasDisponiveis;  // Tipo de caravana e disponibilidade
     int linha, coluna;
     //TODO: array id de caravanas
 
