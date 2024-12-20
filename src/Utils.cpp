@@ -113,6 +113,7 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         cerr << "[ERRO] O número de instantes deve ser maior que 0.\n";
         return;
     }
+    deserto.atualizarBuffer();
     deserto.mostrarMapa(); // para testes
 }
 
@@ -218,13 +219,21 @@ void comandoVende(const vector<string> &args) {
 
 // Comando: move <N> <X>
 void comandoMove(const vector<string> &args, Deserto &deserto) {
+    if (args.size() != 2) {
+        cerr << "[ERRO] Sintaxe: move <número> <direção>\n";
+        return;
+    }
+
     vector<string> direcoes = {"D", "E", "C", "B", "CE", "CD", "BE", "BD"};
-    if (args.size() != 2 || !isNumber(args[0]) || find(direcoes.begin(), direcoes.end(), args[1]) == direcoes.end()) {
+    string dir = args[1];
+    std::transform(dir.begin(), dir.end(), dir.begin(), ::toupper);
+
+    if (!isNumber(args[0]) || find(direcoes.begin(), direcoes.end(), dir) == direcoes.end()) {
         cerr << "[ERRO] Sintaxe: move <número> <direção>\n";
         cerr << "Direções válidas: D, E, C, B, CE, CD, BE, BD\n";
         return;
     }
-    deserto.moverCaravana(stoi(args[0]), args[1]);
+    deserto.moverCaravana(stoi(args[0]), dir);
 }
 
 // Comando: auto <N>

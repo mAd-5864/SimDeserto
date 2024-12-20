@@ -24,6 +24,7 @@ private:
     Buffer buffer;
     std::vector<std::unique_ptr<Caravana>> caravanas;
     std::vector<Cidade> cidades;
+    std::vector<std::pair<int, int>> montanhas;
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
     ~Deserto() = default;
@@ -34,9 +35,6 @@ public:
 
     void setLinhas(int linhas);
     void setColunas(int colunas);
-
-    int getLinhas();
-    int getColunas();
 
     char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
     void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
@@ -61,24 +59,30 @@ public:
     void setInstantesEntreNovosBarbaros(int valor);
 
     // Getters
-    int getNumCaravanas();
+    int getNumCaravanas() const;
 
-    int getMoedas();
+    int getMoedas() const;
 
-    int getPrecoCaravana();
-    void printPrecos();
+    int getPrecoCaravana() const;
+
+    void printPrecos() const;
 
     void processarBuffer();
+    void atualizarBuffer();
+
+    const std::vector<std::pair<int, int>>& getMontanhas() const;
 
     void adicionaCidade(char nome, int linha, int coluna);
     void printCidades() const;
     const std::vector<Cidade>& getCidades() const; // Const
     std::vector<Cidade>& getCidades(); //Nao const, para poder fazer alteracoes
-    void moverCaravana(int id, std::string movimento);
 
     void adicionaCaravana(char tipo, int l, int c);
     void printCaravanas() const;
     const std::vector<std::unique_ptr<Caravana>>& getCaravanas() const;
+
+    void moverCaravana(int id, const std::string& movimento);
+    bool movimentoInvalido(int linha, int coluna);
 };
 
 

@@ -27,7 +27,7 @@ Buffer::Buffer(int r, int c) : linhas(r), colunas(c), linhaCursor(0), colunaCurs
 
 // Esvaziar o buffer
 void Buffer::clear() {
-    std::fill(data.begin(), data.end(), ' ');
+    std::fill(data.begin(), data.end(), '.');
     linhaCursor = colunaCursor = 0; // Reset cursor
 }
 

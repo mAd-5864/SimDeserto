@@ -8,21 +8,14 @@
 // Construtor: inicializa o mapa com pontos (.)
 Deserto::Deserto(const Buffer &bufferInicial) : buffer(bufferInicial), moedas(0) {}
 
-void Deserto::setLinhas(int linhas) {
-    this->linhas = linhas;
+void Deserto::setLinhas(int l) {
+    this->linhas = l;
 }
 
-void Deserto::setColunas(int colunas) {
-    this->colunas = colunas;
+void Deserto::setColunas(int c) {
+    this->colunas = c;
 }
 
-int Deserto::getLinhas() {
-    return linhas;
-}
-
-int Deserto::getColunas() {
-    return colunas;
-}
 
 // Lê a config de um ficheiro
 bool Deserto::lerFicheiro(const std::string &filename) {
@@ -152,19 +145,19 @@ void Deserto::setDuracaoBarbaros(int valor) {
     this->duracaoBarbaros = valor;
 }
 
-int Deserto::getNumCaravanas() {
+int Deserto::getNumCaravanas() const {
     return numCaravanas;
 }
 
-int Deserto::getMoedas() {
+int Deserto::getMoedas() const {
     return moedas;
 }
 
-int Deserto::getPrecoCaravana() {
+int Deserto::getPrecoCaravana() const {
     return precoCaravana;
 }
 
-void Deserto::printPrecos() {
+void Deserto::printPrecos() const {
     std::cout << "Comprar mercadoria - " << this->precoCompraMerc << " Moedas\nVender mercadoria - "
               << this->precoVendaMerc << " Moedas" << std::endl;
 }
@@ -188,6 +181,8 @@ void Deserto::processarBuffer() {
                 adicionaCidade(c, i, j);
             } else if (isdigit(c)) {  // Encontrou Caravana
                 adicionaCaravana('c', i, j); //Iniicalmente todas caravanas comerciais
+            } else if (c == '+') { // Encontrou Montanha
+                montanhas.emplace_back(i, j);
             }
         }
     }
@@ -201,8 +196,6 @@ void Deserto::adicionaCidade(char nome, int l, int c) {
 
 // Instanciar caravana e adicionar ao vetor
 void Deserto::adicionaCaravana(char tipo, int l, int c) {
-    int ID = ++numCaravanas;
-    // TODO: modificar construtor das caravanas
     switch (toupper(tipo)) {
         case 'C': // Comercio
             caravanas.emplace_back(std::make_unique<CaravanaComercio>(l, c));
@@ -239,11 +232,38 @@ std::vector<Cidade> &Deserto::getCidades() {
     return cidades;
 }
 
+const std::vector<std::pair<int, int>> &Deserto::getMontanhas() const {
+    return montanhas;
+}
+
 void Deserto::printCaravanas() const {
     for (const auto &caravana: caravanas) {
         caravana->detalhes();
     }
 }
+
+void Deserto::atualizarBuffer() {
+    buffer.clear(); // Estado inicial
+
+    // Adicionar montanhas
+    for (const auto& montanha : montanhas) {
+        buffer.moveCursor(montanha.first, montanha.second);
+        buffer.writeChar('+');
+    }
+
+    // Adicionar caravanas
+    for (const auto& caravana : caravanas) {
+        buffer.moveCursor(caravana->getLinha(), caravana->getColuna());
+        buffer.writeChar('0'+caravana->getId());
+    }
+
+    // Adicionar cidades
+    for (const auto& cidade : cidades) {
+        buffer.moveCursor(cidade.getLinha(), cidade.getColuna());
+        buffer.writeChar(tolower(cidade.getNome()));
+    }
+}
+
 
 
 //Caravanas
@@ -280,76 +300,58 @@ int movimentaDireita(const std::unique_ptr<Caravana> &caravana, int maxColuna) {
     }
 }
 
-void Deserto::moverCaravana(int id, std::string movimento) {
-    char ID_caracter;
+void Deserto::moverCaravana(int id, const std::string& movimento) {
     for (const auto &caravana: caravanas) {
         if (caravana->getId() == id) {
             int posLinhaNova = caravana->getLinha(), posColunaNova = caravana->getColuna();
-            // Validação de limites    Falta verificar se é montanha....
+            // Validação de limites
             if (movimento == "C") {
-                posLinhaNova = movimentaCima(caravana, getLinhas() - 1);
+                posLinhaNova = movimentaCima(caravana, linhas - 1);
             } else if (movimento == "B") {
-                posLinhaNova = movimentaBaixo(caravana, getLinhas() - 1);
+                posLinhaNova = movimentaBaixo(caravana, linhas - 1);
             } else if (movimento == "E") {
-                posColunaNova = movimentaEsquerda(caravana, getColunas() - 1);
+                posColunaNova = movimentaEsquerda(caravana, colunas - 1);
             } else if (movimento == "D") {
-                posColunaNova = movimentaDireita(caravana, getColunas() - 1);
+                posColunaNova = movimentaDireita(caravana, colunas - 1);
             } else if (movimento == "CE") {
-                posLinhaNova = movimentaCima(caravana, getLinhas() - 1);
-                posColunaNova = movimentaEsquerda(caravana, getColunas() - 1);
+                posLinhaNova = movimentaCima(caravana, linhas - 1);
+                posColunaNova = movimentaEsquerda(caravana, colunas - 1);
             } else if (movimento == "CD") {
-                posLinhaNova = movimentaCima(caravana, getLinhas() - 1);
-                posColunaNova = movimentaDireita(caravana, getColunas() - 1);
+                posLinhaNova = movimentaCima(caravana, linhas - 1);
+                posColunaNova = movimentaDireita(caravana, colunas - 1);
             } else if (movimento == "BE") {
-                posLinhaNova = movimentaBaixo(caravana, getLinhas() - 1);
-                posColunaNova = movimentaEsquerda(caravana, getColunas() - 1);
+                posLinhaNova = movimentaBaixo(caravana, linhas - 1);
+                posColunaNova = movimentaEsquerda(caravana, colunas - 1);
             } else if (movimento == "BD") {
-                posLinhaNova = movimentaBaixo(caravana, getLinhas() - 1);
-                posColunaNova = movimentaDireita(caravana, getColunas() - 1);
+                posLinhaNova = movimentaBaixo(caravana, linhas - 1);
+                posColunaNova = movimentaDireita(caravana, colunas - 1);
             }
-            /*
-            if (novaLinha < 0 || novaLinha >= buffer.getLinhas() ||
-                novaColuna < 0 || novaColuna >= buffer.getColunas()) {
-                std::cerr << "Erro: Movimento fora dos limites do mapa.\n";
+
+            if (movimentoInvalido(posLinhaNova, posColunaNova)) {
+                std::cerr << "[ERRO] Movimento inválido\n";
                 return;
-            }
-
-            // Validação de colisão (opcional)
-            for (Caravana* outra : caravanas) {
-                if (outra->getId() != id &&
-                    outra->getLinha() == novaLinha &&
-                    outra->getColuna() == novaColuna) {
-                    std::cerr << "Erro: Colisão com outra caravana.\n";
-                    return;
-                }
-            }*/
-
-            //Confirma se o movimento é para o meio das montanhas
-            if (buffer.getChar(posLinhaNova, posColunaNova) == '+') {
-                printf("A caravana nao anda no meio do monte|\n");
-                return;
-            }
-
-            // Atualiza o mapa (remove a caravana da posição antiga)
-            buffer.moveCursor(caravana->getLinha(), caravana->getColuna());
-            if (!isalpha(buffer.getChar(caravana->getLinha(), caravana->getColuna()))) {
-                buffer.writeChar('.'); // Representa o chão vazio
             }
 
             // Move a caravana para a nova posição
             caravana->mover(posLinhaNova, posColunaNova);
-
-            // Atualiza o mapa (desenha a caravana na nova posição)
-            buffer.moveCursor(posLinhaNova, posColunaNova);
-            if (!isalpha(buffer.getChar(posLinhaNova, posColunaNova))) {
-                ID_caracter = '0' + caravana->getId();
-                buffer.writeChar(ID_caracter);
-            }
-
-            std::cout << "Caravana " << id << " movida para ("
-                      << posLinhaNova << ", " << posColunaNova << ").\n";
+            std::cout << "Caravana " << id << " movida para (" << posLinhaNova << ", " << posColunaNova << ")\n";
             return;
         }
     }
-    std::cerr << "Erro: Caravana com ID " << id << " não encontrada.\n";
+    std::cerr << "Erro: Caravana " << id << " nao encontrada\n";
+}
+
+bool Deserto::movimentoInvalido(int linha, int coluna) {
+    // Verificar se está dentro dos limites
+    if (linha < 0 || linha >= buffer.getLinhas() || coluna < 0 || coluna >= buffer.getColunas()) return true;
+
+    // Verificar se posição está ocupada por uma montanha
+    if (std::find(montanhas.begin(), montanhas.end(), std::make_pair(linha, coluna)) != montanhas.end()) return true;
+
+    // Verificar se posição está ocupada por uma caravana
+    for (const auto &caravana: caravanas) {
+        if (caravana->getLinha() == linha && caravana->getColuna() == coluna) return true;
+    }
+
+    return false; // Movimento é válido
 }
