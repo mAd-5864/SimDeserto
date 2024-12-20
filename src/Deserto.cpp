@@ -8,6 +8,21 @@
 // Construtor: inicializa o mapa com pontos (.)
 Deserto::Deserto(const Buffer &bufferInicial) : buffer(bufferInicial), moedas(0) {}
 
+void Deserto::setLinhas(int linhas) {
+    this->linhas = linhas;
+}
+
+void Deserto::setColunas(int colunas) {
+    this->colunas = colunas;
+}
+
+int Deserto::getLinhas() {
+    return  linhas;
+}
+
+int Deserto::getColunas() {
+    return colunas;
+}
 
 // Lê a config de um ficheiro
 bool Deserto::lerFicheiro(const std::string &filename) {
@@ -26,10 +41,11 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     // Ler as primeiras duas linhas com os tamanhos
     file >> lixo >> nLinhas;
     buffer.setLinhas(nLinhas);
+    setLinhas(nLinhas);
 
     file >> lixo >> nColunas;
     buffer.setColunas(nColunas);
-
+    setColunas(nColunas);
 
     // Ler cada linha do mapa
     std::string line;
@@ -225,4 +241,110 @@ void Deserto::printCaravanas() const {
     for (const auto& caravana : caravanas) {
         caravana->detalhes();
     }
+}
+
+
+//Caravanas
+
+int movimentaCima(const std::unique_ptr<Caravana>& caravana, int maxLinha){
+    if( caravana->getLinha() - 1 >= 0 ){
+        return caravana->getLinha() - 1;
+    }else{
+        return maxLinha;
+    }
+}
+
+int movimentaBaixo(const std::unique_ptr<Caravana>& caravana, int maxLinha){
+    if( caravana->getLinha() + 1 <= maxLinha ){
+        return caravana->getLinha() + 1;
+    }else{
+        return 0;
+    }
+}
+
+int movimentaEsquerda(const std::unique_ptr<Caravana>& caravana, int maxColuna){
+    if( caravana->getColuna() - 1 >= 0 ){
+        return caravana->getColuna() - 1;
+    }else{
+        return maxColuna;
+    }
+}
+
+int movimentaDireita(const std::unique_ptr<Caravana>& caravana, int maxColuna){
+    if( caravana->getColuna() + 1 <= maxColuna ){
+        return caravana->getColuna() + 1;
+    }else{
+        return 0;
+    }
+}
+
+void Deserto::moverCaravana(int id, std::string movimento) {
+    char ID_caracter;
+    for (const auto& caravana : caravanas) {
+        if (caravana->getId() == id) {
+            int posLinhaNova = caravana->getLinha(), posColunaNova = caravana->getColuna();
+            // Validação de limites    Falta verificar se é montanha....
+            if( movimento == "C" ){
+                posLinhaNova = movimentaCima(caravana,getLinhas() - 1);
+            }else if( movimento == "B" ){
+                posLinhaNova = movimentaBaixo(caravana,getLinhas() - 1);
+            }else if( movimento == "E" ){
+                posColunaNova = movimentaEsquerda(caravana,getColunas() - 1);
+            }else if( movimento == "D"){
+                posColunaNova = movimentaDireita(caravana,getColunas() - 1);
+            }else if( movimento == "CE"){
+                posLinhaNova = movimentaCima(caravana,getLinhas() - 1);
+                posColunaNova = movimentaEsquerda(caravana,getColunas() - 1);
+            }else if( movimento == "CD"){
+                posLinhaNova = movimentaCima(caravana,getLinhas() - 1);
+                posColunaNova = movimentaDireita(caravana,getColunas() - 1);
+            }else if( movimento == "BE"){
+                posLinhaNova = movimentaBaixo(caravana,getLinhas() - 1);
+                posColunaNova = movimentaEsquerda(caravana,getColunas() - 1);
+            }else if( movimento == "BD"){
+                posLinhaNova = movimentaBaixo(caravana,getLinhas() - 1);
+                posColunaNova = movimentaDireita(caravana,getColunas() - 1);
+            }
+            /*
+            if (novaLinha < 0 || novaLinha >= buffer.getLinhas() ||
+                novaColuna < 0 || novaColuna >= buffer.getColunas()) {
+                std::cerr << "Erro: Movimento fora dos limites do mapa.\n";
+                return;
+            }
+
+            // Validação de colisão (opcional)
+            for (Caravana* outra : caravanas) {
+                if (outra->getId() != id &&
+                    outra->getLinha() == novaLinha &&
+                    outra->getColuna() == novaColuna) {
+                    std::cerr << "Erro: Colisão com outra caravana.\n";
+                    return;
+                }
+            }*/
+
+            //Confirma se o movimento é para o meio das montanhas
+            if(buffer.getChar(posLinhaNova,posColunaNova) == '+'){
+                printf("A caravana nao anda no meio do monte|\n");
+                return;
+            }
+
+            // Atualiza o mapa (remove a caravana da posição antiga)
+            buffer.moveCursor(caravana->getLinha(), caravana->getColuna());
+            buffer.writeChar('.'); // Representa o chão vazio
+
+            // Move a caravana para a nova posição
+            caravana->mover(posLinhaNova, posColunaNova);
+
+            // Atualiza o mapa (desenha a caravana na nova posição)
+            buffer.moveCursor(posLinhaNova, posColunaNova);
+            ID_caracter = '0' + caravana->getId();
+            buffer.writeChar(ID_caracter);
+
+            std::cout << "Caravana " << id << " movida para ("
+                      << posLinhaNova << ", " << posColunaNova << ").\n";
+            buffer.print();
+            return;
+        }
+    }
+    std::cerr << "Erro: Caravana com ID " << id << " não encontrada.\n";
 }

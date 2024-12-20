@@ -45,7 +45,7 @@ void comandoCompra(const vector<string> &args);
 
 void comandoVende(const vector<string> &args);
 
-void comandoMove(const vector<string> &args);
+void comandoMove(const vector<string> &args, Deserto& deserto);
 
 void comandoAuto(const vector<string> &args);
 

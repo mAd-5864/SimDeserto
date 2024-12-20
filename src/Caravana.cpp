@@ -34,3 +34,4 @@ void Caravana::detalhes() const{
               << " | Posicao(" << linha << ", " <<coluna << ")\n\t"<<
               numTripulantes<<" Tripulantes | "<<qntAgua<< "L Agua | "<<qntMerc<< "T Mercadoria"<< std::endl;
 }
+

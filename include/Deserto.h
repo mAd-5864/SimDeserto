@@ -20,6 +20,7 @@ private:
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros;
     int numCidades = 0, numCaravanas = 0;
+    int linhas, colunas;
     Buffer buffer;
     std::vector<std::unique_ptr<Caravana>> caravanas;
     std::vector<Cidade> cidades;
@@ -32,8 +33,10 @@ public:
     void mostrarMapa(Buffer buffer) const;
 
     void setLinhas(int linhas);
-
     void setColunas(int colunas);
+
+    int getLinhas();
+    int getColunas();
 
     char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
     void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
@@ -71,6 +74,7 @@ public:
     void printCidades() const;
     const std::vector<Cidade>& getCidades() const; // Const
     std::vector<Cidade>& getCidades(); //Nao const, para poder fazer alteracoes
+    void moverCaravana(int id, std::string movimento);
 
     void adicionaCaravana(char tipo, int l, int c);
     void printCaravanas() const;

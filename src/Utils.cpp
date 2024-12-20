@@ -71,7 +71,7 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
     else if (cmd == "caravana") comandoCaravana(args, deserto.getCaravanas());
     else if (cmd == "compra") comandoCompra(args);
     else if (cmd == "vende") comandoVende(args);
-    else if (cmd == "move") comandoMove(args);
+    else if (cmd == "move") comandoMove(args, deserto);
     else if (cmd == "auto") comandoAuto(args);
     else if (cmd == "stop") comandoStop(args);
     else if (cmd == "barbaro") comandoBarbaro(args);
@@ -216,7 +216,7 @@ void comandoVende(const vector<string>& args) {
 }
 
 // Comando: move <N> <X>
-void comandoMove(const vector<string>& args) {
+void comandoMove(const vector<string>& args, Deserto& deserto) {
     vector<string> direcoes = {"D", "E", "C", "B", "CE", "CD", "BE", "BD"};
     if (args.size() != 2 || !isNumber(args[0]) || find(direcoes.begin(), direcoes.end(), args[1]) == direcoes.end()) {
         cerr << "[ERRO] Sintaxe: move <número> <direção>\n";
@@ -225,6 +225,8 @@ void comandoMove(const vector<string>& args) {
     }
     cout << "Movendo caravana " << args[0] << " para a direção " << args[1] << ".\n";
     // Implementar movimentação de caravana
+    int id = stoi(args[0]);
+    deserto.moverCaravana(id,args[1]);
 }
 
 // Comando: auto <N>
