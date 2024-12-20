@@ -16,7 +16,7 @@ public:
     Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int linha, int coluna);
     virtual ~Caravana();
 
-    // Common methods (add getters, setters, or virtual methods here if needed)
+    // Getters
     int getId() const { return ID; }
     int getLinha() const { return linha; }
     int getColuna() const { return coluna; }
@@ -43,13 +43,6 @@ public:
 
     void descarregar() {
         qntMerc = 0;
-    }
-
-    void mostrarDetalhes() const {
-        std::cout << "Caravana " << ID
-                  << " [Tipo: " << tipo
-                  << ", Posição: (" << linha << ", " << coluna << ")"
-                  << ", Carga: " << qntMerc << "]\n";
     }
 
 };
