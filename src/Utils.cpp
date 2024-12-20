@@ -5,12 +5,12 @@
 #include "../include/Utils.h"
 
 // Verifica se uma string representa um número inteiro válido
-bool isNumber(const string& str) {
+bool isNumber(const string &str) {
     return !str.empty() && all_of(str.begin(), str.end(), [](char c) { return isdigit(c) || c == '-'; });
 }
 
 // Validar comandos
-int lerComandos(int fase, Deserto& deserto) {
+int lerComandos(int fase, Deserto &deserto) {
     cout << "Introduza um comando:" << endl;
     string linha;
     getline(cin, linha);
@@ -42,7 +42,8 @@ int lerComandos(int fase, Deserto& deserto) {
         return processarComandosFase2(cmd, args, deserto);
     }
 }
-int comandoConfig(const vector<string>& args, Deserto& deserto){
+
+int comandoConfig(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: config <nomeFicheiro>\n";
         return 1; // ERRO Continuar na mesma fase
@@ -51,7 +52,7 @@ int comandoConfig(const vector<string>& args, Deserto& deserto){
     return 1; // Falhou Continuar na fase 1
 }
 
-int processarComandosFase1(const string& cmd, const vector<string>& args, Deserto& deserto) {
+int processarComandosFase1(const string &cmd, const vector<string> &args, Deserto &deserto) {
     if (cmd == "config") return comandoConfig(args, deserto); // Ficheiro lido com sucesso passa para fase 2
     else if (cmd == "sair") {
         cout << "Encerrando programa...\n";
@@ -62,7 +63,7 @@ int processarComandosFase1(const string& cmd, const vector<string>& args, Desert
     return 1; // Continuar na fase 1
 }
 
-int processarComandosFase2(const string& cmd, const vector<string>& args, Deserto& deserto) {
+int processarComandosFase2(const string &cmd, const vector<string> &args, Deserto &deserto) {
     if (cmd == "exec") comandoExec(args);
     else if (cmd == "prox") comandoProx(args, deserto);
     else if (cmd == "comprac") comandoComprac(args, deserto);
@@ -92,7 +93,7 @@ int processarComandosFase2(const string& cmd, const vector<string>& args, Desert
 }
 
 // Comando: exec <nomeFicheiro>
-void comandoExec(const vector<string>& args) {
+void comandoExec(const vector<string> &args) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: exec <nomeFicheiro>\n";
         return;
@@ -102,7 +103,7 @@ void comandoExec(const vector<string>& args) {
 }
 
 // Comando: prox <n>
-void comandoProx(const vector<string>& args, Deserto& deserto) {
+void comandoProx(const vector<string> &args, Deserto &deserto) {
     if (args.size() > 1 || (args.size() == 1 && !isNumber(args[0]))) {
         cerr << "[ERRO] Sintaxe: prox [<número de instantes>]\n";
         return;
@@ -112,12 +113,11 @@ void comandoProx(const vector<string>& args, Deserto& deserto) {
         cerr << "[ERRO] O número de instantes deve ser maior que 0.\n";
         return;
     }
-    cout << "Avançando " << instantes << " instante(s).\n";
-    // Implementar avanço de instantes
+    deserto.mostrarMapa(); // para testes
 }
 
 // Comando: comprac <C> <T>
-void comandoComprac(const vector<string>& args, Deserto& deserto) {
+void comandoComprac(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 2) {
         cerr << "[ERRO] Sintaxe: comprac <cidade> <tipo>\n";
         return;
@@ -129,10 +129,11 @@ void comandoComprac(const vector<string>& args, Deserto& deserto) {
         return;
     }
 // Procurar cidade com nome recebido
-    for (auto& cidade : deserto.getCidades()) {
+    for (auto &cidade: deserto.getCidades()) {
         if (cidade.getNome() == nomeCidade) {
-            if(cidade.comprarCaravana(tipo))
-                deserto.adicionaCaravana(tipo, cidade.getLinha(), cidade.getColuna()); // Add caravana na mesma posicao da cidade
+            if (cidade.comprarCaravana(tipo))
+                deserto.adicionaCaravana(tipo, cidade.getLinha(),
+                                         cidade.getColuna()); // Add caravana na mesma posicao da cidade
             return;
         }
     }
@@ -140,7 +141,7 @@ void comandoComprac(const vector<string>& args, Deserto& deserto) {
 }
 
 // Comando: precos
-void comandoPrecos(const vector<string>& args, Deserto &deserto) {
+void comandoPrecos(const vector<string> &args, Deserto &deserto) {
     if (!args.empty()) {
         cerr << "[ERRO] Sintaxe: precos\n";
         return;
@@ -149,25 +150,25 @@ void comandoPrecos(const vector<string>& args, Deserto &deserto) {
 }
 
 // Comando: cidade <C>
-void comandoCidade(const vector<string>& args, Deserto &deserto) {
+void comandoCidade(const vector<string> &args, Deserto &deserto) {
     char nomeCidade = toupper(args[0][0]);
     if (args.size() != 1 || !isalpha(nomeCidade)) {
         cerr << "[ERRO] Sintaxe: cidade <nome cidade>\n";
         return;
     }
-    auto& cidades = deserto.getCidades();
-    auto& caravanas = deserto.getCaravanas();
+    auto &cidades = deserto.getCidades();
+    auto &caravanas = deserto.getCaravanas();
 
     // Procurar cidade com nome recebido
-    for (const auto& cidade : cidades) {
+    for (const auto &cidade: cidades) {
         if (cidade.getNome() == nomeCidade) {
 
             //check if any caravana is in the same position as the city (lin,col)
-            std::cout << "Caravanas estacionadas na cidade "<< cidade.getNome()<<":";
-            for (const auto& caravana : caravanas) {
+            std::cout << "Caravanas estacionadas na cidade " << cidade.getNome() << ":";
+            for (const auto &caravana: caravanas) {
                 if (caravana->getLinha() == cidade.getLinha() &&
                     caravana->getColuna() == cidade.getColuna()) {
-                    std::cout<<"\n";
+                    std::cout << "\n";
                     caravana->detalhes();
                 }
             }
@@ -178,7 +179,7 @@ void comandoCidade(const vector<string>& args, Deserto &deserto) {
 }
 
 // Comando: caravana <C>
-void comandoCaravana(const vector<string>& args, const std::vector<std::unique_ptr<Caravana>>& caravanas) {
+void comandoCaravana(const vector<string> &args, const std::vector<std::unique_ptr<Caravana>> &caravanas) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: caravana <número>\n";
         return;
@@ -186,7 +187,7 @@ void comandoCaravana(const vector<string>& args, const std::vector<std::unique_p
     int id = stoi(args[0]);
 
     // Procurar caravana com ID lido
-    for (const auto& caravana : caravanas) {
+    for (const auto &caravana: caravanas) {
         if (caravana->getId() == id) {
             caravana->detalhes();
             return;
@@ -196,7 +197,7 @@ void comandoCaravana(const vector<string>& args, const std::vector<std::unique_p
 
 
 // Comando: compra <N> <M>
-void comandoCompra(const vector<string>& args) {
+void comandoCompra(const vector<string> &args) {
     if (args.size() != 2 || !isNumber(args[0]) || !isNumber(args[1])) {
         cerr << "[ERRO] Sintaxe: compra <número> <quantidade>\n";
         return;
@@ -206,7 +207,7 @@ void comandoCompra(const vector<string>& args) {
 }
 
 // Comando: vende <N>
-void comandoVende(const vector<string>& args) {
+void comandoVende(const vector<string> &args) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: vende <número>\n";
         return;
@@ -216,21 +217,18 @@ void comandoVende(const vector<string>& args) {
 }
 
 // Comando: move <N> <X>
-void comandoMove(const vector<string>& args, Deserto& deserto) {
+void comandoMove(const vector<string> &args, Deserto &deserto) {
     vector<string> direcoes = {"D", "E", "C", "B", "CE", "CD", "BE", "BD"};
     if (args.size() != 2 || !isNumber(args[0]) || find(direcoes.begin(), direcoes.end(), args[1]) == direcoes.end()) {
         cerr << "[ERRO] Sintaxe: move <número> <direção>\n";
         cerr << "Direções válidas: D, E, C, B, CE, CD, BE, BD\n";
         return;
     }
-    cout << "Movendo caravana " << args[0] << " para a direção " << args[1] << ".\n";
-    // Implementar movimentação de caravana
-    int id = stoi(args[0]);
-    deserto.moverCaravana(id,args[1]);
+    deserto.moverCaravana(stoi(args[0]), args[1]);
 }
 
 // Comando: auto <N>
-void comandoAuto(const vector<string>& args) {
+void comandoAuto(const vector<string> &args) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: auto <número>\n";
         return;
@@ -240,7 +238,7 @@ void comandoAuto(const vector<string>& args) {
 }
 
 // Comando: stop <N>
-void comandoStop(const vector<string>& args) {
+void comandoStop(const vector<string> &args) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: stop <número>\n";
         return;
@@ -250,7 +248,7 @@ void comandoStop(const vector<string>& args) {
 }
 
 // Comando: barbaro <l> <c>
-void comandoBarbaro(const vector<string>& args) {
+void comandoBarbaro(const vector<string> &args) {
     if (args.size() != 2 || !isNumber(args[0]) || !isNumber(args[1])) {
         cerr << "[ERRO] Sintaxe: barbaro <linha> <coluna>\n";
         return;
@@ -260,17 +258,18 @@ void comandoBarbaro(const vector<string>& args) {
 }
 
 // Comando: areia <l> <c> <r>
-void comandoAreia(const vector<string>& args) {
+void comandoAreia(const vector<string> &args) {
     if (args.size() != 3 || !isNumber(args[0]) || !isNumber(args[1]) || !isNumber(args[2])) {
         cerr << "[ERRO] Sintaxe: areia <linha> <coluna> <raio>\n";
         return;
     }
-    cout << "Criando tempestade de areia nas coordenadas (" << args[0] << ", " << args[1] << ") com raio " << args[2] << ".\n";
+    cout << "Criando tempestade de areia nas coordenadas (" << args[0] << ", " << args[1] << ") com raio " << args[2]
+         << ".\n";
     // Implementar tempestade de areia
 }
 
 // Comando: moedas <N>
-void comandoMoedas(const vector<string>& args, Deserto& deserto) {
+void comandoMoedas(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: moedas <número>\n";
         return;
@@ -279,7 +278,7 @@ void comandoMoedas(const vector<string>& args, Deserto& deserto) {
 }
 
 // Comando: tripul <N> <T>
-void comandoTripul(const vector<string>& args) {
+void comandoTripul(const vector<string> &args) {
     if (args.size() != 2 || !isNumber(args[0]) || !isNumber(args[1])) {
         cerr << "[ERRO] Sintaxe: tripul <número> <quantidade>\n";
         return;
@@ -289,7 +288,7 @@ void comandoTripul(const vector<string>& args) {
 }
 
 // Comando: saves <nome>
-void comandoSaves(const vector<string>& args) {
+void comandoSaves(const vector<string> &args) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: saves <nome>\n";
         return;
@@ -299,7 +298,7 @@ void comandoSaves(const vector<string>& args) {
 }
 
 // Comando: loads <nome>
-void comandoLoads(const vector<string>& args) {
+void comandoLoads(const vector<string> &args) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: loads <nome>\n";
         return;
@@ -309,7 +308,7 @@ void comandoLoads(const vector<string>& args) {
 }
 
 // Comando: lists
-void comandoLists(const vector<string>& args) {
+void comandoLists(const vector<string> &args) {
     if (!args.empty()) {
         cerr << "[ERRO] Sintaxe: lists\n";
         return;
@@ -319,7 +318,7 @@ void comandoLists(const vector<string>& args) {
 }
 
 // Comando: dels <nome>
-void comandoDels(const vector<string>& args) {
+void comandoDels(const vector<string> &args) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: dels <nome>\n";
         return;

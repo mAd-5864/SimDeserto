@@ -17,7 +17,7 @@ void Deserto::setColunas(int colunas) {
 }
 
 int Deserto::getLinhas() {
-    return  linhas;
+    return linhas;
 }
 
 int Deserto::getColunas() {
@@ -165,13 +165,14 @@ int Deserto::getPrecoCaravana() {
 }
 
 void Deserto::printPrecos() {
-    std::cout<< "Comprar mercadoria - "<< this->precoCompraMerc<< " Moedas\nVender mercadoria - "<< this->precoVendaMerc<<" Moedas"<< std::endl;
+    std::cout << "Comprar mercadoria - " << this->precoCompraMerc << " Moedas\nVender mercadoria - "
+              << this->precoVendaMerc << " Moedas" << std::endl;
 }
 
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
-    if (moedas<0) moedas = 0;
-    std::cout << valor << " moedas adicionadas"<< std::endl;
+    if (moedas < 0) moedas = 0;
+    std::cout << valor << " moedas adicionadas" << std::endl;
 }
 
 void Deserto::mostrarMapa() const {
@@ -220,25 +221,26 @@ void Deserto::adicionaCaravana(char tipo, int l, int c) {
 
 void Deserto::printCidades() const {
     std::cout << "Cidades no mapa:" << std::endl;
-    for (const auto& cidade : cidades) {
+    for (const auto &cidade: cidades) {
         std::cout << "Cidade: " << cidade.getNome()
                   << " | Posicao: (" << cidade.getLinha() << ", " << cidade.getColuna() << ")" << std::endl;
     }
 }
 
-const std::vector<std::unique_ptr<Caravana>>& Deserto::getCaravanas() const {
+const std::vector<std::unique_ptr<Caravana>> &Deserto::getCaravanas() const {
     return caravanas;
 }
 
-const std::vector<Cidade>& Deserto::getCidades() const {
+const std::vector<Cidade> &Deserto::getCidades() const {
     return cidades;
 }
-std::vector<Cidade>& Deserto::getCidades() {
+
+std::vector<Cidade> &Deserto::getCidades() {
     return cidades;
 }
 
 void Deserto::printCaravanas() const {
-    for (const auto& caravana : caravanas) {
+    for (const auto &caravana: caravanas) {
         caravana->detalhes();
     }
 }
@@ -246,64 +248,64 @@ void Deserto::printCaravanas() const {
 
 //Caravanas
 
-int movimentaCima(const std::unique_ptr<Caravana>& caravana, int maxLinha){
-    if( caravana->getLinha() - 1 >= 0 ){
+int movimentaCima(const std::unique_ptr<Caravana> &caravana, int maxLinha) {
+    if (caravana->getLinha() - 1 >= 0) {
         return caravana->getLinha() - 1;
-    }else{
+    } else {
         return maxLinha;
     }
 }
 
-int movimentaBaixo(const std::unique_ptr<Caravana>& caravana, int maxLinha){
-    if( caravana->getLinha() + 1 <= maxLinha ){
+int movimentaBaixo(const std::unique_ptr<Caravana> &caravana, int maxLinha) {
+    if (caravana->getLinha() + 1 <= maxLinha) {
         return caravana->getLinha() + 1;
-    }else{
+    } else {
         return 0;
     }
 }
 
-int movimentaEsquerda(const std::unique_ptr<Caravana>& caravana, int maxColuna){
-    if( caravana->getColuna() - 1 >= 0 ){
+int movimentaEsquerda(const std::unique_ptr<Caravana> &caravana, int maxColuna) {
+    if (caravana->getColuna() - 1 >= 0) {
         return caravana->getColuna() - 1;
-    }else{
+    } else {
         return maxColuna;
     }
 }
 
-int movimentaDireita(const std::unique_ptr<Caravana>& caravana, int maxColuna){
-    if( caravana->getColuna() + 1 <= maxColuna ){
+int movimentaDireita(const std::unique_ptr<Caravana> &caravana, int maxColuna) {
+    if (caravana->getColuna() + 1 <= maxColuna) {
         return caravana->getColuna() + 1;
-    }else{
+    } else {
         return 0;
     }
 }
 
 void Deserto::moverCaravana(int id, std::string movimento) {
     char ID_caracter;
-    for (const auto& caravana : caravanas) {
+    for (const auto &caravana: caravanas) {
         if (caravana->getId() == id) {
             int posLinhaNova = caravana->getLinha(), posColunaNova = caravana->getColuna();
             // Validação de limites    Falta verificar se é montanha....
-            if( movimento == "C" ){
-                posLinhaNova = movimentaCima(caravana,getLinhas() - 1);
-            }else if( movimento == "B" ){
-                posLinhaNova = movimentaBaixo(caravana,getLinhas() - 1);
-            }else if( movimento == "E" ){
-                posColunaNova = movimentaEsquerda(caravana,getColunas() - 1);
-            }else if( movimento == "D"){
-                posColunaNova = movimentaDireita(caravana,getColunas() - 1);
-            }else if( movimento == "CE"){
-                posLinhaNova = movimentaCima(caravana,getLinhas() - 1);
-                posColunaNova = movimentaEsquerda(caravana,getColunas() - 1);
-            }else if( movimento == "CD"){
-                posLinhaNova = movimentaCima(caravana,getLinhas() - 1);
-                posColunaNova = movimentaDireita(caravana,getColunas() - 1);
-            }else if( movimento == "BE"){
-                posLinhaNova = movimentaBaixo(caravana,getLinhas() - 1);
-                posColunaNova = movimentaEsquerda(caravana,getColunas() - 1);
-            }else if( movimento == "BD"){
-                posLinhaNova = movimentaBaixo(caravana,getLinhas() - 1);
-                posColunaNova = movimentaDireita(caravana,getColunas() - 1);
+            if (movimento == "C") {
+                posLinhaNova = movimentaCima(caravana, getLinhas() - 1);
+            } else if (movimento == "B") {
+                posLinhaNova = movimentaBaixo(caravana, getLinhas() - 1);
+            } else if (movimento == "E") {
+                posColunaNova = movimentaEsquerda(caravana, getColunas() - 1);
+            } else if (movimento == "D") {
+                posColunaNova = movimentaDireita(caravana, getColunas() - 1);
+            } else if (movimento == "CE") {
+                posLinhaNova = movimentaCima(caravana, getLinhas() - 1);
+                posColunaNova = movimentaEsquerda(caravana, getColunas() - 1);
+            } else if (movimento == "CD") {
+                posLinhaNova = movimentaCima(caravana, getLinhas() - 1);
+                posColunaNova = movimentaDireita(caravana, getColunas() - 1);
+            } else if (movimento == "BE") {
+                posLinhaNova = movimentaBaixo(caravana, getLinhas() - 1);
+                posColunaNova = movimentaEsquerda(caravana, getColunas() - 1);
+            } else if (movimento == "BD") {
+                posLinhaNova = movimentaBaixo(caravana, getLinhas() - 1);
+                posColunaNova = movimentaDireita(caravana, getColunas() - 1);
             }
             /*
             if (novaLinha < 0 || novaLinha >= buffer.getLinhas() ||
@@ -323,26 +325,29 @@ void Deserto::moverCaravana(int id, std::string movimento) {
             }*/
 
             //Confirma se o movimento é para o meio das montanhas
-            if(buffer.getChar(posLinhaNova,posColunaNova) == '+'){
+            if (buffer.getChar(posLinhaNova, posColunaNova) == '+') {
                 printf("A caravana nao anda no meio do monte|\n");
                 return;
             }
 
             // Atualiza o mapa (remove a caravana da posição antiga)
             buffer.moveCursor(caravana->getLinha(), caravana->getColuna());
-            buffer.writeChar('.'); // Representa o chão vazio
+            if (!isalpha(buffer.getChar(caravana->getLinha(), caravana->getColuna()))) {
+                buffer.writeChar('.'); // Representa o chão vazio
+            }
 
             // Move a caravana para a nova posição
             caravana->mover(posLinhaNova, posColunaNova);
 
             // Atualiza o mapa (desenha a caravana na nova posição)
             buffer.moveCursor(posLinhaNova, posColunaNova);
-            ID_caracter = '0' + caravana->getId();
-            buffer.writeChar(ID_caracter);
+            if (!isalpha(buffer.getChar(posLinhaNova, posColunaNova))) {
+                ID_caracter = '0' + caravana->getId();
+                buffer.writeChar(ID_caracter);
+            }
 
             std::cout << "Caravana " << id << " movida para ("
                       << posLinhaNova << ", " << posColunaNova << ").\n";
-            buffer.print();
             return;
         }
     }
