@@ -196,6 +196,7 @@ void Deserto::adicionaCidade(char nome, int l, int c) {
 
 // Instanciar caravana e adicionar ao vetor
 void Deserto::adicionaCaravana(char tipo, int l, int c) {
+    numCaravanas++;
     switch (toupper(tipo)) {
         case 'C': // Comercio
             caravanas.emplace_back(std::make_unique<CaravanaComercio>(l, c));
@@ -347,6 +348,10 @@ bool Deserto::movimentoInvalido(int linha, int coluna) {
 
     // Verificar se posição está ocupada por uma montanha
     if (std::find(montanhas.begin(), montanhas.end(), std::make_pair(linha, coluna)) != montanhas.end()) return true;
+
+    for (const Cidade& cidade : cidades){
+        if(cidade.getLinha() == linha && cidade.getColuna() == coluna) return false; // Permitir varias caravanas em cidades
+    }
 
     // Verificar se posição está ocupada por uma caravana
     for (const auto &caravana: caravanas) {
