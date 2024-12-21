@@ -17,7 +17,6 @@ void CaravanaSecreta::atualizarTurno() {
     if (numTripulantes==0){
         // destruida
     }
-    else if (numTripulantes<tripulantesMax/2) qntAgua--;
     else qntAgua-=2;
     movesRestantes = maxMoves;
 }

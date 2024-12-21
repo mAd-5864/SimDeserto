@@ -17,8 +17,9 @@ void CaravanaMilitar::atualizarTurno() {
     if (numTripulantes==0){
         // desloca-se sempre na mesma direção do último movimento que fez
         // passados 7 instantes, acaba por desaparecer
+        qntAgua--;
     }
     else if (numTripulantes<tripulantesMax/2) qntAgua--;
-    else qntAgua-=2;
+    else qntAgua-=3;
     movesRestantes = maxMoves;
 }
