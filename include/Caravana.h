@@ -8,13 +8,15 @@ protected:
     static int nextID; // Para gerar IDs únicos
     int ID, numTripulantes, qntAgua, qntMerc;
     const int cargaMaxima, aguaMax, tripulantesMax;
-    int tipoMovimentacao; // 0-Sem tripulantes, 1-Utilizador, 2-Autónomo
+    int movesRestantes, maxMoves, tipoMovimentacao; // 0-Sem tripulantes, 1-Utilizador, 2-Autónomo
     int linha, coluna;
     char tipo; // c -> comercio, m -> militar, s -> secreto
 
 public:
-    Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int linha, int coluna);
+    Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int maxMoves, int linha, int coluna);
     virtual ~Caravana();
+
+    virtual void atualizarTurno() = 0; // Método virtual puro
 
     // Getters
     int getId() const { return ID; }
@@ -22,13 +24,11 @@ public:
     int getColuna() const { return coluna; }
     char getTipo() const { return tipo; }
     int getCarga() const { return qntMerc; }
+    int getMoves() { return movesRestantes; }
 
     void detalhes() const;
 
-    void mover(int novaLinha, int novaColuna) {
-        linha = novaLinha;
-        coluna = novaColuna;
-    }
+    void mover(int novaLinha, int novaColuna);
 
     void carregar(int quantidade) {
         if(qntMerc <= cargaMaxima)

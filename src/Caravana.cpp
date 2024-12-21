@@ -8,9 +8,9 @@
 int Caravana::nextID = 1;
 
 // Constructor for base Caravana
-Caravana::Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int linha, int coluna)
+Caravana::Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int maxMoves, int linha, int coluna)
         : ID(nextID++), cargaMaxima(cargaMax), aguaMax(aguaMax), tripulantesMax(tripulantesMax),
-          tipoMovimentacao(tipoMov), linha(linha), coluna(coluna) {
+          tipoMovimentacao(tipoMov), maxMoves(maxMoves), linha(linha), coluna(coluna) {
     // Os valores numTripulantes, qntAgua, e qntMerc já são inicializados implicitamente como 0
 }
 
@@ -33,5 +33,14 @@ void Caravana::detalhes() const{
               << " | Caravana " << converterTipoCaravana(tipo)
               << " | Posicao(" << linha << ", " <<coluna << ")\n\t"<<
               numTripulantes<<" Tripulantes | "<<qntAgua<< "L Agua | "<<qntMerc<< "T Mercadoria"<< std::endl;
+}
+
+void Caravana::mover(int novaLinha, int novaColuna) {
+    if (movesRestantes>0){
+        linha = novaLinha;
+        coluna = novaColuna;
+        movesRestantes--;
+        std::cout << "Caravana " << ID << " movida para (" << novaLinha << ", " << novaColuna << ")\n";
+    } else std::cout << "Ja atingiu maximo de movimentos neste turno\n";
 }
 

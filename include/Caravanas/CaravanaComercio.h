@@ -10,6 +10,8 @@ class CaravanaComercio : public Caravana {
 public:
     // Constructor
     CaravanaComercio(int linha, int coluna);
+
+    void atualizarTurno();
 };
 
 #endif //SIMDESERTO_CARAVANACOMERCIO_H
