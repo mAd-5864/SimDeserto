@@ -2,6 +2,8 @@
 #define SIMDESERTO_CARAVANA_H
 
 #include <iostream>
+#include <vector>
+#include "Cidade.h"
 
 class Caravana {
 protected:
@@ -30,20 +32,20 @@ public:
 
     void mover(int novaLinha, int novaColuna);
 
-    void carregar(int quantidade) {
-        if(qntMerc <= cargaMaxima)
-            qntMerc += quantidade;
-        //else
-            //Carga maxima atingida!!
-    }
 
     void reabasteceAgua(){
         qntAgua = aguaMax;
     }
 
+    bool carregar(int quantidade);
     void descarregar() {
         qntMerc = 0;
     }
+
+    bool addTripulantes(int quantidade);
+
+    bool estaNaCidade(const std::vector<Cidade>& cidades) const;
+    bool estaNaCidade(char nomeCidade, const std::vector<Cidade>& cidades) const;
 
 };
 

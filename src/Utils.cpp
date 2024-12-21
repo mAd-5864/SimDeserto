@@ -70,15 +70,15 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
     else if (cmd == "precos") comandoPrecos(args, deserto);
     else if (cmd == "cidade") comandoCidade(args, deserto);
     else if (cmd == "caravana") comandoCaravana(args, deserto.getCaravanas());
-    else if (cmd == "compra") comandoCompra(args);
-    else if (cmd == "vende") comandoVende(args);
+    else if (cmd == "compra") comandoCompra(args, deserto);
+    else if (cmd == "vende") comandoVende(args, deserto);
     else if (cmd == "move") comandoMove(args, deserto);
     else if (cmd == "auto") comandoAuto(args);
     else if (cmd == "stop") comandoStop(args);
     else if (cmd == "barbaro") comandoBarbaro(args);
     else if (cmd == "areia") comandoAreia(args);
     else if (cmd == "moedas") comandoMoedas(args, deserto);
-    else if (cmd == "tripul") comandoTripul(args);
+    else if (cmd == "tripul") comandoTripul(args, deserto);
     else if (cmd == "saves") comandoSaves(args);
     else if (cmd == "loads") comandoLoads(args);
     else if (cmd == "lists") comandoLists(args);
@@ -110,7 +110,7 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
     }
     int instantes = args.empty() ? 1 : stoi(args[0]);
     if (instantes <= 0) {
-        cerr << "[ERRO] O número de instantes deve ser maior que 0.\n";
+        cerr << "[ERRO] O número de instantes deve ser maior que 0\n";
         return;
     }
     for (int i = 0; i < instantes; ++i) {
@@ -130,19 +130,18 @@ void comandoComprac(const vector<string> &args, Deserto &deserto) {
     char nomeCidade = toupper(args[0][0]);
     char tipo = toupper(args[1][0]);
     if (!isalpha(nomeCidade) || (tipo != 'C' && tipo != 'M' && tipo != 'S')) {
-        cerr << "[ERRO] Cidade deve ser uma letra, tipo deve ser C, M ou S.\n";
+        cerr << "[ERRO] Cidade deve ser uma letra, tipo deve ser C, M ou S\n";
         return;
     }
 // Procurar cidade com nome recebido
     for (auto &cidade: deserto.getCidades()) {
         if (cidade.getNome() == nomeCidade) {
-            if (cidade.comprarCaravana(tipo))
-                deserto.adicionaCaravana(tipo, cidade.getLinha(),
-                                         cidade.getColuna()); // Add caravana na mesma posicao da cidade
+            if (cidade.comprarCaravana(tipo)) // Add caravana na mesma posicao da cidade
+                deserto.adicionaCaravana(tipo, cidade.getLinha(),cidade.getColuna());
             return;
         }
     }
-    std::cerr << "[ERRO] Cidade " << nomeCidade << " não encontrada.\n";
+    std::cerr << "[ERRO] Cidade " << nomeCidade << " não encontrada\n";
 }
 
 // Comando: precos
@@ -151,7 +150,8 @@ void comandoPrecos(const vector<string> &args, Deserto &deserto) {
         cerr << "[ERRO] Sintaxe: precos\n";
         return;
     }
-    deserto.printPrecos();
+    std::cout << "Comprar mercadoria - " << deserto.getPrecoCompraMerc() << " Moedas\nVender mercadoria - "
+              << deserto.getPrecoVendaMerc() << " Moedas" << std::endl;
 }
 
 // Comando: cidade <C>
@@ -181,6 +181,7 @@ void comandoCidade(const vector<string> &args, Deserto &deserto) {
             return;
         }
     }
+        std::cerr << "[ERRO] Cidade " << nomeCidade << " nao encontrada\n";
 }
 
 // Comando: caravana <C>
@@ -198,27 +199,49 @@ void comandoCaravana(const vector<string> &args, const std::vector<std::unique_p
             return;
         }
     }
+        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
-
 // Comando: compra <N> <M>
-void comandoCompra(const vector<string> &args) {
+void comandoCompra(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 2 || !isNumber(args[0]) || !isNumber(args[1])) {
         cerr << "[ERRO] Sintaxe: compra <número> <quantidade>\n";
         return;
     }
-    cout << "Comprando " << args[1] << " toneladas de mercadoria para a caravana " << args[0] << ".\n";
-    // Implementar compra de mercadoria
+    int id = stoi(args[0]);
+    int quantidade = stoi(args[1]);
+    // Procurar caravana com ID lido
+    for (const auto &caravana: deserto.getCaravanas()) {
+        if (caravana->getId() == id && caravana->estaNaCidade(deserto.getCidades())) {
+            if (deserto.getMoedas()>=deserto.getPrecoCompraMerc()*quantidade){
+                if (caravana->carregar(quantidade)){
+                    deserto.ajustarMoedas(-1*(deserto.getPrecoCompraMerc()*quantidade));
+                    std::cout << "Comprou "<< quantidade << "T de mercadoria para a caravana "<< caravana->getId()<<"\n";
+                }
+            } else std::cerr << "Nao tem moedas suficientes para " <<quantidade<< "T de mercadoria\n";
+            return;
+        }
+    }
+        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: vende <N>
-void comandoVende(const vector<string> &args) {
+void comandoVende(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: vende <número>\n";
         return;
     }
-    cout << "Vendendo mercadoria da caravana: " << args[0] << ".\n";
-    // Implementar venda de mercadoria
+    int id = stoi(args[0]);
+    // Procurar caravana com ID lido
+    for (const auto &caravana: deserto.getCaravanas()) {
+        if (caravana->getId() == id && caravana->estaNaCidade(deserto.getCidades())) {
+            std::cout << "Vendeu "<< caravana->getCarga() << "T de mercadoria\n";
+            deserto.ajustarMoedas(caravana->getCarga() * deserto.getPrecoVendaMerc());
+            caravana->descarregar();
+            return;
+        }
+    }
+        std::cerr << "[ERRO] Caravana " << id << " não encontrada\n";
 }
 
 // Comando: move <N> <X>
@@ -291,13 +314,26 @@ void comandoMoedas(const vector<string> &args, Deserto &deserto) {
 }
 
 // Comando: tripul <N> <T>
-void comandoTripul(const vector<string> &args) {
+void comandoTripul(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 2 || !isNumber(args[0]) || !isNumber(args[1])) {
         cerr << "[ERRO] Sintaxe: tripul <número> <quantidade>\n";
         return;
     }
-    cout << "Adicionando " << args[1] << " tripulantes à caravana " << args[0] << ".\n";
-    // Implementar adição de tripulantes
+    int id = stoi(args[0]);
+    int quantidade = stoi(args[1]);
+    // Procurar caravana com ID lido
+    for (const auto &caravana: deserto.getCaravanas()) {
+        if (caravana->getId() == id && caravana->estaNaCidade(deserto.getCidades())) {
+            if (deserto.getMoedas()>=quantidade){
+                if (caravana->addTripulantes(quantidade)){
+                    deserto.ajustarMoedas(-1*quantidade);
+                    std::cout  << quantidade << " tripulantes adicionados na caravana "<< caravana->getId()<<"\n";
+                }
+            } else std::cerr << "Nao tem moedas suficientes para " <<quantidade<< " tripulantes\n";
+            return;
+        }
+    }
+        std::cerr << "[ERRO] Caravana " << id << " não encontrada\n";
 }
 
 // Comando: saves <nome>

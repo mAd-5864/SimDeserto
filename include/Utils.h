@@ -41,9 +41,9 @@ void comandoCidade(const vector<string> &args, Deserto &deserto);
 
 void comandoCaravana(const vector<string>& args, const std::vector<std::unique_ptr<Caravana>>& caravanas);
 
-void comandoCompra(const vector<string> &args);
+void comandoCompra(const vector<string> &args, Deserto &deserto);
 
-void comandoVende(const vector<string> &args);
+void comandoVende(const vector<string> &args, Deserto &deserto);
 
 void comandoMove(const vector<string> &args, Deserto& deserto);
 
@@ -57,7 +57,7 @@ void comandoAreia(const vector<string> &args);
 
 void comandoMoedas(const vector<string> &args, Deserto& deserto);
 
-void comandoTripul(const vector<string> &args);
+void comandoTripul(const vector<string> &args, Deserto &deserto);
 
 void comandoSaves(const vector<string> &args);
 

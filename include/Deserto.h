@@ -64,8 +64,8 @@ public:
     int getMoedas() const;
 
     int getPrecoCaravana() const;
-
-    void printPrecos() const;
+    int getPrecoCompraMerc() const;
+    int getPrecoVendaMerc() const;
 
     void processarBuffer();
     void atualizarBuffer();

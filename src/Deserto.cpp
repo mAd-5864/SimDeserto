@@ -157,15 +157,21 @@ int Deserto::getPrecoCaravana() const {
     return precoCaravana;
 }
 
-void Deserto::printPrecos() const {
-    std::cout << "Comprar mercadoria - " << this->precoCompraMerc << " Moedas\nVender mercadoria - "
-              << this->precoVendaMerc << " Moedas" << std::endl;
+int Deserto::getPrecoCompraMerc() const{
+    return precoCompraMerc;
+}
+
+int Deserto::getPrecoVendaMerc() const{
+    return precoVendaMerc;
 }
 
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
     if (moedas < 0) moedas = 0;
-    std::cout << valor << " moedas adicionadas" << std::endl;
+    if (valor>=0)
+        std::cout << valor << " moedas adicionadas" << std::endl;
+    else
+        std::cout << abs(valor) << " moedas removidas" << std::endl;
 }
 
 void Deserto::mostrarMapa() const {
@@ -363,5 +369,6 @@ bool Deserto::movimentoInvalido(int linha, int coluna) {
 void Deserto::atualizarCaravanas() {
     for (const auto& caravana : caravanas) {
         caravana->atualizarTurno(); // Chama o método específico de cada tipo
+        if (caravana->estaNaCidade(cidades)) caravana->reabasteceAgua();
     }
 }

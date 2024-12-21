@@ -44,3 +44,42 @@ void Caravana::mover(int novaLinha, int novaColuna) {
     } else std::cout << "Ja atingiu maximo de movimentos neste turno\n";
 }
 
+bool Caravana::estaNaCidade(const std::vector<Cidade>& cidades) const {
+    for (const Cidade& cidade : cidades) {
+        if (cidade.getLinha() == linha && cidade.getColuna() == coluna) {
+            return true;
+        }
+    }
+    return false;
+}
+// Verifica se a caravana está numa cidade específica
+bool Caravana::estaNaCidade(char nomeCidade, const std::vector<Cidade>& cidades) const {
+    for (const Cidade& cidade : cidades) {
+        if (cidade.getNome() == nomeCidade && cidade.getLinha() == linha && cidade.getColuna() == coluna) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Caravana::carregar(int quantidade) {
+    if(qntMerc+quantidade <= cargaMaxima){
+        qntMerc += quantidade;
+        return true;
+    }
+    else{
+        std::cerr << "Caravana "<<ID<< " so tem capacidade para mais " <<cargaMaxima-qntMerc <<"T de mercadoria\n";
+     return false;
+    }
+}
+
+bool Caravana::addTripulantes(int quantidade){
+    if(numTripulantes+quantidade <= tripulantesMax){
+        numTripulantes += quantidade;
+        return true;
+    }
+    else{
+        std::cerr << "Caravana "<<ID<< " so tem capacidade para mais " <<tripulantesMax-numTripulantes <<" tripulantes\n";
+        return false;
+    }
+}
