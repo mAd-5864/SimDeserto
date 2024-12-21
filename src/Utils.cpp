@@ -113,6 +113,10 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         cerr << "[ERRO] O número de instantes deve ser maior que 0.\n";
         return;
     }
+    for (int i = 0; i < instantes; ++i) {
+        deserto.atualizarCaravanas();
+    }
+
     deserto.atualizarBuffer();
     deserto.mostrarMapa(); // para testes
 }

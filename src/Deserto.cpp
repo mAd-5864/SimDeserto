@@ -335,7 +335,6 @@ void Deserto::moverCaravana(int id, const std::string& movimento) {
 
             // Move a caravana para a nova posição
             caravana->mover(posLinhaNova, posColunaNova);
-            std::cout << "Caravana " << id << " movida para (" << posLinhaNova << ", " << posColunaNova << ")\n";
             return;
         }
     }
@@ -359,4 +358,10 @@ bool Deserto::movimentoInvalido(int linha, int coluna) {
     }
 
     return false; // Movimento é válido
+}
+
+void Deserto::atualizarCaravanas() {
+    for (const auto& caravana : caravanas) {
+        caravana->atualizarTurno(); // Chama o método específico de cada tipo
+    }
 }

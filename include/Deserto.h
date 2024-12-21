@@ -83,6 +83,7 @@ public:
 
     void moverCaravana(int id, const std::string& movimento);
     bool movimentoInvalido(int linha, int coluna);
+    void atualizarCaravanas();
 };
 
 
