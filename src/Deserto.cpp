@@ -71,32 +71,32 @@ bool Deserto::lerFicheiro(const std::string &filename) {
             } else if (chave == "instantes_entre_novos_itens") {
                 setInstantesEntreNovosItems(valor);
                 std::cout << "Instantes entre novos items: " << valor << std::endl;
-            } else if (chave == "duração_item") {
+            } else if (chave == "duracao_item") {
                 setDuracaoItem(valor);
-                std::cout << "Duração do item: " << valor << std::endl;
+                std::cout << "Duracao do item: " << valor << std::endl;
             } else if (chave == "max_itens") {
                 setMaxItens(valor);
-                std::cout << "Máximo de itens: " << valor << std::endl;
-            } else if (chave == "preço_venda_mercadoria") {
+                std::cout << "Maximo de itens: " << valor << std::endl;
+            } else if (chave == "preco_venda_mercadoria") {
                 setPrecoVendaMerc(valor);
-                std::cout << "Preço de venda de mercadoria: " << valor << std::endl;
-            } else if (chave == "preço_compra_mercadoria") {
+                std::cout << "Preco de venda de mercadoria: " << valor << std::endl;
+            } else if (chave == "preco_compra_mercadoria") {
                 setPrecoCompraMerc(valor);
-                std::cout << "Preço de compra de mercadoria: " << valor << std::endl;
-            } else if (chave == "preço_caravana") {
+                std::cout << "Preco de compra de mercadoria: " << valor << std::endl;
+            } else if (chave == "preco_caravana") {
                 setPrecoCaravana(valor);
-                std::cout << "Preço da caravana: " << valor << std::endl;
+                std::cout << "Preco da caravana: " << valor << std::endl;
             } else if (chave == "instantes_entre_novos_barbaros") {
                 setInstantesEntreNovosBarbaros(valor);
-                std::cout << "Instantes entre novos bárbaros: " << valor << std::endl;
-            } else if (chave == "duração_barbaros") {
+                std::cout << "Instantes entre novos barbaros: " << valor << std::endl;
+            } else if (chave == "duracao_barbaros") {
                 setDuracaoBarbaros(valor);
-                std::cout << "Duração dos bárbaros: " << valor << std::endl;
+                std::cout << "Duracao dos barbaros: " << valor << std::endl;
             } else {
-                std::cerr << "Aviso: Configuração desconhecida '" << chave << "'" << std::endl;
+                std::cerr << "Aviso: Configuracao desconhecida '" << chave << "'" << std::endl;
             }
         } else {
-            std::cerr << "Erro ao ler linha de configuração: " << line << std::endl;
+            std::cerr << "Erro ao ler linha de configuracao: " << line << std::endl;
             return false;
         }
     }
@@ -214,7 +214,7 @@ void Deserto::adicionaCaravana(char tipo, int l, int c) {
             caravanas.emplace_back(std::make_unique<CaravanaSecreta>(l, c));
             break;
         default:
-            std::cerr << "[ERRO] Tipo de caravana inválido: " << tipo << std::endl;
+            std::cerr << "[ERRO] Tipo de caravana invalido: " << tipo << std::endl;
             return;
     }
 }
@@ -335,7 +335,7 @@ void Deserto::moverCaravana(int id, const std::string& movimento) {
             }
 
             if (movimentoInvalido(posLinhaNova, posColunaNova)) {
-                std::cerr << "[ERRO] Movimento inválido\n";
+                std::cerr << "[ERRO] Movimento invalido\n";
                 return;
             }
 

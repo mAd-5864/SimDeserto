@@ -27,7 +27,7 @@ void Cidade::mostrarCaravanasDisponiveis() const {
 bool Cidade::comprarCaravana(char tipo) {
     std::string nomeCaravana = converterTipoCaravana(tipo);
     if (nomeCaravana.empty()) {
-        std::cerr << "[ERRO] Tipo de caravana inválido. <C>-Comercio <M>-Militar <S>-Secreta \n";
+        std::cerr << "[ERRO] Tipo de caravana invalido. <C>-Comercio <M>-Militar <S>-Secreta \n";
         return false;
     }
 
@@ -41,6 +41,6 @@ bool Cidade::comprarCaravana(char tipo) {
     }
 
     std::cerr << "[ERRO] Caravana " << nomeCaravana
-              << " não está disponível na cidade " << nome << std::endl;
+              << " nao esta disponivel na cidade " << nome << std::endl;
     return false;
 }

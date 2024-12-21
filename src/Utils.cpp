@@ -58,7 +58,7 @@ int processarComandosFase1(const string &cmd, const vector<string> &args, Desert
         cout << "Encerrando programa...\n";
         return 0; // Retorna 0 para encerrar programa
     } else {
-        cerr << "[ERRO] Comando inválido\n";
+        cerr << "[ERRO] Comando invalido\n";
     }
     return 1; // Continuar na fase 1
 }
@@ -141,7 +141,7 @@ void comandoComprac(const vector<string> &args, Deserto &deserto) {
             return;
         }
     }
-    std::cerr << "[ERRO] Cidade " << nomeCidade << " não encontrada\n";
+    std::cerr << "[ERRO] Cidade " << nomeCidade << " nao encontrada\n";
 }
 
 // Comando: precos
@@ -241,13 +241,13 @@ void comandoVende(const vector<string> &args, Deserto &deserto) {
             return;
         }
     }
-        std::cerr << "[ERRO] Caravana " << id << " não encontrada\n";
+        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: move <N> <X>
 void comandoMove(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 2) {
-        cerr << "[ERRO] Sintaxe: move <número> <direção>\n";
+        cerr << "[ERRO] Sintaxe: move <número> <direcao>\n";
         return;
     }
 
@@ -256,8 +256,8 @@ void comandoMove(const vector<string> &args, Deserto &deserto) {
     std::transform(dir.begin(), dir.end(), dir.begin(), ::toupper);
 
     if (!isNumber(args[0]) || find(direcoes.begin(), direcoes.end(), dir) == direcoes.end()) {
-        cerr << "[ERRO] Sintaxe: move <número> <direção>\n";
-        cerr << "Direções válidas: D, E, C, B, CE, CD, BE, BD\n";
+        cerr << "[ERRO] Sintaxe: move <número> <direcao>\n";
+        cerr << "Direcoes validas: D, E, C, B, CE, CD, BE, BD\n";
         return;
     }
     deserto.moverCaravana(stoi(args[0]), dir);
@@ -269,7 +269,7 @@ void comandoAuto(const vector<string> &args) {
         cerr << "[ERRO] Sintaxe: auto <número>\n";
         return;
     }
-    cout << "Ativando modo automático para a caravana: " << args[0] << ".\n";
+    cout << "Ativando modo automatico para a caravana: " << args[0] << ".\n";
     // Implementar modo automático
 }
 
@@ -279,7 +279,7 @@ void comandoStop(const vector<string> &args) {
         cerr << "[ERRO] Sintaxe: stop <número>\n";
         return;
     }
-    cout << "Desativando modo automático para a caravana: " << args[0] << ".\n";
+    cout << "Desativando modo automatico para a caravana: " << args[0] << ".\n";
     // Implementar desativação do modo automático
 }
 
@@ -289,7 +289,7 @@ void comandoBarbaro(const vector<string> &args) {
         cerr << "[ERRO] Sintaxe: barbaro <linha> <coluna>\n";
         return;
     }
-    cout << "Criando caravana bárbara nas coordenadas (" << args[0] << ", " << args[1] << ").\n";
+    cout << "Criando caravana barbara nas coordenadas (" << args[0] << ", " << args[1] << ").\n";
     // Implementar criação de bárbaros
 }
 
@@ -333,7 +333,7 @@ void comandoTripul(const vector<string> &args, Deserto &deserto) {
             return;
         }
     }
-        std::cerr << "[ERRO] Caravana " << id << " não encontrada\n";
+        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: saves <nome>
