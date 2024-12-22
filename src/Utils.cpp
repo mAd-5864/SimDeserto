@@ -351,7 +351,6 @@ void comandoLoads(const vector<string> &args, Deserto &deserto) {
         cerr << "[ERRO] Sintaxe: loads <nome>\n";
         return;
     }
-    cout << "Carregando estado visual com o nome: " << args[0] << ".\n";
     deserto.loadBuffer(args[0]);
 }
 
