@@ -157,18 +157,18 @@ int Deserto::getPrecoCaravana() const {
     return precoCaravana;
 }
 
-int Deserto::getPrecoCompraMerc() const{
+int Deserto::getPrecoCompraMerc() const {
     return precoCompraMerc;
 }
 
-int Deserto::getPrecoVendaMerc() const{
+int Deserto::getPrecoVendaMerc() const {
     return precoVendaMerc;
 }
 
 void Deserto::ajustarMoedas(int valor) {
     moedas += valor;
     if (moedas < 0) moedas = 0;
-    if (valor>=0)
+    if (valor >= 0)
         std::cout << valor << " moedas adicionadas" << std::endl;
     else
         std::cout << abs(valor) << " moedas removidas" << std::endl;
@@ -189,6 +189,8 @@ void Deserto::processarBuffer() {
                 adicionaCaravana('c', i, j); //Iniicalmente todas caravanas comerciais
             } else if (c == '+') { // Encontrou Montanha
                 montanhas.emplace_back(i, j);
+            } else if (c == '!') { // Encontrou Barbaro
+                barbaros.emplace_back(i, j);
             }
         }
     }
@@ -243,6 +245,10 @@ const std::vector<std::pair<int, int>> &Deserto::getMontanhas() const {
     return montanhas;
 }
 
+const std::vector<Barbaro> &Deserto::getBarbaros() {
+    return barbaros;
+}
+
 void Deserto::printCaravanas() const {
     for (const auto &caravana: caravanas) {
         caravana->detalhes();
@@ -252,20 +258,26 @@ void Deserto::printCaravanas() const {
 void Deserto::atualizarBuffer() {
     buffer.clear(); // Estado inicial
 
+    // Adicionar barbaros
+    for (const auto &barbaro: barbaros) {
+        buffer.moveCursor(barbaro.getLinha(), barbaro.getColuna());
+        buffer.writeChar('!');
+    }
+
     // Adicionar montanhas
-    for (const auto& montanha : montanhas) {
+    for (const auto &montanha: montanhas) {
         buffer.moveCursor(montanha.first, montanha.second);
         buffer.writeChar('+');
     }
 
     // Adicionar caravanas
-    for (const auto& caravana : caravanas) {
+    for (const auto &caravana: caravanas) {
         buffer.moveCursor(caravana->getLinha(), caravana->getColuna());
-        buffer.writeChar('0'+caravana->getId());
+        buffer.writeChar('0' + caravana->getId());
     }
 
     // Adicionar cidades
-    for (const auto& cidade : cidades) {
+    for (const auto &cidade: cidades) {
         buffer.moveCursor(cidade.getLinha(), cidade.getColuna());
         buffer.writeChar(tolower(cidade.getNome()));
     }
@@ -307,7 +319,7 @@ int movimentaDireita(const std::unique_ptr<Caravana> &caravana, int maxColuna) {
     }
 }
 
-void Deserto::moverCaravana(int id, const std::string& movimento) {
+void Deserto::moverCaravana(int id, const std::string &movimento) {
     for (const auto &caravana: caravanas) {
         if (caravana->getId() == id) {
             int posLinhaNova = caravana->getLinha(), posColunaNova = caravana->getColuna();
@@ -354,8 +366,9 @@ bool Deserto::movimentoInvalido(int linha, int coluna) {
     // Verificar se posição está ocupada por uma montanha
     if (std::find(montanhas.begin(), montanhas.end(), std::make_pair(linha, coluna)) != montanhas.end()) return true;
 
-    for (const Cidade& cidade : cidades){
-        if(cidade.getLinha() == linha && cidade.getColuna() == coluna) return false; // Permitir varias caravanas em cidades
+    for (const Cidade &cidade: cidades) {
+        if (cidade.getLinha() == linha && cidade.getColuna() == coluna)
+            return false; // Permitir varias caravanas em cidades
     }
 
     // Verificar se posição está ocupada por uma caravana
@@ -363,11 +376,16 @@ bool Deserto::movimentoInvalido(int linha, int coluna) {
         if (caravana->getLinha() == linha && caravana->getColuna() == coluna) return true;
     }
 
+    // Verificar se posição está ocupada por barbaros
+    for (const Barbaro &barbaro: barbaros) {
+        if (barbaro.getLinha() == linha && barbaro.getColuna() == coluna) return true;
+    }
+
     return false; // Movimento é válido
 }
 
 void Deserto::atualizarCaravanas() {
-    for (const auto& caravana : caravanas) {
+    for (const auto &caravana: caravanas) {
         caravana->atualizarTurno(); // Chama o método específico de cada tipo
         if (caravana->estaNaCidade(cidades)) caravana->reabasteceAgua();
     }
@@ -403,7 +421,7 @@ void Deserto::listBuffer() const {
     }
 
     std::cout << "Saves disponiveis:\n";
-    for (const auto &save : bufferSaves) {
+    for (const auto &save: bufferSaves) {
         std::cout << "\t> " << save.first << std::endl;
     }
 }
@@ -418,3 +436,67 @@ bool Deserto::apagarBuffer(const std::string &nome) {
     }
 }
 
+void Deserto::movimentarBarbaros() {
+    for (auto &barbaro: barbaros) {
+        Caravana *inimigo = nullptr;
+        int distanciaMin = 9, distancia;
+
+        // Verificar se existe uma caravana próxima (distância <= 8)
+        for (const auto &caravana: caravanas) {
+            if (!caravana->estaNaCidade(cidades)) { // se não estiver na cidade persegue
+                distancia = abs(barbaro.getLinha() - caravana->getLinha()) +
+                            abs(barbaro.getColuna() - caravana->getColuna());
+                if (distancia <= 8) {
+                    if (distancia < distanciaMin) {
+                        distanciaMin = distancia;
+                        inimigo = caravana.get();
+                    }
+                }
+            }
+        }
+
+        // Se encontrar uma caravana próxima, persegue-a
+        if (inimigo) {
+            std::cout << "barbaro em perseguicao da caravana " << inimigo->getId() << "\n";
+            if (barbaro.perseguirCaravana(inimigo->getLinha(), inimigo->getColuna())) {
+                std::cout << "Vai começar o combate\n";
+            }
+        } else {
+            // Gerar valores aleatórios para movimento (-1, 0, +1)
+            int novaLinha = barbaro.getLinha() + (rand() % 3 - 1);
+            int novaColuna = barbaro.getColuna() + (rand() % 3 - 1);
+            if (verificarMoveAleatorio(novaLinha, novaColuna)) {
+                barbaro.move(novaLinha, novaColuna);
+                std::cout << "barbaro a andar aleatorio\n";
+            }
+        }
+    }
+}
+
+bool Deserto::verificarMoveAleatorio(int &novaLinha, int &novaColuna) {
+    if (novaLinha == linhas) novaLinha = 0;
+    if (novaLinha < 0) novaLinha = linhas - 1;
+    if (novaColuna == colunas) novaColuna = 0;
+    if (novaColuna < 0) novaColuna = colunas - 1;
+
+    // Verificar se posição está ocupada por uma caravana
+    for (const Cidade &cidade: cidades) {
+        if (cidade.getLinha() == novaLinha && cidade.getColuna() == novaColuna)
+            return false;
+    }
+
+    // Verificar se posição está ocupada por uma montanha
+    if (std::find(montanhas.begin(), montanhas.end(), std::make_pair(novaLinha, novaColuna)) != montanhas.end())
+        return false;
+
+    // Verificar se posição está ocupada por uma caravana
+    for (const auto &caravana: caravanas) {
+        if (caravana->getLinha() == novaLinha && caravana->getColuna() == novaColuna) return false;
+    }
+
+    // Verificar se posição está ocupada por barbaros
+    for (const Barbaro &barbaro: barbaros) {
+        if (barbaro.getLinha() == novaLinha && barbaro.getColuna() == novaColuna) return false;
+    }
+    return true;
+}

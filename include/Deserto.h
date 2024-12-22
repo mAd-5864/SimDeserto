@@ -13,6 +13,7 @@
 #include "Caravanas/CaravanaSecreta.h"
 #include "Caravanas/CaravanaMilitar.h"
 #include "Caravanas/CaravanaComercio.h"
+#include "Barbaro.h"
 
 class Deserto {
 private:
@@ -26,6 +27,7 @@ private:
     std::vector<std::unique_ptr<Caravana>> caravanas;
     std::vector<Cidade> cidades;
     std::vector<std::pair<int, int>> montanhas;
+    std::vector<Barbaro> barbaros;
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
     ~Deserto() = default;
@@ -90,6 +92,10 @@ public:
     void moverCaravana(int id, const std::string& movimento);
     bool movimentoInvalido(int linha, int coluna);
     void atualizarCaravanas();
+
+    const std::vector<Barbaro>& getBarbaros();
+    void movimentarBarbaros();
+    bool verificarMoveAleatorio(int &novaLinha, int &novaColuna);
 };
 
 
