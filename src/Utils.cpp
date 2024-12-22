@@ -136,8 +136,11 @@ void comandoComprac(const vector<string> &args, Deserto &deserto) {
 // Procurar cidade com nome recebido
     for (auto &cidade: deserto.getCidades()) {
         if (cidade.getNome() == nomeCidade) {
-            if (cidade.comprarCaravana(tipo)) // Add caravana na mesma posicao da cidade
-                deserto.adicionaCaravana(tipo, cidade.getLinha(),cidade.getColuna());
+            if (cidade.comprarCaravana(tipo)){
+            // Add caravana na mesma posicao da cidade
+            deserto.adicionaCaravana(tipo, cidade.getLinha(),cidade.getColuna());
+            deserto.ajustarMoedas(-1*deserto.getPrecoCaravana());
+            }
             return;
         }
     }
