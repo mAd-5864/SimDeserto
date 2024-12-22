@@ -79,10 +79,10 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
     else if (cmd == "areia") comandoAreia(args);
     else if (cmd == "moedas") comandoMoedas(args, deserto);
     else if (cmd == "tripul") comandoTripul(args, deserto);
-    else if (cmd == "saves") comandoSaves(args);
-    else if (cmd == "loads") comandoLoads(args);
-    else if (cmd == "lists") comandoLists(args);
-    else if (cmd == "dels") comandoDels(args);
+    else if (cmd == "saves") comandoSaves(args, deserto);
+    else if (cmd == "loads") comandoLoads(args, deserto);
+    else if (cmd == "lists") comandoLists(args, deserto);
+    else if (cmd == "dels") comandoDels(args, deserto);
     else if (cmd == "terminar") {
         cout << "Encerrando simulador...\n";
         return 1;
@@ -337,41 +337,38 @@ void comandoTripul(const vector<string> &args, Deserto &deserto) {
 }
 
 // Comando: saves <nome>
-void comandoSaves(const vector<string> &args) {
+void comandoSaves(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: saves <nome>\n";
         return;
     }
-    cout << "Salvando estado visual com o nome: " << args[0] << ".\n";
-    // Implementar save visual
+    deserto.saveBuffer(args[0]);
 }
 
 // Comando: loads <nome>
-void comandoLoads(const vector<string> &args) {
+void comandoLoads(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: loads <nome>\n";
         return;
     }
     cout << "Carregando estado visual com o nome: " << args[0] << ".\n";
-    // Implementar load visual
+    deserto.loadBuffer(args[0]);
 }
 
 // Comando: lists
-void comandoLists(const vector<string> &args) {
+void comandoLists(const vector<string> &args, Deserto &deserto) {
     if (!args.empty()) {
         cerr << "[ERRO] Sintaxe: lists\n";
         return;
     }
-    cout << "Listando todos os estados visuais salvos.\n";
-    // Implementar listagem de estados visuais
+    deserto.listBuffer();
 }
 
 // Comando: dels <nome>
-void comandoDels(const vector<string> &args) {
+void comandoDels(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: dels <nome>\n";
         return;
     }
-    cout << "Excluindo estado visual com o nome: " << args[0] << ".\n";
-    // Implementar exclusão de estado visual
+    deserto.apagarBuffer(args[0]);
 }

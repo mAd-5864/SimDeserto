@@ -59,12 +59,12 @@ void comandoMoedas(const vector<string> &args, Deserto& deserto);
 
 void comandoTripul(const vector<string> &args, Deserto &deserto);
 
-void comandoSaves(const vector<string> &args);
+void comandoSaves(const vector<string> &args, Deserto &deserto);
 
-void comandoLoads(const vector<string> &args);
+void comandoLoads(const vector<string> &args, Deserto &deserto);
 
-void comandoLists(const vector<string> &args);
+void comandoLists(const vector<string> &args, Deserto &deserto);
 
-void comandoDels(const vector<string> &args);
+void comandoDels(const vector<string> &args, Deserto &deserto);
 
 #endif //SIMDESERTO_UTILS_H

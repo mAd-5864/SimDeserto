@@ -22,6 +22,7 @@ private:
     int numCidades = 0, numCaravanas = 0;
     int linhas, colunas;
     Buffer buffer;
+    std::map<std::string, Buffer> bufferSaves; // Nome e cópia do buffer
     std::vector<std::unique_ptr<Caravana>> caravanas;
     std::vector<Cidade> cidades;
     std::vector<std::pair<int, int>> montanhas;
@@ -32,6 +33,11 @@ public:
     bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro
     void mostrarMapa() const;                   // Exibe o mapa na consola
     void mostrarMapa(Buffer buffer) const;
+
+    bool saveBuffer(const std::string &nome);
+    bool loadBuffer(const std::string &nome);
+    void listBuffer() const;
+    bool apagarBuffer(const std::string &nome);
 
     void setLinhas(int linhas);
     void setColunas(int colunas);

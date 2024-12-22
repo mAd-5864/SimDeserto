@@ -71,25 +71,25 @@ bool Deserto::lerFicheiro(const std::string &filename) {
             } else if (chave == "instantes_entre_novos_itens") {
                 setInstantesEntreNovosItems(valor);
                 std::cout << "Instantes entre novos items: " << valor << std::endl;
-            } else if (chave == "duracao_item") {
+            } else if (chave == "duração_item") {
                 setDuracaoItem(valor);
                 std::cout << "Duracao do item: " << valor << std::endl;
             } else if (chave == "max_itens") {
                 setMaxItens(valor);
                 std::cout << "Maximo de itens: " << valor << std::endl;
-            } else if (chave == "preco_venda_mercadoria") {
+            } else if (chave == "preço_venda_mercadoria") {
                 setPrecoVendaMerc(valor);
                 std::cout << "Preco de venda de mercadoria: " << valor << std::endl;
-            } else if (chave == "preco_compra_mercadoria") {
+            } else if (chave == "preço_compra_mercadoria") {
                 setPrecoCompraMerc(valor);
                 std::cout << "Preco de compra de mercadoria: " << valor << std::endl;
-            } else if (chave == "preco_caravana") {
+            } else if (chave == "preço_caravana") {
                 setPrecoCaravana(valor);
                 std::cout << "Preco da caravana: " << valor << std::endl;
             } else if (chave == "instantes_entre_novos_barbaros") {
                 setInstantesEntreNovosBarbaros(valor);
                 std::cout << "Instantes entre novos barbaros: " << valor << std::endl;
-            } else if (chave == "duracao_barbaros") {
+            } else if (chave == "duração_barbaros") {
                 setDuracaoBarbaros(valor);
                 std::cout << "Duracao dos barbaros: " << valor << std::endl;
             } else {
@@ -372,3 +372,49 @@ void Deserto::atualizarCaravanas() {
         if (caravana->estaNaCidade(cidades)) caravana->reabasteceAgua();
     }
 }
+
+bool Deserto::saveBuffer(const std::string &nome) {
+    if (bufferSaves.find(nome) != bufferSaves.end()) {
+        std::cerr << "[ERRO] Ja existe uma copia com o nome '" << nome << "'\n";
+        return false;
+    }
+    bufferSaves.insert(std::make_pair(nome, buffer)); // Faz uma cópia do buffer atual
+    std::cout << "Copia guardada como '" << nome << "'\n";
+    return true;
+}
+
+bool Deserto::loadBuffer(const std::string &nome) {
+    auto it = bufferSaves.find(nome);
+    if (it == bufferSaves.end()) {
+        std::cerr << "[ERRO] Nao existe nenhuma copia com o nome '" << nome << "'\n";
+        return false;
+    }
+
+    Buffer copia = it->second;
+    std::cout << "-----Buffer " << nome << "-----\n";
+    copia.print();
+    return true;
+}
+
+void Deserto::listBuffer() const {
+    if (bufferSaves.empty()) {
+        std::cout << "A lista de saves esta vazia\n";
+        return;
+    }
+
+    std::cout << "Saves disponiveis:\n";
+    for (const auto &save : bufferSaves) {
+        std::cout << "\t> " << save.first << std::endl;
+    }
+}
+
+bool Deserto::apagarBuffer(const std::string &nome) {
+    if (bufferSaves.erase(nome)) {
+        std::cout << "Copia '" << nome << "' apagada com sucesso\n";
+        return true;
+    } else {
+        std::cerr << "[ERRO] Nao existe uma copia com o nome '" << nome << "'\n";
+        return false;
+    }
+}
+
