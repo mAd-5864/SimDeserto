@@ -104,6 +104,7 @@ public:
     void atualizarBarbaros();
     void movimentarBarbaros();
     bool verificarMoveAleatorio(int &novaLinha, int &novaColuna);
+    bool perseguirCaravana(Barbaro& barbaro, int destinoLinha, int destinoColuna);
 
     void processarCombates();
 };

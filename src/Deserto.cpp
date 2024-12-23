@@ -486,7 +486,7 @@ void Deserto::movimentarBarbaros() {
         // Se encontrar uma caravana próxima, persegue-a
         if (inimigo) {
             //std::cout << "barbaro "<< barbaro.getId()<<" em perseguicao da caravana " << inimigo->getId() << "\n";
-            if (barbaro.perseguirCaravana(inimigo->getLinha(), inimigo->getColuna()))
+            if (perseguirCaravana(barbaro, inimigo->getLinha(), inimigo->getColuna()))
                 combates.emplace_back(inimigo->getId(), barbaro.getId());
         } else {
             // Gerar valores aleatórios para movimento (-1, 0, +1)
@@ -524,6 +524,42 @@ bool Deserto::verificarMoveAleatorio(int &novaLinha, int &novaColuna) {
         if (barbaro.getLinha() == novaLinha && barbaro.getColuna() == novaColuna) return false;
     }
     return true;
+}
+
+bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoColuna) {
+    int novaLinha = barbaro.getLinha();
+    int novaColuna = barbaro.getColuna();
+    int distancia = abs(novaLinha - destinoLinha) +
+                    abs(novaColuna - destinoColuna);
+    if (distancia > 1) {
+        // Determinar direção para a linha
+        if (novaLinha < destinoLinha) {
+            novaLinha++;
+        } else if (novaLinha > destinoLinha) {
+            novaLinha--;
+        }
+    }
+
+    distancia = abs(novaLinha - destinoLinha) +
+                abs(novaColuna - destinoColuna);
+
+    // Determinar direção para a coluna
+    if (distancia > 1) {
+        if (novaColuna < destinoColuna) {
+            novaColuna++;
+        } else if (novaColuna > destinoColuna) {
+            novaColuna--;
+        }
+        distancia = abs(novaLinha - destinoLinha) +
+                    abs(novaColuna - destinoColuna);
+    }
+    if (verificarMoveAleatorio(novaLinha,novaColuna)){
+        barbaro.move(novaLinha,novaColuna);
+        if (distancia <= 1) {
+            return true; // Entra em combate!!
+        }
+    }
+    return false;
 }
 
 void Deserto::processarCombates() {
