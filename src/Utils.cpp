@@ -64,7 +64,7 @@ int processarComandosFase1(const string &cmd, const vector<string> &args, Desert
 }
 
 int processarComandosFase2(const string &cmd, const vector<string> &args, Deserto &deserto) {
-    if (cmd == "exec") comandoExec(args);
+    if (cmd == "exec") comandoExec(args, deserto);
     else if (cmd == "prox") comandoProx(args, deserto);
     else if (cmd == "comprac") comandoComprac(args, deserto);
     else if (cmd == "precos") comandoPrecos(args, deserto);
@@ -93,13 +93,12 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
 }
 
 // Comando: exec <nomeFicheiro>
-void comandoExec(const vector<string> &args) {
+void comandoExec(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1) {
         cerr << "[ERRO] Sintaxe: exec <nomeFicheiro>\n";
         return;
     }
-    cout << "Executando comandos do ficheiro: " << args[0] << "\n";
-    // Implementar execução de comandos do ficheiro
+    processarFicheiroComandos(args[0], deserto);
 }
 
 // Comando: prox <n>
@@ -385,4 +384,38 @@ void comandoDels(const vector<string> &args, Deserto &deserto) {
         return;
     }
     deserto.apagarBuffer(args[0]);
+}
+
+void processarFicheiroComandos(const std::string &filename, Deserto &deserto){
+    std::string folder = "../config/";
+    std::string path = folder + filename + ".txt";
+    std::ifstream file(path);
+    if (!file) {
+        std::cerr << "[ERRO] Nao foi possivel abrir o ficheiro: " << filename << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        // Remove espaços no início e no final
+        line.erase(0, line.find_first_not_of(' '));
+        line.erase(line.find_last_not_of(' ') + 1);
+        if (line.empty()) continue; // Ignora linhas vazias
+
+        std::istringstream sslinha(line);
+        std::string cmd;
+        std::vector<std::string> args;
+
+        sslinha >> cmd; // Lê o comando
+        std::string arg;
+        while (sslinha >> arg) {
+            args.push_back(arg); // Armazena os argumentos
+        }
+
+        // Processa o comando
+        processarComandosFase2(cmd, args, deserto);
+    }
+
+    file.close();
+    std::cout << "Todos os comandos do ficheiro '" << filename << ".txt' foram processados.\n";
 }

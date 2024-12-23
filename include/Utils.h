@@ -29,7 +29,8 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
 // Funções para cada comando
 int comandoConfig(const vector<string> &args, Deserto& deserto);
 
-void comandoExec(const vector<string> &args);
+void comandoExec(const vector<string> &args, Deserto &deserto);
+void processarFicheiroComandos(const std::string &filename, Deserto &deserto);
 
 void comandoProx(const vector<string> &args, Deserto& deserto);
 
