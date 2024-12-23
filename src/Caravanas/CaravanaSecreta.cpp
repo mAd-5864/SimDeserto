@@ -14,9 +14,12 @@ CaravanaSecreta::CaravanaSecreta(int linha, int coluna)
 }
 
 void CaravanaSecreta::atualizarTurno() {
-    if (numTripulantes==0){
+    if (numTripulantes == 0) {
         // destruida
+    }else qntAgua -= 2;
+    if (qntAgua < 0) {
+        numTripulantes--;
+        qntAgua = 0;
     }
-    else qntAgua-=2;
     movesRestantes = maxMoves;
 }

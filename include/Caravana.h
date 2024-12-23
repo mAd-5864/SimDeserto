@@ -12,6 +12,7 @@ protected:
     const int cargaMaxima, aguaMax, tripulantesMax;
     int movesRestantes, maxMoves, tipoMovimentacao; // 0-Sem tripulantes, 1-Utilizador, 2-Autónomo
     int linha, coluna;
+    int instantesRestantes;
     char tipo; // c -> comercio, m -> militar, s -> secreto
 
 public:

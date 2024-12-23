@@ -14,12 +14,18 @@ CaravanaMilitar::CaravanaMilitar(int linha, int coluna)
 }
 
 void CaravanaMilitar::atualizarTurno() {
-    if (numTripulantes==0){
+    if (numTripulantes == 0) {
         // desloca-se sempre na mesma direção do último movimento que fez
         // passados 7 instantes, acaba por desaparecer
         qntAgua--;
+    } else {
+        if (numTripulantes < tripulantesMax / 2) qntAgua--;
+        else qntAgua -= 3;
+        if (qntAgua < 0) {
+            numTripulantes--;
+            qntAgua = 0;
+        }
     }
-    else if (numTripulantes<tripulantesMax/2) qntAgua--;
-    else qntAgua-=3;
+    if (qntAgua<0) qntAgua=0;
     movesRestantes = maxMoves;
 }

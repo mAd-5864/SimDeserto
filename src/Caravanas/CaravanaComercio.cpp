@@ -10,16 +10,22 @@ CaravanaComercio::CaravanaComercio(int linha, int coluna)
     qntAgua = aguaMax;
     qntMerc = 0;
     movesRestantes = maxMoves;
+    instantesRestantes = 5;
     tipo = 'C';
 }
 
 void CaravanaComercio::atualizarTurno() {
-    if (numTripulantes==0){
+    if (numTripulantes == 0) {
         // mover aleatoriamente
-        // passados 5 instantes, acaba por desaparecer
+        if (instantesRestantes-- == 0);// passados 5 instantes, acaba por desaparecer
+    } else {
+            if (numTripulantes < tripulantesMax / 2) qntAgua--;
+            else qntAgua -= 2;
+        if (qntAgua < 0) {
+            numTripulantes--;
+            qntAgua = 0;
+        }
     }
-    else if (numTripulantes<tripulantesMax/2) qntAgua--;
-    else qntAgua-=2;
     movesRestantes = maxMoves;
 }
 
