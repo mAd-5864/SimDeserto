@@ -17,6 +17,7 @@ protected:
 
 public:
     Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int maxMoves, int linha, int coluna);
+    static void resetID() { nextID = 1; }
     virtual ~Caravana();
 
     virtual void atualizarTurno() = 0; // Método virtual puro

@@ -5,7 +5,7 @@
 #include "../include/Caravana.h"
 
 // Static ID generator
-int Caravana::nextID = 1;
+int Caravana::nextID;
 
 // Constructor for base Caravana
 Caravana::Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int maxMoves, int linha, int coluna)

@@ -186,7 +186,12 @@ void Deserto::processarBuffer() {
             if (isalpha(c)) {   // Encontrou Cidade
                 adicionaCidade(c, i, j);
             } else if (isdigit(c)) {  // Encontrou Caravana
-                adicionaCaravana('c', i, j); //Iniicalmente todas caravanas comerciais
+                int chance = rand() % 3;
+                if (chance < 2) {  // 66% de chance para militar
+                    adicionaCaravana('m', i, j);
+                } else {           // 33% de chance para comercial
+                    adicionaCaravana('c', i, j);
+                }
             } else if (c == '+') { // Encontrou Montanha
                 montanhas.emplace_back(i, j);
             } else if (c == '!') { // Encontrou Barbaro
@@ -279,7 +284,7 @@ void Deserto::atualizarBuffer() {
     // Adicionar cidades
     for (const auto &cidade: cidades) {
         buffer.moveCursor(cidade.getLinha(), cidade.getColuna());
-        buffer.writeChar(tolower(cidade.getNome()));
+        buffer.writeChar(cidade.getNome());
     }
 }
 
