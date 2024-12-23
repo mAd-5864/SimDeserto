@@ -28,6 +28,7 @@ private:
     std::vector<Cidade> cidades;
     std::vector<std::pair<int, int>> montanhas;
     std::vector<Barbaro> barbaros;
+    std::vector<std::pair<int, int>> combates; // <id_Caravana, id_Barbaro>
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
     ~Deserto() = default;
@@ -94,8 +95,11 @@ public:
     void atualizarCaravanas();
 
     const std::vector<Barbaro>& getBarbaros();
+    void atualizarBarbaros();
     void movimentarBarbaros();
     bool verificarMoveAleatorio(int &novaLinha, int &novaColuna);
+
+    void processarCombates();
 };
 
 

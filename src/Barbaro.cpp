@@ -4,9 +4,17 @@
 
 #include "../include/Barbaro.h"
 
+int Barbaro::nextID = 0;
+
 // Construtor
-Barbaro::Barbaro(int lin, int col) : linha(lin), coluna(col), turnosRestantes(60), maxTripulantes(40) {
+Barbaro::Barbaro(int lin, int col, int maxTripulantes, int turnosRestantes) : ID(nextID++), linha(lin), coluna(col), turnosRestantes(turnosRestantes), maxTripulantes(maxTripulantes) {
     numTripulantes = maxTripulantes;
+}
+
+bool Barbaro::atualizar(){
+    if (estaAborrecido() || numTripulantes == 0) return false;
+    turnosRestantes--;
+    return true;
 }
 
 // Movimenta o bárbaro aleatoriamente para uma posição adjacente
@@ -14,11 +22,9 @@ void Barbaro::move(int novaLinha, int novaColuna) {
     linha = novaLinha;
     coluna = novaColuna;
 
-    --turnosRestantes;
 }
 
 bool Barbaro::perseguirCaravana(int destinoLinha, int destinoColuna) {
-    --turnosRestantes;
     int distancia = abs(linha - destinoLinha) +
                 abs(coluna - destinoColuna);
     if (distancia > 1) {
