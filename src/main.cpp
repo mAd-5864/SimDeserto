@@ -19,7 +19,7 @@ int main() {
         }
         if (fase==2){
             //system("Color E4");
-            std::cout << "\nFase " << fase<< " - Moedas: "<< desertoInicial->getMoedas()<< "   Caravanas: "<< desertoInicial->getNumCaravanas()<<"\n";
+            std::cout << "\nFase " << fase<< " | Instante "<< desertoInicial->getInstante()<<" - Moedas: "<< desertoInicial->getMoedas()<< "   Caravanas: "<< desertoInicial->getNumCaravanas()<<"\n";
         }
         fase = lerComandos(fase, *desertoInicial);
     } while (fase!=0);

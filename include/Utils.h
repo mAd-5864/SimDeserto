@@ -51,7 +51,7 @@ void comandoAuto(const vector<string> &args);
 
 void comandoStop(const vector<string> &args);
 
-void comandoBarbaro(const vector<string> &args);
+void comandoBarbaro(const vector<string> &args, Deserto &deserto);
 
 void comandoAreia(const vector<string> &args);
 

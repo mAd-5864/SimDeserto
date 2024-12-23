@@ -75,7 +75,7 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
     else if (cmd == "move") comandoMove(args, deserto);
     else if (cmd == "auto") comandoAuto(args);
     else if (cmd == "stop") comandoStop(args);
-    else if (cmd == "barbaro") comandoBarbaro(args);
+    else if (cmd == "barbaro") comandoBarbaro(args, deserto);
     else if (cmd == "areia") comandoAreia(args);
     else if (cmd == "moedas") comandoMoedas(args, deserto);
     else if (cmd == "tripul") comandoTripul(args, deserto);
@@ -114,6 +114,7 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         return;
     }
     for (int i = 0; i < instantes; ++i) {
+        deserto.proxInstante();
         deserto.atualizarCaravanas();
         deserto.movimentarBarbaros();
         deserto.processarCombates();
@@ -290,13 +291,21 @@ void comandoStop(const vector<string> &args) {
 }
 
 // Comando: barbaro <l> <c>
-void comandoBarbaro(const vector<string> &args) {
+void comandoBarbaro(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 2 || !isNumber(args[0]) || !isNumber(args[1])) {
         cerr << "[ERRO] Sintaxe: barbaro <linha> <coluna>\n";
         return;
     }
-    cout << "Criando caravana barbara nas coordenadas (" << args[0] << ", " << args[1] << ").\n";
-    // Implementar criação de bárbaros
+    int linha = stoi(args[0]);
+    int coluna = stoi(args[1]);
+    if (linha>=0 && linha<deserto.getLinhas() && coluna>=0 && coluna<deserto.getColunas()){
+        if (deserto.verificarMoveAleatorio(linha, coluna)){
+            deserto.adicionaBarbaro(linha,coluna);
+            std::cout << "Barbaro adicionado na posicao (" << linha << ", " << coluna << ")\n";
+            return;
+        }
+    }
+        cerr << "[ERRO] Posicao invalida\n";
 }
 
 // Comando: areia <l> <c> <r>

@@ -194,7 +194,7 @@ void Deserto::processarBuffer() {
             } else if (c == '+') { // Encontrou Montanha
                 montanhas.emplace_back(i, j);
             } else if (c == '!') { // Encontrou Barbaro
-                barbaros.emplace_back(i, j, 40, duracaoBarbaros);
+                adicionaBarbaro(i, j);
             }
         }
     }
@@ -223,6 +223,10 @@ void Deserto::adicionaCaravana(char tipo, int l, int c) {
             std::cerr << "[ERRO] Tipo de caravana invalido: " << tipo << std::endl;
             return;
     }
+}
+
+void Deserto::adicionaBarbaro(int linha, int coluna){
+    barbaros.emplace_back(linha, coluna, 40, duracaoBarbaros);
 }
 
 void Deserto::printCidades() const {
@@ -443,6 +447,20 @@ void Deserto::atualizarBarbaros() {
         if (!barbaro->atualizar()) {
             barbaro = barbaros.erase(barbaro); // Remove barbaro do vetor
         } else ++barbaro;
+    }
+
+    // Adicionar novo bárbaro de x em x instantes
+    if (instanteAtual % instantesEntreNovosBarbaros == 0) {
+        int linha = rand() % linhas;
+        int coluna = rand() % colunas;
+
+        // Verificar se a posição é válida antes de adicionar
+        while (!verificarMoveAleatorio(linha, coluna)) {
+            linha = rand() % buffer.getLinhas();
+            coluna = rand() % buffer.getColunas();
+        }
+
+        adicionaBarbaro(linha, coluna);
     }
 }
 

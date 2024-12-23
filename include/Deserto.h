@@ -21,7 +21,7 @@ private:
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros;
     int numCidades = 0, numCaravanas = 0;
-    int linhas, colunas;
+    int linhas, colunas, instanteAtual = 0;
     Buffer buffer;
     std::map<std::string, Buffer> bufferSaves; // Nome e cópia do buffer
     std::vector<std::unique_ptr<Caravana>> caravanas;
@@ -44,6 +44,11 @@ public:
 
     void setLinhas(int linhas);
     void setColunas(int colunas);
+    int getLinhas(){return linhas;}
+    int getColunas(){return colunas;}
+
+    void proxInstante() { ++instanteAtual; };
+    int getInstante() { return instanteAtual; }
 
     char getTerreno(int linha, int coluna) const;         // Obtem o terreno de uma posição
     void setTerreno(int linha, int coluna, char terreno); // Define o terreno de uma posição
@@ -94,6 +99,7 @@ public:
     bool movimentoInvalido(int linha, int coluna);
     void atualizarCaravanas();
 
+    void adicionaBarbaro(int linha, int coluna);
     const std::vector<Barbaro>& getBarbaros();
     void atualizarBarbaros();
     void movimentarBarbaros();
