@@ -109,7 +109,8 @@ public:
 
     void processarCombates();
 
-    void adicionaItem();
+    void adicionaItem(int linha, int coluna, int tipo);
+    void atualizarItems();
 };
 
 

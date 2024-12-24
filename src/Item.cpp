@@ -4,7 +4,11 @@
 
 #include "../include/Item.h"
 
-//Destrutor da class
-Item::~Item() {
-    // Limpeza, se necessário (por exemplo, desalocar memória dinâmica, se aplicada futuramente)
+//Construtor da class
+Item::Item(int lin, int col, int tipo, int turnosRestantes) : linha(lin), coluna(col), tipo(tipo), tempoRestante(turnosRestantes){}
+
+bool Item::atualizar(){
+    if (tempoRestante == 0) return false;
+    tempoRestante--;
+    return true;
 }

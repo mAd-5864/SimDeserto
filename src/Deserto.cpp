@@ -229,6 +229,11 @@ void Deserto::adicionaBarbaro(int linha, int coluna){
     barbaros.emplace_back(linha, coluna, 40, duracaoBarbaros);
 }
 
+void Deserto::adicionaItem(int linha, int coluna, int tipo) {
+    // adicionar tipo e duracao ao construtor
+    itens.emplace_back(linha, coluna, tipo, duracaoItem);
+}
+
 void Deserto::printCidades() const {
     std::cout << "Cidades no mapa:" << std::endl;
     for (const auto &cidade: cidades) {
@@ -276,6 +281,12 @@ void Deserto::atualizarBuffer() {
     for (const auto &montanha: montanhas) {
         buffer.moveCursor(montanha.first, montanha.second);
         buffer.writeChar('+');
+    }
+
+    // Adicionar items
+    for (const auto &item: itens) {
+        buffer.moveCursor(item.getLinha(), item.getColuna());
+        buffer.writeChar('?');
     }
 
     // Adicionar caravanas
@@ -594,21 +605,25 @@ void Deserto::processarCombates() {
     }
 }
 
-void Deserto::adicionaItem() {
-    int linhaAleatoria, colunaAleatoria, tipo;
-
-    if(numeroItens <= maxItems){
-        for (int i = 0; i <= numeroItens; ++i) {
-            do {
-                // Gerar valores aleatórios
-                linhaAleatoria = (rand() % linhas);
-                colunaAleatoria = (rand() % colunas);
-                tipo = (rand() % 5+1);
-            } while (!verificarMoveAleatorio(linhaAleatoria, colunaAleatoria));
-
-            itens.emplace_back(linhaAleatoria, colunaAleatoria, tipo);
-            buffer.moveCursor(linhaAleatoria, colunaAleatoria);
-            buffer.writeChar('x');
-        }
+void Deserto::atualizarItems(){
+    // Caso acabe o tempo de vida do item
+    for (auto item = itens.begin(); item != itens.end();) {
+        if (!item->atualizar()) {
+            item = itens.erase(item); // Remove barbaro do vetor
+        } else ++item;
     }
+
+    if(numeroItens <= maxItems && instanteAtual%instantesEntreNovosItems==0) {
+        // Gerar novo item
+        int linhaAleatoria, colunaAleatoria, tipo;
+        do {
+            // Gerar valores aleatórios
+            linhaAleatoria = (rand() % linhas);
+            colunaAleatoria = (rand() % colunas);
+            tipo = (rand() % 5+1);
+        } while (!verificarMoveAleatorio(linhaAleatoria, colunaAleatoria));
+
+        adicionaItem(linhaAleatoria, colunaAleatoria, tipo);
+    }
+
 }
