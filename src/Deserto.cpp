@@ -297,6 +297,15 @@ void Deserto::atualizarCaravanas() {
     for (const auto &caravana: caravanas) {
         caravana->atualizarTurno(); // Chama o método específico de cada tipo
         if (caravana->estaNaCidade(cidades)) caravana->reabasteceAgua();
+        if (caravana->getTipoMovimentacao() == 1) {
+            std::pair resultado = caravana->autoMove(caravanas, barbaros);
+            if (!movimentoInvalido(resultado.first, resultado.second))
+                caravana->mover(resultado.first, resultado.second);
+        } else if (caravana->getTipoMovimentacao() == 2){
+            // Caravana a morrer
+            // Militar: (usar <pair> posAnterior)
+            // Comercial: random
+        }
     }
 }
 
@@ -335,6 +344,10 @@ int movimentaDireita(const std::unique_ptr<Caravana> &caravana, int maxColuna) {
 void Deserto::moverCaravana(int id, const std::string &movimento) {
     for (const auto &caravana: caravanas) {
         if (caravana->getId() == id) {
+            if (caravana->getTipoMovimentacao()){
+                std::cout<<"Caravana "<< caravana->getId()<< " em movimento automatico\n";
+                return;
+            }
             int posLinhaNova = caravana->getLinha(), posColunaNova = caravana->getColuna();
             // Validação de limites
             if (movimento == "C") {

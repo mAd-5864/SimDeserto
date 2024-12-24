@@ -36,6 +36,7 @@ void Caravana::detalhes() const{
 }
 
 void Caravana::mover(int novaLinha, int novaColuna) {
+    posAnterior = std::make_pair(linha, coluna);
     if (movesRestantes>0){
         linha = novaLinha;
         coluna = novaColuna;

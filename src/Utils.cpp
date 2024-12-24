@@ -73,8 +73,8 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
     else if (cmd == "compra") comandoCompra(args, deserto);
     else if (cmd == "vende") comandoVende(args, deserto);
     else if (cmd == "move") comandoMove(args, deserto);
-    else if (cmd == "auto") comandoAuto(args);
-    else if (cmd == "stop") comandoStop(args);
+    else if (cmd == "auto") comandoAuto(args, deserto);
+    else if (cmd == "stop") comandoStop(args, deserto);
     else if (cmd == "barbaro") comandoBarbaro(args, deserto);
     else if (cmd == "areia") comandoAreia(args);
     else if (cmd == "moedas") comandoMoedas(args, deserto);
@@ -270,23 +270,39 @@ void comandoMove(const vector<string> &args, Deserto &deserto) {
 }
 
 // Comando: auto <N>
-void comandoAuto(const vector<string> &args) {
+void comandoAuto(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: auto <número>\n";
         return;
     }
-    cout << "Ativando modo automatico para a caravana: " << args[0] << ".\n";
-    // Implementar modo automático
+    int id = stoi(args[0]);
+    // Procurar caravana com ID lido
+    for (const auto &caravana: deserto.getCaravanas()) {
+        if (caravana->getId() == id) {
+            caravana->setMoveType(1);
+            std::cout << "Caravana "<< caravana->getId()<<" esta em modo automatico\n";
+            return;
+        }
+    }
+    std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: stop <N>
-void comandoStop(const vector<string> &args) {
+void comandoStop(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 1 || !isNumber(args[0])) {
         cerr << "[ERRO] Sintaxe: stop <número>\n";
         return;
     }
-    cout << "Desativando modo automatico para a caravana: " << args[0] << ".\n";
-    // Implementar desativação do modo automático
+    int id = stoi(args[0]);
+    // Procurar caravana com ID lido
+    for (const auto &caravana: deserto.getCaravanas()) {
+        if (caravana->getId() == id) {
+            caravana->setMoveType(0);
+            std::cout << "Caravana "<< caravana->getId()<<" esta em modo automatico\n";
+            return;
+        }
+    }
+    std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: barbaro <l> <c>

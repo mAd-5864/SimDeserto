@@ -13,6 +13,7 @@ public:
     CaravanaSecreta(int linha, int coluna);
 
     void atualizarTurno();
+    std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros);
 };
 
 #endif //SIMDESERTO_CARAVANASECRETA_H

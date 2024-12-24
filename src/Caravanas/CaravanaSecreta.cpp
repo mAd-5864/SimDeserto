@@ -5,7 +5,7 @@
 
 // Constructor for CaravanaSecreta
 CaravanaSecreta::CaravanaSecreta(int linha, int coluna)
-        : Caravana(5, 200, 10, 1, 4, linha, coluna) { // Exemplo: 5T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
+        : Caravana(5, 200, 10, 0, 4, linha, coluna) { // Exemplo: 5T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
     numTripulantes = tripulantesMax;
     qntAgua = aguaMax;
     qntMerc = 0;
@@ -23,3 +23,5 @@ void CaravanaSecreta::atualizarTurno() {
     }
     movesRestantes = maxMoves;
 }
+
+std::pair<int, int> CaravanaSecreta::autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros){}

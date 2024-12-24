@@ -4,7 +4,7 @@
 
 #include "../include/Barbaro.h"
 
-int Barbaro::nextID = 0;
+int Barbaro::nextID = 1;
 
 // Construtor
 Barbaro::Barbaro(int lin, int col, int maxTripulantes, int turnosRestantes) : ID(nextID++), linha(lin), coluna(col), turnosRestantes(turnosRestantes), maxTripulantes(maxTripulantes) {

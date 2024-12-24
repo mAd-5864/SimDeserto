@@ -4,7 +4,6 @@
 
 #ifndef SIMDESERTO_DESERTO_H
 #define SIMDESERTO_DESERTO_H
-#include <memory>
 #include <limits>
 
 #include "Buffer.h"

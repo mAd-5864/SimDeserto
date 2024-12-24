@@ -48,9 +48,9 @@ void comandoVende(const vector<string> &args, Deserto &deserto);
 
 void comandoMove(const vector<string> &args, Deserto& deserto);
 
-void comandoAuto(const vector<string> &args);
+void comandoAuto(const vector<string> &args, Deserto& deserto);
 
-void comandoStop(const vector<string> &args);
+void comandoStop(const vector<string> &args, Deserto& deserto);
 
 void comandoBarbaro(const vector<string> &args, Deserto &deserto);
 

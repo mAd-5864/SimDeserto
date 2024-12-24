@@ -5,7 +5,7 @@
 
 // Constructor
 CaravanaComercio::CaravanaComercio(int linha, int coluna)
-        : Caravana(40, 200, 20, 1, 2, linha, coluna) { // 40T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
+        : Caravana(40, 200, 20, 0, 2, linha, coluna) { // 40T cargaMaxima, 200 litrosMaximo, movimentacao tipo 1
     numTripulantes = tripulantesMax;
     qntAgua = aguaMax;
     qntMerc = 0;
@@ -29,3 +29,4 @@ void CaravanaComercio::atualizarTurno() {
     movesRestantes = maxMoves;
 }
 
+std::pair<int, int> CaravanaComercio::autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros){}

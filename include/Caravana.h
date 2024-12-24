@@ -3,17 +3,20 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "Cidade.h"
+#include "Barbaro.h"
 
 class Caravana {
 protected:
     static int nextID; // Para gerar IDs únicos
     int ID, numTripulantes, qntAgua, qntMerc;
     const int cargaMaxima, aguaMax, tripulantesMax;
-    int movesRestantes, maxMoves, tipoMovimentacao; // 0-Sem tripulantes, 1-Utilizador, 2-Autónomo
+    int movesRestantes, maxMoves, tipoMovimentacao; // 0-Utilizador, 1-Sem tripulantes, 2-Autónomo
     int linha, coluna;
     int instantesRestantes;
     char tipo; // c -> comercio, m -> militar, s -> secreto
+    std::pair<int, int> posAnterior;
 
 public:
     Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int maxMoves, int linha, int coluna);
@@ -21,6 +24,7 @@ public:
     virtual ~Caravana();
 
     virtual void atualizarTurno() = 0; // Método virtual puro
+    virtual std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros) = 0;
 
     // Getters
     int getId() const { return ID; }
@@ -29,10 +33,14 @@ public:
     char getTipo() const { return tipo; }
     int getCarga() const { return qntMerc; }
     int getMoves() { return movesRestantes; }
+    int getTipoMovimentacao() const { return tipoMovimentacao; }
 
     void detalhes() const;
 
     void mover(int novaLinha, int novaColuna);
+    void setMoveType(int moveType){
+        tipoMovimentacao = moveType;
+    }
 
 
     void reabasteceAgua(){

@@ -1,0 +1,8 @@
+move 1 bd
+move 1 bd
+move 2 cd
+move 2 cd
+move 4 be
+move 4 b
+move 4 bd
+auto 3

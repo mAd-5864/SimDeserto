@@ -11,6 +11,7 @@ public:
     CaravanaMilitar(int linha, int coluna); // Values: 40 Tripulantes, 400L Agua, 5T CargaMaxima
 
     void atualizarTurno();
+    std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros);
 };
 
 #endif //SIMDESERTO_CARAVANAMILITAR_H
