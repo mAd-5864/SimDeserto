@@ -1,21 +1,12 @@
-//
-// Created by Pedro on 11/3/2024.
-//
-
-#ifndef SIMDESERTO_ITEM_H
-#define SIMDESERTO_ITEM_H
-
-
 #include "Utils.h"
+
 
 class Item {
 protected:
     int tempoRestante;
-    Position pos;
-    string tipo;
+    int linha, coluna;
+    int tipo; // 1 - Caixa de Pandora \ 2 - Arca do tesouro \ 3 - Jaula \ 4 - Mina \ 5 - Surpresa
 public:
+    Item(int linha, int coluna, int tipo);
     ~Item();
 };
-
-
-#endif //SIMDESERTO_ITEM_H

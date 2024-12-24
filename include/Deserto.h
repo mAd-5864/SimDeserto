@@ -13,13 +13,14 @@
 #include "Caravanas/CaravanaMilitar.h"
 #include "Caravanas/CaravanaComercio.h"
 #include "Barbaro.h"
+#include "Item.h"
 
 class Deserto {
 private:
     // Valores Configuraveis
     int moedas, instantesEntreNovosItems, duracaoItem, maxItems, precoVendaMerc, precoCompraMerc;
     int precoCaravana, instantesEntreNovosBarbaros, duracaoBarbaros;
-    int numCidades = 0, numCaravanas = 0;
+    int numCidades = 0, numCaravanas = 0, numeroItens = 0;
     int linhas, colunas, instanteAtual = 0;
     Buffer buffer;
     std::map<std::string, Buffer> bufferSaves; // Nome e cópia do buffer
@@ -28,6 +29,7 @@ private:
     std::vector<std::pair<int, int>> montanhas;
     std::vector<Barbaro> barbaros;
     std::vector<std::pair<int, int>> combates; // <id_Caravana, id_Barbaro>
+    std::vector<Item> itens;
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
     ~Deserto() = default;
@@ -106,6 +108,8 @@ public:
     bool perseguirCaravana(Barbaro& barbaro, int destinoLinha, int destinoColuna);
 
     void processarCombates();
+
+    void adicionaItem();
 };
 
 

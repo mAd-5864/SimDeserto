@@ -593,3 +593,22 @@ void Deserto::processarCombates() {
     combates.clear();
     }
 }
+
+void Deserto::adicionaItem() {
+    int linhaAleatoria, colunaAleatoria, tipo;
+
+    if(numeroItens <= maxItems){
+        for (int i = 0; i <= numeroItens; ++i) {
+            do {
+                // Gerar valores aleatórios
+                linhaAleatoria = (rand() % linhas);
+                colunaAleatoria = (rand() % colunas);
+                tipo = (rand() % 5+1);
+            } while (!verificarMoveAleatorio(linhaAleatoria, colunaAleatoria));
+
+            itens.emplace_back(linhaAleatoria, colunaAleatoria, tipo);
+            buffer.moveCursor(linhaAleatoria, colunaAleatoria);
+            buffer.writeChar('x');
+        }
+    }
+}
