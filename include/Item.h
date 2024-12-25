@@ -9,6 +9,7 @@ public:
 
     int getLinha() const { return linha; }
     int getColuna() const { return coluna; }
+    int getTipo() const { return tipo; }
 
     bool atualizar();
 };

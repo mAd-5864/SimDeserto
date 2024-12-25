@@ -32,6 +32,8 @@ public:
     int getColuna() const { return coluna; }
     char getTipo() const { return tipo; }
     int getCarga() const { return qntMerc; }
+    int getTripulantes() const { return numTripulantes; }
+    int getMaxTripulantes() const { return tripulantesMax; }
     int getMoves() { return movesRestantes; }
     int getTipoMovimentacao() const { return tipoMovimentacao; }
 

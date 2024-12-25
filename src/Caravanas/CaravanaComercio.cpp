@@ -30,7 +30,7 @@ void CaravanaComercio::atualizarTurno() {
 }
 
 std::pair<int, int>CaravanaComercio::autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros) {
-    // Procurar caravanas a 6 posições de distancia
+    // Procurar caravanas a 4 posições de distancia
     int alidado = 0, linhaAliado, colunaAliado;
     int distanciaMin = 999, distancia;
     for (const auto &caravana: caravanas) {
