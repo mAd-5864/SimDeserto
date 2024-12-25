@@ -5,6 +5,7 @@
 #ifndef SIMDESERTO_DESERTO_H
 #define SIMDESERTO_DESERTO_H
 #include <limits>
+#include <cmath>
 
 #include "Buffer.h"
 #include "Caravana.h"
@@ -45,8 +46,8 @@ public:
 
     void setLinhas(int linhas);
     void setColunas(int colunas);
-    int getLinhas(){return linhas;}
-    int getColunas(){return colunas;}
+    int getLinhas() { return linhas; }
+    int getColunas() { return colunas; }
 
     void proxInstante() { ++instanteAtual; };
     int getInstante() { return instanteAtual; }
@@ -85,33 +86,34 @@ public:
     void processarBuffer();
     void atualizarBuffer();
 
-    const std::vector<std::pair<int, int>>& getMontanhas() const;
+    const std::vector<std::pair<int, int>> &getMontanhas() const;
 
     void adicionaCidade(char nome, int linha, int coluna);
     void printCidades() const;
-    const std::vector<Cidade>& getCidades() const; // Const
-    std::vector<Cidade>& getCidades(); //Nao const, para poder fazer alteracoes
+    const std::vector<Cidade> &getCidades() const; // Const
+    std::vector<Cidade> &getCidades(); //Nao const, para poder fazer alteracoes
 
     void adicionaCaravana(char tipo, int l, int c);
     void printCaravanas() const;
-    const std::vector<std::unique_ptr<Caravana>>& getCaravanas() const;
+    const std::vector<std::unique_ptr<Caravana>> &getCaravanas() const;
 
-    void moverCaravana(int id, const std::string& movimento);
+    void moverCaravana(int id, const std::string &movimento);
     bool movimentoInvalido(int linha, int coluna);
     void atualizarCaravanas();
 
     void adicionaBarbaro(int linha, int coluna);
-    const std::vector<Barbaro>& getBarbaros();
+    const std::vector<Barbaro> &getBarbaros();
     void atualizarBarbaros();
     void movimentarBarbaros();
     bool verificarMoveAleatorio(int &novaLinha, int &novaColuna);
-    bool perseguirCaravana(Barbaro& barbaro, int destinoLinha, int destinoColuna);
+    bool perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoColuna);
 
     void processarCombates();
 
     void adicionaItem(int linha, int coluna, int tipo);
     void atualizarItems();
-};
+    std::pair<int, int> procuraItem(int linha, int coluna);
 
+};
 
 #endif // SIMDESERTO_DESERTO_H

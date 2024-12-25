@@ -309,9 +309,17 @@ void Deserto::atualizarCaravanas() {
         caravana->atualizarTurno(); // Chama o método específico de cada tipo
         if (caravana->estaNaCidade(cidades)) caravana->reabasteceAgua();
         if (caravana->getTipoMovimentacao() == 1) {
-            std::pair resultado = caravana->autoMove(caravanas, barbaros);
-            if (!movimentoInvalido(resultado.first, resultado.second))
-                caravana->mover(resultado.first, resultado.second);
+            // Caravana militar procura items??
+            std::pair coords = procuraItem(caravana->getLinha(), caravana->getColuna());
+            if (!movimentoInvalido(coords.first, coords.second)){
+                caravana->mover(coords.first, coords.second);
+                std::cout<< caravana->getId()<< " esta a procurar item\n";
+            }
+            else {
+                coords = caravana->autoMove(caravanas, barbaros);
+                if (!movimentoInvalido(coords.first, coords.second))
+                    caravana->mover(coords.first, coords.second);
+            }
         } else if (caravana->getTipoMovimentacao() == 2){
             // Caravana a morrer
             // Militar: (usar <pair> posAnterior)
@@ -513,6 +521,11 @@ void Deserto::movimentarBarbaros() {
             if (perseguirCaravana(barbaro, inimigo->getLinha(), inimigo->getColuna()))
                 combates.emplace_back(inimigo->getId(), barbaro.getId());
         } else {
+            std::pair coords = procuraItem(barbaro.getLinha(), barbaro.getColuna());
+            if (movimentoInvalido(coords.first, coords.second)){
+                barbaro.move(coords.first, coords.second);
+                return;
+            }
             // Gerar valores aleatórios para movimento (-1, 0, +1)
             int novaLinha = barbaro.getLinha() + (rand() % 3 - 1);
             int novaColuna = barbaro.getColuna() + (rand() % 3 - 1);
@@ -599,17 +612,19 @@ void Deserto::processarCombates() {
         std::cout << "Combates a decorrer:" << std::endl;
         for (const auto &comabte: combates) {
             std::cout << comabte.first << " vs " << comabte.second << std::endl;
-        // TODO iniciar o combate
+            // TODO iniciar o combate
         }
-    combates.clear();
+        combates.clear();
     }
 }
 
 void Deserto::atualizarItems(){
-    // Caso acabe o tempo de vida do item
     for (auto item = itens.begin(); item != itens.end();) {
+        // pos caravana == pos item
+
+        // Caso acabe o tempo de vida do item
         if (!item->atualizar()) {
-            item = itens.erase(item); // Remove barbaro do vetor
+            item = itens.erase(item);
         } else ++item;
     }
 
@@ -625,5 +640,42 @@ void Deserto::atualizarItems(){
 
         adicionaItem(linhaAleatoria, colunaAleatoria, tipo);
     }
+}
 
+std::pair<int, int> Deserto::procuraItem(int linha, int coluna){
+    // Procurar items a 4 posicoes de distancia
+    int alvo = 0, linhaItem, colunaItem;
+    int distanciaMin = 999, distancia;
+    for (const auto &item : itens) {
+        distancia = abs(item.getLinha() - linha) +
+                    abs(item.getColuna() - coluna);
+
+        if (distancia<=4) {
+            if (distancia < distanciaMin) {
+                distanciaMin = distancia;
+                alvo = item.getTipo();
+                linhaItem = item.getLinha();
+                colunaItem = item.getColuna();
+            }
+        }
+    }
+    // Caso encontre um item
+    if (alvo) {
+        int novaLinha = linha;
+        int novaColuna = coluna;
+
+        // Mover em direcao ao Item
+        if (novaColuna < colunaItem) {
+            novaColuna++;
+        } else if (novaColuna > colunaItem) {
+            novaColuna--;
+        }
+        if (novaLinha < linhaItem) {
+            novaLinha++;
+        } else if (novaLinha > linhaItem) {
+            novaLinha--;
+        }
+        return std::make_pair(novaLinha, novaColuna);
+    }
+    return std::make_pair(linha, coluna);
 }
