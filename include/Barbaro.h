@@ -16,7 +16,7 @@ public:
     int getId() const { return ID; }
     int getLinha() const { return linha; }
     int getColuna() const { return coluna; }
-    int getTripul() const { return numTripulantes; }
+    int getTripulantes() const { return numTripulantes; }
     void addTripulantes(int quantidade) {
         if (numTripulantes + quantidade <= 40) {
             numTripulantes += quantidade;

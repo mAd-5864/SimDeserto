@@ -113,6 +113,8 @@ public:
     void adicionaItem(int linha, int coluna, int tipo);
     void atualizarItems();
     std::pair<int, int> procuraItem(int linha, int coluna);
+    template <typename Entity>
+    bool processarItem(Entity& entity, int itemTipo, int maxTripulantes);
 
 };
 

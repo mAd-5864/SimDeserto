@@ -620,7 +620,40 @@ void Deserto::processarCombates() {
 
 void Deserto::atualizarItems(){
     for (auto item = itens.begin(); item != itens.end();) {
-        // pos caravana == pos item
+        bool itemProcessed = false;
+
+        // Check interaction with caravanas
+        for (auto& caravana : caravanas) {
+            if (caravana->getLinha() == item->getLinha() && caravana->getColuna() == item->getColuna()) {
+                if (processarItem(*caravana, item->getTipo(), caravana->getMaxTripulantes())){
+                    caravana = nullptr;
+                    caravanas.erase(std::remove(caravanas.begin(), caravanas.end(), nullptr), caravanas.end());
+                }
+                item = itens.erase(item);
+                itemProcessed = true;
+                break;
+            }
+        }
+        if (itemProcessed) continue;
+
+        // Check interaction with barbaros
+        for (auto& barbaro : barbaros) {
+            if (barbaro.getLinha() == item->getLinha() && barbaro.getColuna() == item->getColuna()) {
+                if(processarItem(barbaro, item->getTipo(), 40)){
+                    barbaros.erase(
+                            std::remove_if(
+                                    barbaros.begin(),
+                                    barbaros.end(),
+                                    [&barbaro](const Barbaro& b) { return b.getId() == barbaro.getId(); } // Encontrar ID
+                            ),
+                            barbaros.end()
+                    );
+                }
+                item = itens.erase(item);
+                break;
+            }
+        }
+        if (itemProcessed) continue;
 
         // Caso acabe o tempo de vida do item
         if (!item->atualizar()) {
@@ -678,4 +711,34 @@ std::pair<int, int> Deserto::procuraItem(int linha, int coluna){
         return std::make_pair(novaLinha, novaColuna);
     }
     return std::make_pair(linha, coluna);
+}
+
+template <typename Entity>
+bool Deserto::processarItem(Entity& entity, int itemTipo, int maxTripulantes) {
+    switch (itemTipo) {
+        case 1: { // Caixa de Pandora
+            int tripulantesPerdidos = floor(entity.getTripulantes() * 0.2);
+            std::cout << entity.getId() << " abriu uma Caixa de Pandora e perdeu "
+                      << tripulantesPerdidos << " tripulantes\n";
+            entity.addTripulantes(-tripulantesPerdidos);
+            break;
+        }
+        case 2: { // Arca do Tesouro
+            std::cout << entity.getId() << " abriu uma Arca do Tesouro\n";
+            ajustarMoedas(moedas * 0.1); // Assuming `ajustarMoedas` is defined elsewhere
+            break;
+        }
+        case 3: { // Jaula com Prisioneiros
+            int nPrisioneiros = rand() % (maxTripulantes - entity.getTripulantes());
+            std::cout << entity.getId() << " encontrou uma jaula com "
+                      << nPrisioneiros << " prisioneiros\n";
+            entity.addTripulantes(nPrisioneiros);
+            break;
+        }
+        case 4: { // Mina
+            std::cout << entity.getId() << " explodiu numa mina da WW2\n";
+            return true;
+        }
+    }
+    return false;
 }
