@@ -33,4 +33,5 @@ add_executable(SimDeserto src/main.cpp
         src/Caravanas/CaravanaComercio.cpp
         src/Caravanas/CaravanaMilitar.cpp
         src/Caravanas/CaravanaSecreta.cpp
+        src/Tempestade.cpp
 )
