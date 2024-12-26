@@ -5,6 +5,7 @@ using namespace std;
 int main() {
     // Set the global locale to UTF-8
     std::locale::global(std::locale(""));
+    srand(static_cast<unsigned int>(time(nullptr))); // Seed com a hora atual
 
     // Inicializa o deserto
     Deserto* desertoInicial = nullptr;

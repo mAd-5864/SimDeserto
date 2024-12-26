@@ -5,6 +5,7 @@
 #include <cstdlib> // For random number generation
 #include <iostream> // Para mensagens de depuração
 #include <vector>
+#include <ctime>
 
 class Barbaro {
     static int nextID; // Para gerar IDs únicos
