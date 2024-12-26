@@ -54,7 +54,7 @@ void comandoStop(const vector<string> &args, Deserto& deserto);
 
 void comandoBarbaro(const vector<string> &args, Deserto &deserto);
 
-void comandoAreia(const vector<string> &args);
+void comandoAreia(const vector<string> &args, Deserto &deserto);
 
 void comandoMoedas(const vector<string> &args, Deserto& deserto);
 

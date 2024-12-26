@@ -127,3 +127,11 @@ bool CaravanaSecreta::infiltrarBarbaros(std::vector<Barbaro> &barbaros) {
 // a cada turno chance de 75% de matar 1 barbaro ou perder 1 espiao
 // caso um barbaro morra chance de ser apanhada aumenta +2%
 }
+
+int CaravanaSecreta::ataqueTempestade(int probabilidade) {
+    if(probabilidade <= 33){
+        return 1;
+    }
+    retiraTripulantes(10);
+    return 0;
+}

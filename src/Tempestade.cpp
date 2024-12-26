@@ -2,14 +2,19 @@
 // Created by Tiago on 26/12/2024.
 //
 
+#include <valarray>
 #include "../include/Tempestade.h"
+
 
 Tempestade::Tempestade(int linha, int coluna, int raio):linha(linha), coluna(coluna), raio(raio) {}
 
-int Tempestade::verificaDentro(int linha, int coluna) {
-    if(this->linha >= linha && this->linha + this->raio <= linha
-    && this->coluna >= coluna && this->coluna + this->raio <= coluna)
+int Tempestade::verificaDentro(int linhaCaravana, int colunaCaravana) {
+    int distancia = abs(linha - linhaCaravana)
+    + abs(coluna - colunaCaravana);
+
+    if (distancia <= raio){
         return 0;
-    else
-        return 1;
+    }
+
+    return 1;
 }

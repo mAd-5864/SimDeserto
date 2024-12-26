@@ -81,3 +81,11 @@ std::pair<int, int> CaravanaMilitar::moveMorrer(){
     --instantesRestantes;
     return std::make_pair(linha+direcao.first, coluna+direcao.second);
 }
+
+int CaravanaMilitar::ataqueTempestade(int probabilidade) {
+    if(probabilidade <= 33){
+        return 1;
+    }
+    retiraTripulantes(10);
+    return 0;
+}

@@ -76,7 +76,7 @@ int processarComandosFase2(const string &cmd, const vector<string> &args, Desert
     else if (cmd == "auto") comandoAuto(args, deserto);
     else if (cmd == "stop") comandoStop(args, deserto);
     else if (cmd == "barbaro") comandoBarbaro(args, deserto);
-    else if (cmd == "areia") comandoAreia(args);
+    else if (cmd == "areia") comandoAreia(args, deserto);
     else if (cmd == "moedas") comandoMoedas(args, deserto);
     else if (cmd == "tripul") comandoTripul(args, deserto);
     else if (cmd == "saves") comandoSaves(args, deserto);
@@ -117,6 +117,7 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         deserto.atualizarCaravanas();
         deserto.movimentarBarbaros();
         deserto.processarCombates();
+        deserto.processarTempestade();
         // TODO: Processar combates
         deserto.atualizarBarbaros();
         deserto.atualizarItems();
@@ -325,14 +326,14 @@ void comandoBarbaro(const vector<string> &args, Deserto &deserto) {
 }
 
 // Comando: areia <l> <c> <r>
-void comandoAreia(const vector<string> &args) {
+void comandoAreia(const vector<string> &args, Deserto &deserto) {
     if (args.size() != 3 || !isNumber(args[0]) || !isNumber(args[1]) || !isNumber(args[2])) {
         cerr << "[ERRO] Sintaxe: areia <linha> <coluna> <raio>\n";
         return;
     }
     cout << "Criando tempestade de areia nas coordenadas (" << args[0] << ", " << args[1] << ") com raio " << args[2]
-         << ".\n";
-    // Implementar tempestade de areia
+         << "\n";
+    deserto.criaTempestade(stoi(args[0]), stoi(args[1]), stoi(args[2]) );
 }
 
 // Comando: moedas <N>

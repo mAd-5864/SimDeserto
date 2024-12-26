@@ -119,7 +119,9 @@ public:
     bool processarItem(Entity& entity, int itemTipo, int maxTripulantes);
 
     int criaTempestade(int linha, int coluna, int raio);
+    void processarTempestade();
 
+    void eliminaCaravana(int id);
 };
 
 #endif // SIMDESERTO_DESERTO_H
