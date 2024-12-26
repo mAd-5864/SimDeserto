@@ -299,7 +299,7 @@ void comandoStop(const vector<string> &args, Deserto &deserto) {
     for (const auto &caravana: deserto.getCaravanas()) {
         if (caravana->getId() == id) {
             caravana->setMoveType(0);
-            std::cout << "Caravana "<< caravana->getId()<<" esta em modo automatico\n";
+            std::cout << "Caravana "<< caravana->getId()<<" saiu do modo automatico\n";
             return;
         }
     }
