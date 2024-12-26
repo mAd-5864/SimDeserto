@@ -591,26 +591,45 @@ bool Deserto::verificarMoveAleatorio(int &novaLinha, int &novaColuna) {
 bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoColuna) {
     int novaLinha = barbaro.getLinha();
     int novaColuna = barbaro.getColuna();
+
     int distancia = abs(novaLinha - destinoLinha) +
                     abs(novaColuna - destinoColuna);
+    int distanciaLinha = abs(destinoLinha - novaLinha);
+    int distanciaColuna = abs(destinoColuna - novaColuna);
 
     // Determinar direção para a coluna
-    if (distancia > 1) {
-        if (novaColuna < destinoColuna) {
-            novaColuna++;
-        } else if (novaColuna > destinoColuna) {
-            novaColuna--;
-        }
-        distancia = abs(novaLinha - destinoLinha) +
-                    abs(novaColuna - destinoColuna);
-    }
-
-    if (distancia > 1) {
-        // Determinar direção para a linha
-        if (novaLinha < destinoLinha) {
-            novaLinha++;
-        } else if (novaLinha > destinoLinha) {
-            novaLinha--;
+    if ((distanciaLinha >= 1 || distanciaColuna >= 1)&& distancia>1) {
+        int direcao = rand() % 2;
+        if (direcao) { // move coluna primeiro
+            if (novaColuna < destinoColuna) {
+                novaColuna++;
+            } else if (novaColuna > destinoColuna) {
+                novaColuna--;
+            }
+            distancia = abs(novaLinha - destinoLinha) +
+                        abs(novaColuna - destinoColuna);
+            if (distancia > 1) {
+                if (novaLinha < destinoLinha) {
+                    novaLinha++;
+                } else if (novaLinha > destinoLinha) {
+                    novaLinha--;
+                }
+            }
+        } else { //move linha primeiro
+            if (novaLinha < destinoLinha) {
+                novaLinha++;
+            } else if (novaLinha > destinoLinha) {
+                novaLinha--;
+            }
+            distancia = abs(novaLinha - destinoLinha) +
+                        abs(novaColuna - destinoColuna);
+            if (distancia > 1) {
+                if (novaColuna < destinoColuna) {
+                    novaColuna++;
+                } else if (novaColuna > destinoColuna) {
+                    novaColuna--;
+                }
+            }
         }
     }
 
@@ -622,12 +641,6 @@ bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoC
         if (distancia <= 1) {
             return true; // Entra em combate!!
         }
-    }else { // Caso nao consiga perseguir move-se aleatoriamente
-        // Gerar valores aleatórios para movimento (-1, 0, +1)
-        novaLinha = barbaro.getLinha() + (rand() % 3 - 1);
-        novaColuna = barbaro.getColuna() + (rand() % 3 - 1);
-        if (verificarMoveAleatorio(novaLinha, novaColuna))
-            barbaro.move(novaLinha, novaColuna);
     }
     return false;
 }

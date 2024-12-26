@@ -51,7 +51,7 @@ CaravanaSecreta::autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std
         int distanciaLinha = abs(linhaBarbaro - linha);
         int distanciaColuna = abs(colunaBarbaro - coluna);
         // Determinar direção para a coluna
-        if (distanciaLinha >= 1 && distanciaColuna >= 1) {
+        if ((distanciaLinha >= 1 || distanciaColuna >= 1)&& distancia>1) {
             int direcao = rand() % 2;
             if (direcao) { // move coluna primeiro
                 if (novaColuna < colunaBarbaro) {

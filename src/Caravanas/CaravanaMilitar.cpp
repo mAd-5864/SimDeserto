@@ -53,21 +53,44 @@ std::pair<int, int> CaravanaMilitar::autoMove(std::vector<std::unique_ptr<Carava
     if (alvo) {
         int novaLinha = linha;
         int novaColuna = coluna;
-        int distanciaLinha = abs(linhaBarbaro-linha);
-        int distanciaColuna = abs(colunaBarbaro-coluna);
+        int distancia = abs(novaLinha - linhaBarbaro) +
+                        abs(novaColuna - colunaBarbaro);
+        int distanciaLinha = abs(linhaBarbaro - novaLinha);
+        int distanciaColuna = abs(colunaBarbaro - novaColuna);
+
         // Determinar direção para a coluna
-        if (distanciaColuna > 1) {
-            if (novaColuna < colunaBarbaro) {
-                novaColuna++;
-            } else if (novaColuna > colunaBarbaro) {
-                novaColuna--;
-            }
-        }
-        if (distanciaLinha>1){
-            if (novaLinha < linhaBarbaro) {
-                novaLinha++;
-            } else if (novaLinha > linhaBarbaro) {
-                novaLinha--;
+        if ((distanciaLinha >= 1 || distanciaColuna >= 1)&& distancia>1) {
+            int direcao = rand() % 2;
+            if (direcao) { // move coluna primeiro
+                if (novaColuna < colunaBarbaro) {
+                    novaColuna++;
+                } else if (novaColuna > colunaBarbaro) {
+                    novaColuna--;
+                }
+                distancia = abs(novaLinha - linhaBarbaro) +
+                            abs(novaColuna - colunaBarbaro);
+                if (distancia > 1) {
+                    if (novaLinha < linhaBarbaro) {
+                        novaLinha++;
+                    } else if (novaLinha > linhaBarbaro) {
+                        novaLinha--;
+                    }
+                }
+            } else { //move linha primeiro
+                if (novaLinha < linhaBarbaro) {
+                    novaLinha++;
+                } else if (novaLinha > linhaBarbaro) {
+                    novaLinha--;
+                }
+                distancia = abs(novaLinha - linhaBarbaro) +
+                            abs(novaColuna - colunaBarbaro);
+                if (distancia > 1) {
+                    if (novaColuna < colunaBarbaro) {
+                        novaColuna++;
+                    } else if (novaColuna > colunaBarbaro) {
+                        novaColuna--;
+                    }
+                }
             }
         }
         return std::make_pair(novaLinha, novaColuna);
