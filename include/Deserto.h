@@ -15,6 +15,7 @@
 #include "Caravanas/CaravanaComercio.h"
 #include "Barbaro.h"
 #include "Item.h"
+#include "Tempestade.h"
 
 class Deserto {
 private:
@@ -31,6 +32,7 @@ private:
     std::vector<Barbaro> barbaros;
     std::vector<std::pair<int, int>> combates; // <id_Caravana, id_Barbaro>
     std::vector<Item> itens;
+    std::vector<Tempestade> tempestades;
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
     ~Deserto() = default;
@@ -115,6 +117,8 @@ public:
     std::pair<int, int> procuraItem(int linha, int coluna);
     template <typename Entity>
     bool processarItem(Entity& entity, int itemTipo, int maxTripulantes);
+
+    int criaTempestade(int linha, int coluna, int raio);
 
 };
 

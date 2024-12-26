@@ -777,3 +777,34 @@ bool Deserto::processarItem(Entity& entity, int itemTipo, int maxTripulantes) {
     }
     return false;
 }
+
+int Deserto::criaTempestade(int linha, int coluna, int raio) {
+    int estaDentro; // 0 - esta dentro \\ 1 - esta fora
+    int probabilidade;
+    if(linha < 0 || coluna < 0 || raio < 0)
+        return 1;
+
+    tempestades.emplace_back(linha,coluna,raio);
+
+    for (const auto &caravana: caravanas){
+
+        if ((estaDentro = tempestades.back().verificaDentro(caravana->getLinha(), caravana->getColuna())) == 0){
+            probabilidade = (std::rand() % (100)) + 1;
+            if (caravana->getTipo() == 'C'){
+                if( ( caravana->getCarga() * 100 / caravana->getMaxCarga() ) > 50 ){
+                    if (probabilidade > 50){
+                        //eleminar Caravana
+                    }
+                }else{
+                    if (probabilidade < 25){
+                        //eleminar Caravana
+                    }
+                }
+            }else if (caravana->getTipo() == 'M'){
+
+            } else if (caravana->getTipo() == 'S'){
+
+            }
+        }
+    }
+}
