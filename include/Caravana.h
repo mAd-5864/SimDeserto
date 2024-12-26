@@ -45,6 +45,8 @@ public:
         tipoMovimentacao = moveType;
     }
 
+    void retiraCarga(int percentagem);
+    void retiraTripulantes(int percentagem);
 
     void reabasteceAgua(){
         qntAgua = aguaMax;
@@ -61,6 +63,8 @@ public:
     bool estaNaCidade(char nomeCidade, const std::vector<Cidade>& cidades) const;
 
     virtual std::pair<int, int> moveMorrer() = 0;
+    virtual int ataqueTempestade(int probabilidade) = 0;
+
 };
 
 std::string converterTipoCaravana(char tipo);

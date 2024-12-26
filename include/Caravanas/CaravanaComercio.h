@@ -11,6 +11,7 @@ public:
     // Constructor
     CaravanaComercio(int linha, int coluna);
 
+    int ataqueTempestade(int probabilidade);
     void atualizarTurno();
     std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros);
     std::pair<int, int> moveMorrer();

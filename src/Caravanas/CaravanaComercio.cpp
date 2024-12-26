@@ -78,3 +78,17 @@ std::pair<int, int> CaravanaComercio::moveMorrer(){
     --instantesRestantes;
     return std::make_pair(linha+(rand() % 3 - 1), coluna+(rand() % 3 - 1));
 }
+
+int CaravanaComercio::ataqueTempestade(int probabilidade) {
+    if( ( getCarga() * 100 / getMaxCarga() ) > 50 ){
+        if (probabilidade <= 50){
+            return 1;
+        }
+    }else{
+        if (probabilidade < 25){
+            return 1;
+        }
+    }
+    retiraCarga(25);
+    return 0;
+}

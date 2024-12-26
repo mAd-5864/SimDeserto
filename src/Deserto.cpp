@@ -779,32 +779,33 @@ bool Deserto::processarItem(Entity& entity, int itemTipo, int maxTripulantes) {
 }
 
 int Deserto::criaTempestade(int linha, int coluna, int raio) {
-    int estaDentro; // 0 - esta dentro \\ 1 - esta fora
-    int probabilidade;
     if(linha < 0 || coluna < 0 || raio < 0)
         return 1;
 
     tempestades.emplace_back(linha,coluna,raio);
 
-    for (const auto &caravana: caravanas){
+    return 1;
+}
 
-        if ((estaDentro = tempestades.back().verificaDentro(caravana->getLinha(), caravana->getColuna())) == 0){
-            probabilidade = (std::rand() % (100)) + 1;
-            if (caravana->getTipo() == 'C'){
-                if( ( caravana->getCarga() * 100 / caravana->getMaxCarga() ) > 50 ){
-                    if (probabilidade > 50){
-                        //eleminar Caravana
-                    }
-                }else{
-                    if (probabilidade < 25){
-                        //eleminar Caravana
-                    }
+void Deserto::processarTempestade() {
+    int estaDentro; // 0 - esta dentro \\ 1 - esta fora
+    int probabilidade;
+    for (Tempestade tempestade : tempestades) {
+        for (const auto &caravana: caravanas){
+            if ((estaDentro = tempestade.verificaDentro(caravana->getLinha(), caravana->getColuna())) == 0){
+                probabilidade = (std::rand() % (100)) + 1;
+                if(caravana->ataqueTempestade(probabilidade) == 1){
+                    eliminaCaravana(caravana->getId());
                 }
-            }else if (caravana->getTipo() == 'M'){
-
-            } else if (caravana->getTipo() == 'S'){
-
             }
+        }
+    }
+}
+
+void Deserto::eliminaCaravana(int id) {
+    for (auto &caravana: caravanas) {
+        if(caravana->getId() == id){
+            std::remove(caravanas.begin(), caravanas.end(),caravana);
         }
     }
 }
