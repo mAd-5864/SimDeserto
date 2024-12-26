@@ -305,28 +305,42 @@ void Deserto::atualizarBuffer() {
 //Caravanas
 
 void Deserto::atualizarCaravanas() {
-    for (const auto &caravana: caravanas) {
+    for (auto it = caravanas.begin(); it != caravanas.end();) {
+        auto& caravana = *it;
         caravana->atualizarTurno(); // Chama o método específico de cada tipo
-        if (caravana->estaNaCidade(cidades)) caravana->reabasteceAgua();
+
+        if (caravana->estaNaCidade(cidades)){
+            caravana->reabasteceAgua();
+            caravana->setMoveType(0);
+        }
+
         if (caravana->getTipoMovimentacao() == 1) {
             // Caravana militar procura items??
-            std::pair coords = procuraItem(caravana->getLinha(), caravana->getColuna());
-            if (!movimentoInvalido(coords.first, coords.second)){
+            std::pair<int, int> coords = procuraItem(caravana->getLinha(), caravana->getColuna());
+            if (!movimentoInvalido(coords.first, coords.second)) {
                 caravana->mover(coords.first, coords.second);
-                std::cout<< caravana->getId()<< " esta a procurar item\n";
-            }
-            else {
+            } else {
                 coords = caravana->autoMove(caravanas, barbaros);
                 if (!movimentoInvalido(coords.first, coords.second))
                     caravana->mover(coords.first, coords.second);
             }
-        } else if (caravana->getTipoMovimentacao() == 2){
-            // Caravana a morrer
-            // Militar: (usar <pair> posAnterior)
-            // Comercial: random
+            ++it;
+        } else if (caravana->getTipoMovimentacao() == 2) {
+            if (caravana->getInstantes()) {
+                std::pair<int, int> coords = caravana->moveMorrer();
+                if (!movimentoInvalido(coords.first, coords.second))
+                    caravana->mover(coords.first, coords.second);
+                ++it;
+            } else {
+                std::cout << "Caravana " << caravana->getId() << " ficou sem tripulantes e foi destruida\n";
+                it = caravanas.erase(it);
+            }
+        } else {
+            ++it;
         }
     }
 }
+
 
 int movimentaCima(const std::unique_ptr<Caravana> &caravana, int maxLinha) {
     if (caravana->getLinha() - 1 >= 0) {
@@ -488,8 +502,8 @@ void Deserto::atualizarBarbaros() {
 
         // Verificar se a posição é válida antes de adicionar
         while (!verificarMoveAleatorio(linha, coluna)) {
-            linha = rand() % buffer.getLinhas();
-            coluna = rand() % buffer.getColunas();
+            linha = rand() % linhas;
+            coluna = rand() % colunas;
         }
 
         adicionaBarbaro(linha, coluna);
@@ -503,7 +517,8 @@ void Deserto::movimentarBarbaros() {
 
         // Verificar se existe uma caravana próxima (distância <= 8)
         for (const auto &caravana: caravanas) {
-            if (!caravana->estaNaCidade(cidades)) { // se não estiver na cidade persegue
+                //caravana não é perseguida se: estiver numa cidade, estiver sem tripulantes, for caravana secreta
+            if (!caravana->estaNaCidade(cidades) && caravana->getTripulantes() && caravana->getTipo()!='S') {
                 distancia = abs(barbaro.getLinha() - caravana->getLinha()) +
                             abs(barbaro.getColuna() - caravana->getColuna());
                 if (distancia <= 8) {
@@ -650,6 +665,7 @@ void Deserto::atualizarItems(){
                     );
                 }
                 item = itens.erase(item);
+                itemProcessed = true;
                 break;
             }
         }
@@ -729,10 +745,15 @@ bool Deserto::processarItem(Entity& entity, int itemTipo, int maxTripulantes) {
             break;
         }
         case 3: { // Jaula com Prisioneiros
+            int maxPrisioneiros = maxTripulantes - entity.getTripulantes();
+            if (maxPrisioneiros){
             int nPrisioneiros = rand() % (maxTripulantes - entity.getTripulantes());
             std::cout << entity.getId() << " encontrou uma jaula com "
                       << nPrisioneiros << " prisioneiros\n";
             entity.addTripulantes(nPrisioneiros);
+                break;
+            }
+            std::cout << entity.getId() << " encontrou uma jaula com prisioneiros mas tem o maximo de tripulantes\n";
             break;
         }
         case 4: { // Mina
