@@ -324,6 +324,20 @@ void Deserto::atualizarCaravanas() {
                 if (!movimentoInvalido(coords.first, coords.second))
                     caravana->mover(coords.first, coords.second);
             }
+            if (caravana->getTipo() == 'S') {
+                std::cout<<"entrou 1\n";
+                // Cast caravana para CaravanaSecreta
+                auto* caravanaSecreta = dynamic_cast<CaravanaSecreta*>(caravana.get());
+                std::cout<<"entrou 2\n";
+                if (caravanaSecreta) {
+                    std::cout<<"entrou 3\n";
+                    if (!caravanaSecreta->infiltrarBarbaros(barbaros)) {
+                        std::cout << "Caravana infiltrada " << caravana->getId() << " foi descoberta pelos barbaros e foi destruida\n";
+                        it = caravanas.erase(it);
+                    }
+                    std::cout<<"entrou 4\n";
+                }
+            }
             ++it;
         } else if (caravana->getTipoMovimentacao() == 2) {
             if (caravana->getInstantes()) {
