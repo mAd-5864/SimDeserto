@@ -16,9 +16,11 @@ CaravanaComercio::CaravanaComercio(int linha, int coluna)
 
 void CaravanaComercio::atualizarTurno() {
     if (numTripulantes == 0) {
+        tipoMovimentacao = 2;
         // mover aleatoriamente
-        if (instantesRestantes-- == 0);// passados 5 instantes, acaba por desaparecer
+
     } else {
+        instantesRestantes = 5;
         if (numTripulantes < tripulantesMax / 2) qntAgua--;
         else qntAgua -= 2;
         if (qntAgua < 0) {
@@ -62,11 +64,17 @@ std::pair<int, int>CaravanaComercio::autoMove(std::vector<std::unique_ptr<Carava
             distancia = abs(linhaAliado - novaLinha);
                     + abs(colunaAliado - novaColuna);
         }
-        std::cout<<ID<<" manteve-se perto da caravana "<<alidado<<"\n";
+        //std::cout<<ID<<" manteve-se perto da caravana "<<alidado<<"\n";
 
         return std::make_pair(novaLinha, novaColuna);
     }
     int novaLinha = linha + (rand() % 3 - 1);
     int novaColuna = coluna + (rand() % 3 - 1);
     return std::make_pair(novaLinha, novaColuna);
+}
+
+std::pair<int, int> CaravanaComercio::moveMorrer(){
+    if (numTripulantes>0) tipoMovimentacao = 0;
+    --instantesRestantes;
+    return std::make_pair(linha+(rand() % 3 - 1), coluna+(rand() % 3 - 1));
 }

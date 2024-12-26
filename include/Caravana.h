@@ -36,7 +36,7 @@ public:
     int getMaxTripulantes() const { return tripulantesMax; }
     int getMoves() { return movesRestantes; }
     int getTipoMovimentacao() const { return tipoMovimentacao; }
-
+    int getInstantes() const { return instantesRestantes; }
     void detalhes() const;
 
     void mover(int novaLinha, int novaColuna);
@@ -59,6 +59,7 @@ public:
     bool estaNaCidade(const std::vector<Cidade>& cidades) const;
     bool estaNaCidade(char nomeCidade, const std::vector<Cidade>& cidades) const;
 
+    virtual std::pair<int, int> moveMorrer() = 0;
 };
 
 std::string converterTipoCaravana(char tipo);

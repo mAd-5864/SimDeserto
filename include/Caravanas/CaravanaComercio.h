@@ -13,6 +13,7 @@ public:
 
     void atualizarTurno();
     std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros);
+    std::pair<int, int> moveMorrer();
 };
 
 #endif //SIMDESERTO_CARAVANACOMERCIO_H

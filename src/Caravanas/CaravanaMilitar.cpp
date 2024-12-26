@@ -15,10 +15,12 @@ CaravanaMilitar::CaravanaMilitar(int linha, int coluna)
 
 void CaravanaMilitar::atualizarTurno() {
     if (numTripulantes == 0) {
+        tipoMovimentacao = 2;
         // desloca-se sempre na mesma direção do último movimento que fez
         // passados 7 instantes, acaba por desaparecer
         qntAgua--;
     } else {
+        instantesRestantes=7;
         if (numTripulantes < tripulantesMax / 2) qntAgua--;
         else qntAgua -= 3;
         if (qntAgua < 0) {
@@ -71,4 +73,11 @@ std::pair<int, int> CaravanaMilitar::autoMove(std::vector<std::unique_ptr<Carava
         return std::make_pair(novaLinha, novaColuna);
     }
     return std::make_pair(linha, coluna);
+}
+
+std::pair<int, int> CaravanaMilitar::moveMorrer(){
+    if (numTripulantes>0) tipoMovimentacao = 0;
+    std::pair direcao = std::make_pair(linha-posAnterior.first, coluna-posAnterior.second);
+    --instantesRestantes;
+    return std::make_pair(linha+direcao.first, coluna+direcao.second);
 }
