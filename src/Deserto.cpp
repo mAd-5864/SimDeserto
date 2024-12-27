@@ -649,9 +649,52 @@ bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoC
 void Deserto::processarCombates() {
     if (!combates.empty()) {
         std::cout << "Combates a decorrer:" << std::endl;
-        for (const auto &comabte: combates) {
-            std::cout << comabte.first << " vs " << comabte.second << std::endl;
-            // TODO iniciar o combate
+        for (const auto &combate: combates) { // <Caravana , Barbaro>
+            Caravana *combatente = nullptr;
+            int rollCaravana, removeTripul;
+            std::cout << combate.first << " vs " << combate.second << std::endl;
+            for (auto &caravana: caravanas) {
+                if (combate.first == caravana->getId()) {
+                    rollCaravana = rand() % caravana->getTripulantes();
+                    combatente = caravana.get();
+                    break;
+                }
+            }
+            for (auto &barbaro: barbaros) {
+                if (combate.second == barbaro.getId()) {
+                    int rollBarbaro = rand() % barbaro.getTripulantes();
+            std::cout << "Passou: "<< combatente->getId() << " vs " << barbaro.getId() << std::endl;
+                    if (rollCaravana > rollBarbaro){
+                        // Caravana venceu
+                        removeTripul = floor(combatente->getTripulantes()*0.2);
+                        combatente->addTripulantes(-removeTripul);
+                        barbaro.addTripulantes(-removeTripul*2);
+                    } else if(rollBarbaro > rollCaravana){
+                        // Barbaro venceu
+                        removeTripul = floor(barbaro.getTripulantes()*0.2);
+                        barbaro.addTripulantes(-removeTripul);
+                        combatente->addTripulantes(-removeTripul*2);
+                    } else{
+                        //empate
+                        // ambas perdem 20%
+                        combatente->addTripulantes(floor(combatente->getTripulantes()*-0.2));
+                        barbaro.addTripulantes(floor(barbaro.getTripulantes()*-0.2));
+                    }
+                    std::cout << "Fim: "<< combatente->getId() << " vs " << barbaro.getId() << std::endl;
+                    break;
+                }
+            }
+
+
+            for (auto it = caravanas.begin(); it != caravanas.end();) {
+                auto &caravana = *it;
+                if (caravana->getTripulantes() <= 0 && caravana->getId() == combatente->getId()) {
+                    std::cout << "Caravana " << caravana->getId() << " foi destruida em combate\n";
+                    it = caravanas.erase(it);
+                    continue;
+                }
+                ++it;
+            }
         }
         combates.clear();
     }
@@ -679,14 +722,7 @@ void Deserto::atualizarItems(){
         for (auto& barbaro : barbaros) {
             if (barbaro.getLinha() == item->getLinha() && barbaro.getColuna() == item->getColuna()) {
                 if(processarItem(barbaro, item->getTipo(), 40)){
-                    barbaros.erase(
-                            std::remove_if(
-                                    barbaros.begin(),
-                                    barbaros.end(),
-                                    [&barbaro](const Barbaro& b) { return b.getId() == barbaro.getId(); } // Encontrar ID
-                            ),
-                            barbaros.end()
-                    );
+                    barbaro.addTripulantes(-barbaro.getTripulantes());
                 }
                 item = itens.erase(item);
                 itemProcessed = true;
@@ -805,7 +841,7 @@ void Deserto::processarTempestade() {
                 int probabilidade = (rand() % (100)) + 1;
                 if(caravana->ataqueTempestade(probabilidade)){
                     std::cout << "Caravana "<<caravana->getId()<< " foi destruida numa tempestade\n";
-                    caravanas.erase(std::remove(caravanas.begin(), caravanas.end(), caravana), caravanas.end());
+                    it = caravanas.erase(it);
                     continue;
                 }
             }
