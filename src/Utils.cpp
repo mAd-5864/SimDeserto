@@ -118,7 +118,6 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         deserto.movimentarBarbaros();
         deserto.processarCombates();
         deserto.processarTempestade();
-        // TODO: Processar combates
         deserto.atualizarBarbaros();
         deserto.atualizarItems();
     }

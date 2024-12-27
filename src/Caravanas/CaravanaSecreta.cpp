@@ -99,6 +99,7 @@ std::pair<int, int> CaravanaSecreta::moveMorrer() {
 }
 
 bool CaravanaSecreta::infiltrarBarbaros(std::vector<Barbaro> &barbaros) {
+    // TODO alterar chances ser descoberta
     for (auto &barbaro: barbaros) {
         int distancia = abs(barbaro.getLinha() - linha) +
                         abs(barbaro.getColuna() - coluna);
