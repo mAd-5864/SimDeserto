@@ -10,7 +10,7 @@ class CaravanaMilitar : public Caravana {
 public:
     CaravanaMilitar(int linha, int coluna); // Values: 40 Tripulantes, 400L Agua, 5T CargaMaxima
 
-    int ataqueTempestade(int probabilidade);
+    bool ataqueTempestade(int probabilidade);
     void atualizarTurno();
     std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros);
     std::pair<int, int> moveMorrer();

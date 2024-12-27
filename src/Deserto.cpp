@@ -325,29 +325,30 @@ void Deserto::atualizarCaravanas() {
                     caravana->mover(coords.first, coords.second);
             }
             if (caravana->getTipo() == 'S') {
-                // Cast caravana para CaravanaSecreta
                 auto* caravanaSecreta = dynamic_cast<CaravanaSecreta*>(caravana.get());
                 if (caravanaSecreta) {
                     if (!caravanaSecreta->infiltrarBarbaros(barbaros)) {
-                        std::cout << "Caravana infiltrada " << caravana->getId() << " foi descoberta pelos barbaros e foi destruida\n";
+                        std::cout << "Caravana infiltrada " << caravana->getId()
+                                  << " foi descoberta pelos barbaros e foi destruida\n";
                         it = caravanas.erase(it);
+                        continue;
                     }
                 }
             }
-            ++it;
         } else if (caravana->getTipoMovimentacao() == 2) {
             if (caravana->getInstantes()) {
                 std::pair<int, int> coords = caravana->moveMorrer();
                 if (!movimentoInvalido(coords.first, coords.second))
                     caravana->mover(coords.first, coords.second);
-                ++it;
             } else {
-                std::cout << "Caravana " << caravana->getId() << " ficou sem tripulantes e foi destruida\n";
+                std::cout << "Caravana " << caravana->getId()
+                          << " ficou sem tripulantes e foi destruida\n";
                 it = caravanas.erase(it);
+                continue;
             }
-        } else {
-            ++it;
         }
+
+        ++it;
     }
 }
 
@@ -549,7 +550,7 @@ void Deserto::movimentarBarbaros() {
             std::pair coords = procuraItem(barbaro.getLinha(), barbaro.getColuna());
             if (movimentoInvalido(coords.first, coords.second)){
                 barbaro.move(coords.first, coords.second);
-                return;
+                continue;
             }
             // Gerar valores aleatórios para movimento (-1, 0, +1)
             int novaLinha = barbaro.getLinha() + (rand() % 3 - 1);
@@ -797,24 +798,19 @@ int Deserto::criaTempestade(int linha, int coluna, int raio) {
 }
 
 void Deserto::processarTempestade() {
-    int estaDentro; // 0 - esta dentro \\ 1 - esta fora
-    int probabilidade;
-    for (Tempestade tempestade : tempestades) {
-        for (const auto &caravana: caravanas){
-            if ((estaDentro = tempestade.verificaDentro(caravana->getLinha(), caravana->getColuna())) == 0){
-                probabilidade = (std::rand() % (100)) + 1;
-                if(caravana->ataqueTempestade(probabilidade) == 1){
-                    eliminaCaravana(caravana->getId());
+    for (Tempestade &tempestade : tempestades) {
+        for (auto it = caravanas.begin(); it != caravanas.end(); ){
+            auto &caravana = *it;
+            if (tempestade.verificaDentro(caravana->getLinha(), caravana->getColuna())){
+                int probabilidade = (rand() % (100)) + 1;
+                if(caravana->ataqueTempestade(probabilidade)){
+                    std::cout << "Caravana "<<caravana->getId()<< " foi destruida numa tempestade\n";
+                    caravanas.erase(std::remove(caravanas.begin(), caravanas.end(), caravana), caravanas.end());
+                    continue;
                 }
             }
+            ++it;
         }
     }
-}
-
-void Deserto::eliminaCaravana(int id) {
-    for (auto &caravana: caravanas) {
-        if(caravana->getId() == id){
-            std::remove(caravanas.begin(), caravanas.end(),caravana);
-        }
-    }
+    tempestades.clear();
 }

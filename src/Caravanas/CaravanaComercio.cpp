@@ -79,16 +79,17 @@ std::pair<int, int> CaravanaComercio::moveMorrer(){
     return std::make_pair(linha+(rand() % 3 - 1), coluna+(rand() % 3 - 1));
 }
 
-int CaravanaComercio::ataqueTempestade(int probabilidade) {
-    if( ( getCarga() * 100 / getMaxCarga() ) > 50 ){
-        if (probabilidade <= 50){
-            return 1;
+bool CaravanaComercio::ataqueTempestade(int probabilidade) {
+    if (qntMerc * 2 > cargaMaxima) {
+        if (probabilidade <= 50) {
+            return true;
         }
-    }else{
-        if (probabilidade < 25){
-            return 1;
+    } else {
+        if (probabilidade < 25) {
+            return true;
         }
     }
-    retiraCarga(25);
-    return 0;
+    carregar(floor(qntMerc*(-0.25)));
+    std::cout << "Caravana "<<ID<< " foi apanhada numa tempestade e perdeu " <<floor(qntMerc * 0.25) <<"T de mercadoria\n";
+    return false;
 }

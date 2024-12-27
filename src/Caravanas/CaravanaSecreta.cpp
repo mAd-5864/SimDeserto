@@ -117,7 +117,7 @@ bool CaravanaSecreta::infiltrarBarbaros(std::vector<Barbaro> &barbaros) {
                 --numTripulantes;
                 chanceSerDescoberta += 5;
             }
-            int serApanhada = rand() % 100;
+            int serApanhada = rand() % 100+1;
             if (serApanhada < chanceSerDescoberta)
                 return false;
         }
@@ -128,10 +128,11 @@ bool CaravanaSecreta::infiltrarBarbaros(std::vector<Barbaro> &barbaros) {
 // caso um barbaro morra chance de ser apanhada aumenta +2%
 }
 
-int CaravanaSecreta::ataqueTempestade(int probabilidade) {
+bool CaravanaSecreta::ataqueTempestade(int probabilidade) {
     if(probabilidade <= 33){
-        return 1;
+        return true;
     }
-    retiraTripulantes(10);
-    return 0;
+    std::cout << "Caravana "<<ID<< " foi apanhada numa tempestade e perdeu " <<floor(numTripulantes * 0.1) <<" tripulantes\n";
+    addTripulantes(floor(numTripulantes * -0.1));
+    return false;
 }

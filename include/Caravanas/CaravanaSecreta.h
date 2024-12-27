@@ -13,7 +13,7 @@ class CaravanaSecreta : public Caravana {
 public:
     CaravanaSecreta(int linha, int coluna);
 
-    int ataqueTempestade(int probabilidade);
+    bool ataqueTempestade(int probabilidade);
     void atualizarTurno();
     std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros);
     std::pair<int, int> moveMorrer();

@@ -84,11 +84,3 @@ bool Caravana::addTripulantes(int quantidade){
         return false;
     }
 }
-
-void Caravana::retiraCarga(int percentagem) {
-    this->qntMerc = getCarga() - (getCarga() * percentagem / 100);
-}
-
-void Caravana::retiraTripulantes(int percentagem) {
-    this->numTripulantes = getTripulantes() - (getTripulantes() * percentagem / 100);
-}

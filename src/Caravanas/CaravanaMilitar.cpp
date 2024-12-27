@@ -105,10 +105,11 @@ std::pair<int, int> CaravanaMilitar::moveMorrer(){
     return std::make_pair(linha+direcao.first, coluna+direcao.second);
 }
 
-int CaravanaMilitar::ataqueTempestade(int probabilidade) {
+bool CaravanaMilitar::ataqueTempestade(int probabilidade) {
     if(probabilidade <= 33){
-        return 1;
+        return true;
     }
-    retiraTripulantes(10);
-    return 0;
+    std::cout << "Caravana "<<ID<< " foi apanhada numa tempestade e perdeu " <<floor(numTripulantes * 0.1) <<" tripulantes\n";
+    addTripulantes(floor(numTripulantes * -0.1));
+    return false;
 }
