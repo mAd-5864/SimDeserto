@@ -20,7 +20,7 @@ bool Barbaro::atualizar() {
 }
 
 // Movimenta o bárbaro aleatoriamente para uma posição adjacente
-void Barbaro::move(int novaLinha, int novaColuna) {
+void Barbaro::mover(int novaLinha, int novaColuna) {
     linha = novaLinha;
     coluna = novaColuna;
 

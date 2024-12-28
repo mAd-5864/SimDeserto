@@ -26,7 +26,7 @@ public:
 
     bool atualizar();
     bool estaAborrecido() const { return !turnosRestantes; }
-    void move(int novaLinha, int novaColuna);
+    void mover(int novaLinha, int novaColuna);
     bool perseguirCaravana(int destinoLinha, int destinoColuna);
 };
 

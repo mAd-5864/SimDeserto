@@ -41,7 +41,7 @@ public:
     void detalhes() const;
     int getMaxCarga() const { return cargaMaxima; }
 
-    void mover(int novaLinha, int novaColuna);
+    bool mover(int novaLinha, int novaColuna);
     void setMoveType(int moveType){
         tipoMovimentacao = moveType;
     }

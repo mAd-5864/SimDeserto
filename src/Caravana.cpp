@@ -35,14 +35,15 @@ void Caravana::detalhes() const{
               numTripulantes<<" Tripulantes | "<<qntAgua<< "L Agua | "<<qntMerc<< "T Mercadoria"<< std::endl;
 }
 
-void Caravana::mover(int novaLinha, int novaColuna) {
+bool Caravana::mover(int novaLinha, int novaColuna) {
     posAnterior = std::make_pair(linha, coluna);
     if (movesRestantes>0){
         linha = novaLinha;
         coluna = novaColuna;
         movesRestantes--;
-        std::cout << "Caravana " << ID << " movida para (" << novaLinha << ", " << novaColuna << ")\n";
+        return true;
     } else std::cout << "Ja atingiu maximo de movimentos neste turno\n";
+    return false;
 }
 
 bool Caravana::estaNaCidade(const std::vector<Cidade>& cidades) const {

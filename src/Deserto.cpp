@@ -422,7 +422,9 @@ void Deserto::moverCaravana(int id, const std::string &movimento) {
             }
 
             // Move a caravana para a nova posição
-            caravana->mover(posLinhaNova, posColunaNova);
+            if(caravana->mover(posLinhaNova, posColunaNova)){
+                std::cout << "Caravana " << caravana->getId() << " movida para (" << posLinhaNova << ", " << posColunaNova << ")\n";
+            }
             return;
         }
     }
@@ -548,14 +550,14 @@ void Deserto::movimentarBarbaros() {
         } else {
             std::pair coords = procuraItem(barbaro.getLinha(), barbaro.getColuna());
             if (!movimentoInvalido(coords.first, coords.second)) {
-                barbaro.move(coords.first, coords.second);
+                barbaro.mover(coords.first, coords.second);
                 continue;
             } else {
             // Gerar valores aleatórios para movimento (-1, 0, +1)
             int novaLinha = barbaro.getLinha() + (rand() % 3 - 1);
             int novaColuna = barbaro.getColuna() + (rand() % 3 - 1);
             if (verificarMoveAleatorio(novaLinha, novaColuna))
-                barbaro.move(novaLinha, novaColuna);
+                barbaro.mover(novaLinha, novaColuna);
             }
         }
     }
@@ -638,7 +640,7 @@ bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoC
                 abs(novaColuna - destinoColuna);
 
     if (verificarMoveAleatorio(novaLinha, novaColuna)) {
-        barbaro.move(novaLinha, novaColuna);
+        barbaro.mover(novaLinha, novaColuna);
         if (distancia <= 1) {
             return true; // Entra em combate!!
         }
@@ -743,7 +745,7 @@ void Deserto::atualizarItems() {
             // Gerar valores aleatórios
             linhaAleatoria = (rand() % linhas);
             colunaAleatoria = (rand() % colunas);
-            tipo = (rand() % 4 + 1); // deve ser rand() % 4 + 1 quando item misterio implementado
+            tipo = rand() % 4 + 1;
         } while (!verificarMoveAleatorio(linhaAleatoria, colunaAleatoria));
 
         adicionaItem(linhaAleatoria, colunaAleatoria, tipo);
@@ -824,6 +826,16 @@ bool Deserto::processarItem(Entity &entity, int itemTipo, int maxTripulantes) {
         case 4: { // Mina
             std::cout << entityType << " explodiu numa mina da WW2\n";
             return true;
+        }
+        case 5:{ // Portal
+            int lRand = rand() % getLinhas();
+            int cRand = rand() % getColunas();
+            while (!verificarMoveAleatorio(lRand, cRand)){
+                lRand = rand() % getLinhas();
+                cRand = rand() % getColunas();
+            }
+            std::cout << entityType << " entrou num portal para (" << lRand << ", " << cRand << ")\n";
+            entity.mover(lRand,cRand);
         }
     }
     return false;
