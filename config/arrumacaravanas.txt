@@ -2,9 +2,16 @@ move 1 bd
 move 1 bd
 move 2 cd
 move 2 cd
-move 3 e
-move 3 ce
-move 3 ce
+move 3 cd
+move 3 cd
 move 4 be
 move 4 b
+prox
+move 3 ce
+move 3 e
 move 4 bd
+barbaro 3 5
+barbaro 8 5
+barbaro 2 2
+barbaro 0 12
+prox
