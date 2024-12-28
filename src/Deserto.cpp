@@ -8,6 +8,17 @@
 // Construtor: inicializa o mapa com pontos (.)
 Deserto::Deserto(const Buffer &bufferInicial) : buffer(bufferInicial), moedas(0) {}
 
+Deserto::~Deserto() {
+    caravanas.clear();
+    cidades.clear();
+    montanhas.clear();
+    barbaros.clear();
+    combates.clear();
+    itens.clear();
+    tempestades.clear();
+    bufferSaves.clear();
+}
+
 void Deserto::setLinhas(int l) {
     this->linhas = l;
 }
@@ -103,11 +114,6 @@ bool Deserto::lerFicheiro(const std::string &filename) {
     return true;
 }
 
-void Deserto::setTerreno(int linha, int coluna, char terreno) {
-    buffer.moveCursor(linha, coluna);
-    buffer.writeChar(terreno);
-}
-
 void Deserto::setMoedas(int valor) {
     this->moedas = valor;
 }
@@ -178,8 +184,8 @@ void Deserto::mostrarMapa() const {
 }
 
 void Deserto::processarBuffer() {
-    for (int i = 0; i < buffer.getLinhas(); ++i) {
-        for (int j = 0; j < buffer.getColunas(); ++j) {
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
             char c = buffer.getChar(i, j);
 
             if (isalpha(c)) {   // Encontrou Cidade
@@ -270,6 +276,7 @@ void Deserto::printCaravanas() const {
 
 void Deserto::atualizarBuffer() {
     buffer.clear(); // Estado inicial
+    numCaravanas = 0;
 
     // Adicionar barbaros
     for (const auto &barbaro: barbaros) {
@@ -291,6 +298,7 @@ void Deserto::atualizarBuffer() {
 
     // Adicionar caravanas
     for (const auto &caravana: caravanas) {
+        numCaravanas++;
         buffer.moveCursor(caravana->getLinha(), caravana->getColuna());
         buffer.writeChar('0' + caravana->getId());
     }
@@ -433,7 +441,7 @@ void Deserto::moverCaravana(int id, const std::string &movimento) {
 
 bool Deserto::movimentoInvalido(int linha, int coluna) {
     // Verificar se está dentro dos limites
-    if (linha < 0 || linha >= buffer.getLinhas() || coluna < 0 || coluna >= buffer.getColunas()) return true;
+    if (linha < 0 || linha >= linhas || coluna < 0 || coluna >= colunas) return true;
 
     // Verificar se posição está ocupada por uma montanha
     if (std::find(montanhas.begin(), montanhas.end(), std::make_pair(linha, coluna)) != montanhas.end()) return true;
@@ -654,14 +662,14 @@ void Deserto::processarCombates() {
             Caravana *combatente = nullptr;
             int rollCaravana, removeTripul;
             for (auto &caravana: caravanas) {
-                if (combate.first == caravana->getId()) {
+                if (combate.first == caravana->getId() && caravana->getTripulantes()>0) {
                     rollCaravana = rand() % caravana->getTripulantes();
                     combatente = caravana.get();
                     break;
                 }
             }
             for (auto &barbaro: barbaros) {
-                if (combate.second == barbaro.getId()) {
+                if (combate.second == barbaro.getId() && barbaro.getTripulantes()>0) {
                     int rollBarbaro = rand() % barbaro.getTripulantes();
                     if (rollCaravana > rollBarbaro) {
                         //std::cout << "Venceu caravana: " << combatente->getId() << std::endl;
@@ -745,7 +753,7 @@ void Deserto::atualizarItems() {
             // Gerar valores aleatórios
             linhaAleatoria = (rand() % linhas);
             colunaAleatoria = (rand() % colunas);
-            tipo = rand() % 4 + 1;
+            tipo = rand() % 5 + 1;
         } while (!verificarMoveAleatorio(linhaAleatoria, colunaAleatoria));
 
         adicionaItem(linhaAleatoria, colunaAleatoria, tipo);
@@ -841,13 +849,11 @@ bool Deserto::processarItem(Entity &entity, int itemTipo, int maxTripulantes) {
     return false;
 }
 
-int Deserto::criaTempestade(int linha, int coluna, int raio) {
+void Deserto::criaTempestade(int linha, int coluna, int raio) {
     if (linha < 0 || coluna < 0 || raio < 0)
-        return 1;
+        return;
 
     tempestades.emplace_back(linha, coluna, raio);
-
-    return 1;
 }
 
 void Deserto::processarTempestade() {

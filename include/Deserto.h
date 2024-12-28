@@ -35,7 +35,7 @@ private:
     std::vector<Tempestade> tempestades;
 public:
     Deserto(const Buffer &bufferInicial); // Construtor
-    ~Deserto() = default;
+    ~Deserto();
 
     bool lerFicheiro(const std::string &filename); // Carrega a config de um ficheiro
     void mostrarMapa() const;                   // Exibe o mapa na consola
@@ -118,7 +118,7 @@ public:
     template <typename Entity>
     bool processarItem(Entity& entity, int itemTipo, int maxTripulantes);
 
-    int criaTempestade(int linha, int coluna, int raio);
+    void criaTempestade(int linha, int coluna, int raio);
     void processarTempestade();
 
     void procurarCombates();

@@ -8,15 +8,14 @@ int main() {
     srand(static_cast<unsigned int>(time(nullptr))); // Seed com a hora atual
 
     // Inicializa o deserto
-    Deserto* desertoInicial = nullptr;
+    std::unique_ptr<Deserto> desertoInicial = nullptr;
 
     int fase = 1;
     do {
-        if (fase==1) {
-            delete desertoInicial;
-            desertoInicial = new Deserto(Buffer(0, 0));
+        if (fase == 1) {
+            desertoInicial = std::make_unique<Deserto>(Buffer(0, 0));
             Caravana::resetID();
-            std::cout << "\nFase " << fase<< "\n";
+            std::cout << "\nFase " << fase << "\n";
         }
         if (fase==2){
             //system("Color E4");
