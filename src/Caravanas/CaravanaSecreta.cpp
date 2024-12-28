@@ -100,33 +100,43 @@ std::pair<int, int> CaravanaSecreta::moveMorrer() {
 
 bool CaravanaSecreta::infiltrarBarbaros(std::vector<Barbaro> &barbaros) {
     // TODO alterar chances ser descoberta
+    bool encontrou = false;
     for (auto &barbaro: barbaros) {
         int distancia = abs(barbaro.getLinha() - linha) +
                         abs(barbaro.getColuna() - coluna);
         if (distancia == 1) { // Caravana está infiltrada
+            encontrou = true;
             int chance = rand() % 4;
             if (chance < 3) {  // 75% chance de matar barbaro
                 barbaro.addTripulantes(-1);
-                chanceSerDescoberta += 2;
+                chanceSerDescoberta += 1;
                 if (barbaro.getTripulantes() <= 0) {
                     // Barbaros sao destruidos
                     chanceSerDescoberta = 0;
-                    std::cout << "Caravana infiltrada " << ID << " infiltrou com sucesso os barbaros\n";
+                    std::cout << "Caravana infiltrada " << ID << " matou todos os bárbaros\n";
                     return true;
                 }
+                std::cout << "Caravana infiltrada " << ID << " matou um barbaro\n";
             } else {           // 25% chance de perder espiao
                 --numTripulantes;
-                chanceSerDescoberta += 5;
+                chanceSerDescoberta += 3;
+                std::cout << "Caravana infiltrada " << ID << " perdeu um tripulante\n";
             }
+
+            // Limita chance de ser descoberta
+            chanceSerDescoberta = std::min(chanceSerDescoberta, 60);
+
             int serApanhada = rand() % 100+1;
             if (serApanhada < chanceSerDescoberta)
                 return false;
+            break;
         }
     }
+    if (!encontrou) chanceSerDescoberta = 0;
     return true;
 // se for apanhada é destruida
 // a cada turno chance de 75% de matar 1 barbaro ou perder 1 espiao
-// caso um barbaro morra chance de ser apanhada aumenta +2%
+// caso um barbaro morra chance de ser apanhada aumenta +1%
 }
 
 bool CaravanaSecreta::ataqueTempestade(int probabilidade) {
