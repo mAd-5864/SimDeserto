@@ -91,7 +91,6 @@ public:
     const std::vector<std::pair<int, int>> &getMontanhas() const;
 
     void adicionaCidade(char nome, int linha, int coluna);
-    void printCidades() const;
     const std::vector<Cidade> &getCidades() const; // Const
     std::vector<Cidade> &getCidades(); //Nao const, para poder fazer alteracoes
 
@@ -112,6 +111,7 @@ public:
 
     void processarCombates();
 
+    void printItems() const;
     void adicionaItem(int linha, int coluna, int tipo);
     void atualizarItems();
     std::pair<int, int> procuraItem(int linha, int coluna);
@@ -121,7 +121,7 @@ public:
     int criaTempestade(int linha, int coluna, int raio);
     void processarTempestade();
 
-    void eliminaCaravana(int id);
+    void procurarCombates();
 };
 
 #endif // SIMDESERTO_DESERTO_H

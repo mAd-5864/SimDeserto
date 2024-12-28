@@ -7,12 +7,14 @@
 int Barbaro::nextID = 1;
 
 // Construtor
-Barbaro::Barbaro(int lin, int col, int maxTripulantes, int turnosRestantes) : ID(nextID++), linha(lin), coluna(col), turnosRestantes(turnosRestantes), maxTripulantes(maxTripulantes) {
+Barbaro::Barbaro(int lin, int col, int maxTripulantes, int turnosRestantes) : ID(nextID++), linha(lin), coluna(col),
+                                                                              turnosRestantes(turnosRestantes),
+                                                                              maxTripulantes(maxTripulantes) {
     numTripulantes = maxTripulantes;
 }
 
-bool Barbaro::atualizar(){
-    if (estaAborrecido() || numTripulantes == 0) return false;
+bool Barbaro::atualizar() {
+    if (estaAborrecido() || numTripulantes <= 0) return false;
     turnosRestantes--;
     return true;
 }
@@ -26,7 +28,7 @@ void Barbaro::move(int novaLinha, int novaColuna) {
 
 bool Barbaro::perseguirCaravana(int destinoLinha, int destinoColuna) {
     int distancia = abs(linha - destinoLinha) +
-                abs(coluna - destinoColuna);
+                    abs(coluna - destinoColuna);
     if (distancia > 1) {
         // Determinar direção para a linha
         if (linha < destinoLinha) {
@@ -37,7 +39,7 @@ bool Barbaro::perseguirCaravana(int destinoLinha, int destinoColuna) {
     }
 
     distancia = abs(linha - destinoLinha) +
-                    abs(coluna - destinoColuna);
+                abs(coluna - destinoColuna);
 
     // Determinar direção para a coluna
     if (distancia > 1) {
@@ -50,7 +52,7 @@ bool Barbaro::perseguirCaravana(int destinoLinha, int destinoColuna) {
         distancia = abs(linha - destinoLinha) +
                     abs(coluna - destinoColuna);
     }
-    if (distancia<=1) {
+    if (distancia <= 1) {
         return true; // Entra em combate!!
     }
 

@@ -114,15 +114,17 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
     }
     for (int i = 0; i < instantes; ++i) {
         deserto.proxInstante();
-        deserto.atualizarCaravanas();
         deserto.movimentarBarbaros();
-        deserto.processarCombates();
+        deserto.atualizarCaravanas();
+        deserto.procurarCombates();
         deserto.processarTempestade();
-        deserto.atualizarBarbaros();
         deserto.atualizarItems();
+        deserto.processarCombates();
+        deserto.atualizarBarbaros();
     }
     deserto.atualizarBuffer();
     deserto.mostrarMapa(); // para testes
+    //deserto.printItems();
 }
 
 // Comando: comprac <C> <T>
@@ -140,10 +142,10 @@ void comandoComprac(const vector<string> &args, Deserto &deserto) {
 // Procurar cidade com nome recebido
     for (auto &cidade: deserto.getCidades()) {
         if (cidade.getNome() == nomeCidade) {
-            if (cidade.comprarCaravana(tipo)){
-            // Add caravana na mesma posicao da cidade
-            deserto.adicionaCaravana(tipo, cidade.getLinha(),cidade.getColuna());
-            deserto.ajustarMoedas(-1*deserto.getPrecoCaravana());
+            if (cidade.comprarCaravana(tipo)) {
+                // Add caravana na mesma posicao da cidade
+                deserto.adicionaCaravana(tipo, cidade.getLinha(), cidade.getColuna());
+                deserto.ajustarMoedas(-1 * deserto.getPrecoCaravana());
             }
             return;
         }
@@ -188,7 +190,7 @@ void comandoCidade(const vector<string> &args, Deserto &deserto) {
             return;
         }
     }
-        std::cerr << "[ERRO] Cidade " << nomeCidade << " nao encontrada\n";
+    std::cerr << "[ERRO] Cidade " << nomeCidade << " nao encontrada\n";
 }
 
 // Comando: caravana <C>
@@ -206,7 +208,7 @@ void comandoCaravana(const vector<string> &args, const std::vector<std::unique_p
             return;
         }
     }
-        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
+    std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: compra <N> <M>
@@ -220,16 +222,17 @@ void comandoCompra(const vector<string> &args, Deserto &deserto) {
     // Procurar caravana com ID lido
     for (const auto &caravana: deserto.getCaravanas()) {
         if (caravana->getId() == id && caravana->estaNaCidade(deserto.getCidades())) {
-            if (deserto.getMoedas()>=deserto.getPrecoCompraMerc()*quantidade){
-                if (caravana->carregar(quantidade)){
-                    deserto.ajustarMoedas(-1*(deserto.getPrecoCompraMerc()*quantidade));
-                    std::cout << "Comprou "<< quantidade << "T de mercadoria para a caravana "<< caravana->getId()<<"\n";
+            if (deserto.getMoedas() >= deserto.getPrecoCompraMerc() * quantidade) {
+                if (caravana->carregar(quantidade)) {
+                    deserto.ajustarMoedas(-1 * (deserto.getPrecoCompraMerc() * quantidade));
+                    std::cout << "Comprou " << quantidade << "T de mercadoria para a caravana " << caravana->getId()
+                              << "\n";
                 }
-            } else std::cerr << "Nao tem moedas suficientes para " <<quantidade<< "T de mercadoria\n";
+            } else std::cerr << "Nao tem moedas suficientes para " << quantidade << "T de mercadoria\n";
             return;
         }
     }
-        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
+    std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: vende <N>
@@ -242,13 +245,13 @@ void comandoVende(const vector<string> &args, Deserto &deserto) {
     // Procurar caravana com ID lido
     for (const auto &caravana: deserto.getCaravanas()) {
         if (caravana->getId() == id && caravana->estaNaCidade(deserto.getCidades())) {
-            std::cout << "Vendeu "<< caravana->getCarga() << "T de mercadoria\n";
+            std::cout << "Vendeu " << caravana->getCarga() << "T de mercadoria\n";
             deserto.ajustarMoedas(caravana->getCarga() * deserto.getPrecoVendaMerc());
             caravana->descarregar();
             return;
         }
     }
-        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
+    std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: move <N> <X>
@@ -281,7 +284,7 @@ void comandoAuto(const vector<string> &args, Deserto &deserto) {
     for (const auto &caravana: deserto.getCaravanas()) {
         if (caravana->getId() == id) {
             caravana->setMoveType(1);
-            std::cout << "Caravana "<< caravana->getId()<<" esta em modo automatico\n";
+            std::cout << "Caravana " << caravana->getId() << " esta em modo automatico\n";
             return;
         }
     }
@@ -299,7 +302,7 @@ void comandoStop(const vector<string> &args, Deserto &deserto) {
     for (const auto &caravana: deserto.getCaravanas()) {
         if (caravana->getId() == id) {
             caravana->setMoveType(0);
-            std::cout << "Caravana "<< caravana->getId()<<" saiu do modo automatico\n";
+            std::cout << "Caravana " << caravana->getId() << " saiu do modo automatico\n";
             return;
         }
     }
@@ -314,14 +317,14 @@ void comandoBarbaro(const vector<string> &args, Deserto &deserto) {
     }
     int linha = stoi(args[0]);
     int coluna = stoi(args[1]);
-    if (linha>=0 && linha<deserto.getLinhas() && coluna>=0 && coluna<deserto.getColunas()){
-        if (deserto.verificarMoveAleatorio(linha, coluna)){
-            deserto.adicionaBarbaro(linha,coluna);
+    if (linha >= 0 && linha < deserto.getLinhas() && coluna >= 0 && coluna < deserto.getColunas()) {
+        if (deserto.verificarMoveAleatorio(linha, coluna)) {
+            deserto.adicionaBarbaro(linha, coluna);
             std::cout << "Barbaro adicionado na posicao (" << linha << ", " << coluna << ")\n";
             return;
         }
     }
-        cerr << "[ERRO] Posicao invalida\n";
+    cerr << "[ERRO] Posicao invalida\n";
 }
 
 // Comando: areia <l> <c> <r>
@@ -332,7 +335,7 @@ void comandoAreia(const vector<string> &args, Deserto &deserto) {
     }
     cout << "Criando tempestade de areia nas coordenadas (" << args[0] << ", " << args[1] << ") com raio " << args[2]
          << "\n";
-    deserto.criaTempestade(stoi(args[0]), stoi(args[1]), stoi(args[2]) );
+    deserto.criaTempestade(stoi(args[0]), stoi(args[1]), stoi(args[2]));
 }
 
 // Comando: moedas <N>
@@ -355,16 +358,16 @@ void comandoTripul(const vector<string> &args, Deserto &deserto) {
     // Procurar caravana com ID lido
     for (const auto &caravana: deserto.getCaravanas()) {
         if (caravana->getId() == id && caravana->estaNaCidade(deserto.getCidades())) {
-            if (deserto.getMoedas()>=quantidade){
-                if (caravana->addTripulantes(quantidade)){
-                    deserto.ajustarMoedas(-1*quantidade);
-                    std::cout  << quantidade << " tripulantes adicionados na caravana "<< caravana->getId()<<"\n";
+            if (deserto.getMoedas() >= quantidade) {
+                if (caravana->addTripulantes(quantidade)) {
+                    deserto.ajustarMoedas(-1 * quantidade);
+                    std::cout << quantidade << " tripulantes adicionados na caravana " << caravana->getId() << "\n";
                 }
-            } else std::cerr << "Nao tem moedas suficientes para " <<quantidade<< " tripulantes\n";
+            } else std::cerr << "Nao tem moedas suficientes para " << quantidade << " tripulantes\n";
             return;
         }
     }
-        std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
+    std::cerr << "[ERRO] Caravana " << id << " nao encontrada\n";
 }
 
 // Comando: saves <nome>
@@ -403,7 +406,7 @@ void comandoDels(const vector<string> &args, Deserto &deserto) {
     deserto.apagarBuffer(args[0]);
 }
 
-void processarFicheiroComandos(const std::string &filename, Deserto &deserto){
+void processarFicheiroComandos(const std::string &filename, Deserto &deserto) {
     std::string folder = "../config/";
     std::string path = folder + filename + ".txt";
     std::ifstream file(path);

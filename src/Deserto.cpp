@@ -225,7 +225,7 @@ void Deserto::adicionaCaravana(char tipo, int l, int c) {
     }
 }
 
-void Deserto::adicionaBarbaro(int linha, int coluna){
+void Deserto::adicionaBarbaro(int linha, int coluna) {
     barbaros.emplace_back(linha, coluna, 40, duracaoBarbaros);
 }
 
@@ -234,11 +234,11 @@ void Deserto::adicionaItem(int linha, int coluna, int tipo) {
     itens.emplace_back(linha, coluna, tipo, duracaoItem);
 }
 
-void Deserto::printCidades() const {
-    std::cout << "Cidades no mapa:" << std::endl;
-    for (const auto &cidade: cidades) {
-        std::cout << "Cidade: " << cidade.getNome()
-                  << " | Posicao: (" << cidade.getLinha() << ", " << cidade.getColuna() << ")" << std::endl;
+void Deserto::printItems() const {
+    std::cout << "Items no mapa:" << std::endl;
+    for (const auto &item: itens) {
+        std::cout << "Item tipo: " << item.getTipo()
+                  << " | Posicao: (" << item.getLinha() << ", " << item.getColuna() << ")" << std::endl;
     }
 }
 
@@ -306,10 +306,10 @@ void Deserto::atualizarBuffer() {
 
 void Deserto::atualizarCaravanas() {
     for (auto it = caravanas.begin(); it != caravanas.end();) {
-        auto& caravana = *it;
+        auto &caravana = *it;
         caravana->atualizarTurno(); // Chama o método específico de cada tipo
 
-        if (caravana->estaNaCidade(cidades)){
+        if (caravana->estaNaCidade(cidades)) {
             caravana->reabasteceAgua();
             caravana->setMoveType(0);
         }
@@ -325,7 +325,7 @@ void Deserto::atualizarCaravanas() {
                     caravana->mover(coords.first, coords.second);
             }
             if (caravana->getTipo() == 'S') {
-                auto* caravanaSecreta = dynamic_cast<CaravanaSecreta*>(caravana.get());
+                auto *caravanaSecreta = dynamic_cast<CaravanaSecreta *>(caravana.get());
                 if (caravanaSecreta) {
                     if (!caravanaSecreta->infiltrarBarbaros(barbaros)) {
                         std::cout << "Caravana infiltrada " << caravana->getId()
@@ -388,8 +388,8 @@ int movimentaDireita(const std::unique_ptr<Caravana> &caravana, int maxColuna) {
 void Deserto::moverCaravana(int id, const std::string &movimento) {
     for (const auto &caravana: caravanas) {
         if (caravana->getId() == id) {
-            if (caravana->getTipoMovimentacao()){
-                std::cout<<"Caravana "<< caravana->getId()<< " em movimento automatico\n";
+            if (caravana->getTipoMovimentacao()) {
+                std::cout << "Caravana " << caravana->getId() << " em movimento automatico\n";
                 return;
             }
             int posLinhaNova = caravana->getLinha(), posColunaNova = caravana->getColuna();
@@ -528,8 +528,8 @@ void Deserto::movimentarBarbaros() {
 
         // Verificar se existe uma caravana próxima (distância <= 8)
         for (const auto &caravana: caravanas) {
-                //caravana não é perseguida se: estiver numa cidade, estiver sem tripulantes, for caravana secreta
-            if (!caravana->estaNaCidade(cidades) && caravana->getTripulantes() && caravana->getTipo()!='S') {
+            //caravana não é perseguida se: estiver numa cidade, estiver sem tripulantes, for caravana secreta
+            if (!caravana->estaNaCidade(cidades) && caravana->getTripulantes() && caravana->getTipo() != 'S') {
                 distancia = abs(barbaro.getLinha() - caravana->getLinha()) +
                             abs(barbaro.getColuna() - caravana->getColuna());
                 if (distancia <= 8) {
@@ -544,19 +544,19 @@ void Deserto::movimentarBarbaros() {
         // Se encontrar uma caravana próxima, persegue-a
         if (inimigo) {
             //std::cout << "barbaro "<< barbaro.getId()<<" em perseguicao da caravana " << inimigo->getId() << "\n";
-            if (perseguirCaravana(barbaro, inimigo->getLinha(), inimigo->getColuna()))
-                combates.emplace_back(inimigo->getId(), barbaro.getId());
+            perseguirCaravana(barbaro, inimigo->getLinha(), inimigo->getColuna());
         } else {
             std::pair coords = procuraItem(barbaro.getLinha(), barbaro.getColuna());
-            if (movimentoInvalido(coords.first, coords.second)){
+            if (!movimentoInvalido(coords.first, coords.second)) {
                 barbaro.move(coords.first, coords.second);
                 continue;
-            }
+            } else {
             // Gerar valores aleatórios para movimento (-1, 0, +1)
             int novaLinha = barbaro.getLinha() + (rand() % 3 - 1);
             int novaColuna = barbaro.getColuna() + (rand() % 3 - 1);
             if (verificarMoveAleatorio(novaLinha, novaColuna))
                 barbaro.move(novaLinha, novaColuna);
+            }
         }
     }
 }
@@ -599,7 +599,7 @@ bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoC
     int distanciaColuna = abs(destinoColuna - novaColuna);
 
     // Determinar direção para a coluna
-    if ((distanciaLinha >= 1 || distanciaColuna >= 1)&& distancia>1) {
+    if ((distanciaLinha >= 1 || distanciaColuna >= 1) && distancia > 1) {
         int direcao = rand() % 2;
         if (direcao) { // move coluna primeiro
             if (novaColuna < destinoColuna) {
@@ -637,8 +637,8 @@ bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoC
     distancia = abs(novaLinha - destinoLinha) +
                 abs(novaColuna - destinoColuna);
 
-    if (verificarMoveAleatorio(novaLinha,novaColuna)){
-        barbaro.move(novaLinha,novaColuna);
+    if (verificarMoveAleatorio(novaLinha, novaColuna)) {
+        barbaro.move(novaLinha, novaColuna);
         if (distancia <= 1) {
             return true; // Entra em combate!!
         }
@@ -648,11 +648,9 @@ bool Deserto::perseguirCaravana(Barbaro &barbaro, int destinoLinha, int destinoC
 
 void Deserto::processarCombates() {
     if (!combates.empty()) {
-        std::cout << "Combates a decorrer:" << std::endl;
         for (const auto &combate: combates) { // <Caravana , Barbaro>
             Caravana *combatente = nullptr;
             int rollCaravana, removeTripul;
-            std::cout << combate.first << " vs " << combate.second << std::endl;
             for (auto &caravana: caravanas) {
                 if (combate.first == caravana->getId()) {
                     rollCaravana = rand() % caravana->getTripulantes();
@@ -663,24 +661,25 @@ void Deserto::processarCombates() {
             for (auto &barbaro: barbaros) {
                 if (combate.second == barbaro.getId()) {
                     int rollBarbaro = rand() % barbaro.getTripulantes();
-            std::cout << "Passou: "<< combatente->getId() << " vs " << barbaro.getId() << std::endl;
-                    if (rollCaravana > rollBarbaro){
+                    if (rollCaravana > rollBarbaro) {
+                        //std::cout << "Venceu caravana: " << combatente->getId() << std::endl;
                         // Caravana venceu
-                        removeTripul = floor(combatente->getTripulantes()*0.2);
+                        removeTripul = floor(combatente->getTripulantes() * 0.2);
                         combatente->addTripulantes(-removeTripul);
-                        barbaro.addTripulantes(-removeTripul*2);
-                    } else if(rollBarbaro > rollCaravana){
+                        barbaro.addTripulantes(-removeTripul * 2);
+                    } else if (rollBarbaro > rollCaravana) {
+                        //std::cout << "Venceu barbaro: " << combatente->getId() << std::endl;
                         // Barbaro venceu
-                        removeTripul = floor(barbaro.getTripulantes()*0.2);
+                        removeTripul = floor(barbaro.getTripulantes() * 0.2);
                         barbaro.addTripulantes(-removeTripul);
-                        combatente->addTripulantes(-removeTripul*2);
-                    } else{
+                        combatente->addTripulantes(-removeTripul * 2);
+                    } else {
+                        //std::cout << "Empate: " << combatente->getId() << " vs " << barbaro.getId() << std::endl;
                         //empate
                         // ambas perdem 20%
-                        combatente->addTripulantes(floor(combatente->getTripulantes()*-0.2));
-                        barbaro.addTripulantes(floor(barbaro.getTripulantes()*-0.2));
+                        combatente->addTripulantes(floor(combatente->getTripulantes() * -0.2));
+                        barbaro.addTripulantes(floor(barbaro.getTripulantes() * -0.2));
                     }
-                    std::cout << "Fim: "<< combatente->getId() << " vs " << barbaro.getId() << std::endl;
                     break;
                 }
             }
@@ -700,14 +699,14 @@ void Deserto::processarCombates() {
     }
 }
 
-void Deserto::atualizarItems(){
+void Deserto::atualizarItems() {
     for (auto item = itens.begin(); item != itens.end();) {
         bool itemProcessed = false;
 
         // Check interaction with caravanas
-        for (auto& caravana : caravanas) {
+        for (auto &caravana: caravanas) {
             if (caravana->getLinha() == item->getLinha() && caravana->getColuna() == item->getColuna()) {
-                if (processarItem(*caravana, item->getTipo(), caravana->getMaxTripulantes())){
+                if (processarItem(*caravana, item->getTipo(), caravana->getMaxTripulantes())) {
                     caravana = nullptr;
                     caravanas.erase(std::remove(caravanas.begin(), caravanas.end(), nullptr), caravanas.end());
                 }
@@ -719,9 +718,9 @@ void Deserto::atualizarItems(){
         if (itemProcessed) continue;
 
         // Check interaction with barbaros
-        for (auto& barbaro : barbaros) {
+        for (auto &barbaro: barbaros) {
             if (barbaro.getLinha() == item->getLinha() && barbaro.getColuna() == item->getColuna()) {
-                if(processarItem(barbaro, item->getTipo(), 40)){
+                if (processarItem(barbaro, item->getTipo(), 40)) {
                     barbaro.addTripulantes(-barbaro.getTripulantes());
                 }
                 item = itens.erase(item);
@@ -737,29 +736,29 @@ void Deserto::atualizarItems(){
         } else ++item;
     }
 
-    if(numeroItens <= maxItems && instanteAtual%instantesEntreNovosItems==0) {
+    if (numeroItens <= maxItems && instanteAtual % instantesEntreNovosItems == 0) {
         // Gerar novo item
         int linhaAleatoria, colunaAleatoria, tipo;
         do {
             // Gerar valores aleatórios
             linhaAleatoria = (rand() % linhas);
             colunaAleatoria = (rand() % colunas);
-            tipo = (rand() % 5+1);
+            tipo = (rand() % 4 + 1); // deve ser rand() % 4 + 1 quando item misterio implementado
         } while (!verificarMoveAleatorio(linhaAleatoria, colunaAleatoria));
 
         adicionaItem(linhaAleatoria, colunaAleatoria, tipo);
     }
 }
 
-std::pair<int, int> Deserto::procuraItem(int linha, int coluna){
+std::pair<int, int> Deserto::procuraItem(int linha, int coluna) {
     // Procurar items a 4 posicoes de distancia
     int alvo = 0, linhaItem, colunaItem;
     int distanciaMin = 999, distancia;
-    for (const auto &item : itens) {
+    for (const auto &item: itens) {
         distancia = abs(item.getLinha() - linha) +
                     abs(item.getColuna() - coluna);
 
-        if (distancia<=4) {
+        if (distancia <= 4) {
             if (distancia < distanciaMin) {
                 distanciaMin = distancia;
                 alvo = item.getTipo();
@@ -789,35 +788,41 @@ std::pair<int, int> Deserto::procuraItem(int linha, int coluna){
     return std::make_pair(linha, coluna);
 }
 
-template <typename Entity>
-bool Deserto::processarItem(Entity& entity, int itemTipo, int maxTripulantes) {
+template<typename Entity>
+bool Deserto::processarItem(Entity &entity, int itemTipo, int maxTripulantes) {
+    std::string entityType;
+    if constexpr (std::is_same<Entity, Caravana>::value) {
+        entityType = "Caravana " + std::to_string(entity.getId());
+    } else {
+        entityType = "Barbaro";
+    }
     switch (itemTipo) {
         case 1: { // Caixa de Pandora
             int tripulantesPerdidos = floor(entity.getTripulantes() * 0.2);
-            std::cout << entity.getId() << " abriu uma Caixa de Pandora e perdeu "
+            std::cout << entityType << " abriu uma Caixa de Pandora e perdeu "
                       << tripulantesPerdidos << " tripulantes\n";
             entity.addTripulantes(-tripulantesPerdidos);
             break;
         }
         case 2: { // Arca do Tesouro
-            std::cout << entity.getId() << " abriu uma Arca do Tesouro\n";
+            std::cout << entityType << " abriu uma Arca do Tesouro\n";
             ajustarMoedas(moedas * 0.1); // Assuming `ajustarMoedas` is defined elsewhere
             break;
         }
         case 3: { // Jaula com Prisioneiros
             int maxPrisioneiros = maxTripulantes - entity.getTripulantes();
-            if (maxPrisioneiros){
-            int nPrisioneiros = rand() % (maxTripulantes - entity.getTripulantes());
-            std::cout << entity.getId() << " encontrou uma jaula com "
-                      << nPrisioneiros << " prisioneiros\n";
-            entity.addTripulantes(nPrisioneiros);
+            if (maxPrisioneiros) {
+                int nPrisioneiros = rand() % (maxTripulantes - entity.getTripulantes());
+                std::cout << entityType << " encontrou uma jaula com "
+                          << nPrisioneiros << " prisioneiros\n";
+                entity.addTripulantes(nPrisioneiros);
                 break;
             }
-            std::cout << entity.getId() << " encontrou uma jaula com prisioneiros mas tem o maximo de tripulantes\n";
+            std::cout << entityType << " encontrou uma jaula com prisioneiros mas tem o maximo de tripulantes\n";
             break;
         }
         case 4: { // Mina
-            std::cout << entity.getId() << " explodiu numa mina da WW2\n";
+            std::cout << entityType << " explodiu numa mina da WW2\n";
             return true;
         }
     }
@@ -825,22 +830,22 @@ bool Deserto::processarItem(Entity& entity, int itemTipo, int maxTripulantes) {
 }
 
 int Deserto::criaTempestade(int linha, int coluna, int raio) {
-    if(linha < 0 || coluna < 0 || raio < 0)
+    if (linha < 0 || coluna < 0 || raio < 0)
         return 1;
 
-    tempestades.emplace_back(linha,coluna,raio);
+    tempestades.emplace_back(linha, coluna, raio);
 
     return 1;
 }
 
 void Deserto::processarTempestade() {
-    for (Tempestade &tempestade : tempestades) {
-        for (auto it = caravanas.begin(); it != caravanas.end(); ){
+    for (Tempestade &tempestade: tempestades) {
+        for (auto it = caravanas.begin(); it != caravanas.end();) {
             auto &caravana = *it;
-            if (tempestade.verificaDentro(caravana->getLinha(), caravana->getColuna())){
+            if (tempestade.verificaDentro(caravana->getLinha(), caravana->getColuna())) {
                 int probabilidade = (rand() % (100)) + 1;
-                if(caravana->ataqueTempestade(probabilidade)){
-                    std::cout << "Caravana "<<caravana->getId()<< " foi destruida numa tempestade\n";
+                if (caravana->ataqueTempestade(probabilidade)) {
+                    std::cout << "Caravana " << caravana->getId() << " foi destruida numa tempestade\n";
                     it = caravanas.erase(it);
                     continue;
                 }
@@ -849,4 +854,17 @@ void Deserto::processarTempestade() {
         }
     }
     tempestades.clear();
+}
+
+void Deserto::procurarCombates() {
+    for (auto &caravana: caravanas) {
+        for (auto &barbaro: barbaros) {
+            if (!caravana->estaNaCidade(cidades) && caravana->getTripulantes() > 0 && caravana->getTipo() != 'S') {
+                int distancia = abs(caravana->getLinha() - barbaro.getLinha()) +
+                                abs(caravana->getColuna() - barbaro.getColuna());
+                if (distancia == 1)
+                    combates.emplace_back(caravana->getId(), barbaro.getId());
+            }
+        }
+    }
 }
