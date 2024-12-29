@@ -663,40 +663,42 @@ void Deserto::processarCombates() {
                 }
             }
             for (auto &barbaro: barbaros) {
-                if (combate.second == barbaro.getId() && barbaro.getTripulantes()>0) {
+                if (combate.second == barbaro.getId() && barbaro.getTripulantes()>0 && combatente!= nullptr) {
                     int rollBarbaro = rand() % barbaro.getTripulantes();
                     if (rollCaravana > rollBarbaro) {
-                        //std::cout << "Venceu caravana: " << combatente->getId() << std::endl;
                         // Caravana venceu
                         removeTripul = floor(combatente->getTripulantes() * 0.2);
                         combatente->addTripulantes(-removeTripul);
                         barbaro.addTripulantes(-removeTripul * 2);
+                        std::cout << "Caravana " << combatente->getId() << " venceu o combate com "<< combatente->getTripulantes()<< " sobreviventes\n";
                     } else if (rollBarbaro > rollCaravana) {
                         //std::cout << "Venceu barbaro: " << combatente->getId() << std::endl;
                         // Barbaro venceu
                         removeTripul = floor(barbaro.getTripulantes() * 0.2);
                         barbaro.addTripulantes(-removeTripul);
                         combatente->addTripulantes(-removeTripul * 2);
+                        if (combatente->getTripulantes()>0)
+                            std::cout << "Caravana " << combatente->getId() << " foi derrotada em combate e perdeu "<< floor(removeTripul * 2)<< " tripulantes\n";
+                        else std::cout << "Caravana " << combatente->getId() << " foi destruida em combate\n";
                     } else {
                         //std::cout << "Empate: " << combatente->getId() << " vs " << barbaro.getId() << std::endl;
                         //empate
                         // ambas perdem 20%
                         combatente->addTripulantes(floor(combatente->getTripulantes() * -0.2));
                         barbaro.addTripulantes(floor(barbaro.getTripulantes() * -0.2));
+                        std::cout << "Caravana " << combatente->getId() << " empatou o combate com "<< combatente->getTripulantes()<< " sobreviventes\n";
                     }
                     break;
                 }
             }
 
-
+            // Remover caravanas destruídas
             for (auto it = caravanas.begin(); it != caravanas.end();) {
                 auto &caravana = *it;
                 if (caravana->getTripulantes() <= 0 && caravana->getId() == combatente->getId()) {
-                    std::cout << "Caravana " << caravana->getId() << " foi destruida em combate\n";
                     it = caravanas.erase(it);
-                    continue;
-                }
-                ++it;
+                    // remover outros combates com a caravana destruida do map combates (ID da caravana é a key do map)
+                } else ++it;
             }
         }
         combates.clear();

@@ -10,4 +10,11 @@ prox
 move 3 ce
 move 3 e
 move 4 bd
+comprac c c
+move 5 c
+move 5 c
 prox
+barbaro 3 6
+barbaro 3 4
+barbaro 4 5
+barbaro 2 5
