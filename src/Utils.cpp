@@ -121,9 +121,9 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         deserto.atualizarItems();
         deserto.processarCombates();
         deserto.atualizarBarbaros();
+        deserto.atualizarBuffer();
+        deserto.mostrarMapa(); // para testes
     }
-    deserto.atualizarBuffer();
-    deserto.mostrarMapa(); // para testes
     //deserto.printItems();
 }
 
