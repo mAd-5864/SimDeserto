@@ -4,30 +4,29 @@
 
 #include "../include/Buffer.h"
 
-
-void Buffer::setLinhas(int l) {
-    linhas = l;
-    resizeBuffer();
-}
-
-void Buffer::setColunas(int c) {
-    colunas = c;
-    resizeBuffer();
-}
-
 // Construtor
-Buffer::Buffer(int r, int c) : linhas(r), colunas(c), linhaCursor(0), colunaCursor(0) {
-    data.resize(linhas * colunas, ' '); // Inicializar com espacos
+Buffer::Buffer(int linhas, int colunas) : linhas(linhas), colunas(colunas), linhaCursor(0), colunaCursor(0) {
+    data = new char[linhas * colunas];
+    clear();
 }
 
-// Destrutor
-//Buffer::~Buffer() {
-//    delete[] data; // Libera memória
-//}
+// Destrutor: libera a memória alocada
+Buffer::~Buffer() {
+    delete[] data;
+}
+
+void Buffer::setDimensoes(int novasLinhas, int novasColunas) {
+    linhas = novasLinhas;
+    colunas = novasColunas;
+    resizeBuffer();
+}
+
+
+
 
 // Esvaziar o buffer
 void Buffer::clear() {
-    std::fill(data.begin(), data.end(), '.');
+    memset(data, '.', linhas * colunas);
     linhaCursor = colunaCursor = 0; // Reset cursor
 }
 
@@ -42,7 +41,7 @@ void Buffer::print() const {
         for (int j = 0; j < colunas; ++j) {
             std::cout << data[calcularIndice(i, j)];
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 }
 
@@ -57,7 +56,7 @@ bool Buffer::moveCursor(int r, int c) {
     return false;
 }
 
-// Escrever um caractere
+// Escrever um caracter
 void Buffer::writeChar(char c) {
     if (linhaCursor >= 0 && linhaCursor <= linhas && colunaCursor >= 0 && colunaCursor < colunas) {
         data[calcularIndice(linhaCursor, colunaCursor)] = c;
@@ -71,12 +70,23 @@ void Buffer::writeChar(char c) {
 }
 
 char Buffer::getChar(int linha, int coluna) {
-    return data[calcularIndice(linha, coluna)];
+    int indice = calcularIndice(linha, coluna);
+    if (indice == -1) return '.';
+    return data[indice];
 }
 
 
 void Buffer::resizeBuffer() {
-    data.clear();
-    data.resize(linhas * colunas, ' ');
-    linhaCursor = colunaCursor = 0;
+    char* novoData = new char[linhas * colunas];
+    memset(novoData, '.', linhas * colunas);
+
+    // Copia os dados antigos para o novo array
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            novoData[(i * colunas) + j] = data[(i * colunas) + j];
+        }
+    }
+
+    //delete[] data; // Limpar memoria do array antigo
+    data = novoData;
 }

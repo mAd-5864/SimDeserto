@@ -15,28 +15,31 @@
 #include <algorithm>
 #include <map>
 #include <locale>
+#include <cstring>
 #include <ostream>
 
 class Buffer {
 private:
-    std::vector<char> data;
+    char* data;
     int linhas, colunas;
     int linhaCursor, colunaCursor;
+
+    // Calcula o índice no vetor com base na linha e coluna
+    int calcularIndice(int linha, int coluna) const;
+
+    // Redimensiona o buffer
     void resizeBuffer();
 
 public:
     // Construtor e destrutor
     Buffer(int linhas, int colunas);
-    //~Buffer();
-    void setLinhas(int l);
-    void setColunas(int c);
+    ~Buffer();
 
+    // Definir tamanho do buffer
+    void setDimensoes(int nLinhas, int nColunas);
 
     // Esvaziar o buffer
     void clear();
-
-    // Calcula o índice no vetor com base na linha e coluna
-    int calcularIndice(int linha, int coluna) const;
 
     // Imprimir o buffer na consola
     void print() const;
@@ -49,7 +52,6 @@ public:
 
     // Devolve char na posicao (l,c)
     char getChar(int linha, int ccoluna);
-
 };
 
 #endif //SIMDESERTO_BUFFER_H
