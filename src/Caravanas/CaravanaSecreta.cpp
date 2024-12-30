@@ -46,7 +46,7 @@ CaravanaSecreta::autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std
     if (alvo) {
         int novaLinha = linha;
         int novaColuna = coluna;
-        int distancia = abs(linha - linhaBarbaro) +
+        distancia = abs(linha - linhaBarbaro) +
                         abs(coluna - colunaBarbaro);
         int distanciaLinha = abs(linhaBarbaro - linha);
         int distanciaColuna = abs(colunaBarbaro - coluna);

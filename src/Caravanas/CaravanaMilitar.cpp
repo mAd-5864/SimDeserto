@@ -53,7 +53,7 @@ std::pair<int, int> CaravanaMilitar::autoMove(std::vector<std::unique_ptr<Carava
     if (alvo) {
         int novaLinha = linha;
         int novaColuna = coluna;
-        int distancia = abs(novaLinha - linhaBarbaro) +
+        distancia = abs(novaLinha - linhaBarbaro) +
                         abs(novaColuna - colunaBarbaro);
         int distanciaLinha = abs(linhaBarbaro - novaLinha);
         int distanciaColuna = abs(colunaBarbaro - novaColuna);

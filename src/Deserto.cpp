@@ -19,15 +19,6 @@ Deserto::~Deserto() {
     bufferSaves.clear();
 }
 
-void Deserto::setLinhas(int l) {
-    this->linhas = l;
-}
-
-void Deserto::setColunas(int c) {
-    this->colunas = c;
-}
-
-
 // Lê a config de um ficheiro
 bool Deserto::lerFicheiro(const std::string &filename) {
     std::string folder = "../config/";
@@ -530,7 +521,7 @@ void Deserto::movimentarBarbaros() {
         Caravana *inimigo = nullptr;
         int distanciaMin = 9, distancia;
 
-        // Verificar se existe uma caravana próxima (distância <= 8)
+        // Verificar se existe uma caravana próxima (distância ≤ 8)
         for (const auto &caravana: caravanas) {
             //caravana não é perseguida se: estiver numa cidade, estiver sem tripulantes, for caravana secreta
             if (!caravana->estaNaCidade(cidades) && caravana->getTripulantes() && caravana->getTipo() != 'S') {
@@ -812,7 +803,7 @@ bool Deserto::processarItem(Entity &entity, int itemTipo, int maxTripulantes) {
         }
         case 2: { // Arca do Tesouro
             std::cout << entityType << " abriu uma Arca do Tesouro\n";
-            ajustarMoedas(moedas * 0.1); // Assuming `ajustarMoedas` is defined elsewhere
+            ajustarMoedas(floor(moedas * 0.1));
             break;
         }
         case 3: { // Jaula com Prisioneiros
@@ -841,6 +832,8 @@ bool Deserto::processarItem(Entity &entity, int itemTipo, int maxTripulantes) {
             std::cout << entityType << " entrou num portal para (" << lRand << ", " << cRand << ")\n";
             entity.mover(lRand,cRand);
         }
+        default:
+            break;
     }
     return false;
 }

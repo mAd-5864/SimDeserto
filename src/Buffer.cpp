@@ -90,3 +90,16 @@ void Buffer::resizeBuffer() {
     //delete[] data; // Limpar memoria do array antigo
     data = novoData;
 }
+
+// Construtor de Cópia para copiar buffer
+Buffer::Buffer(const Buffer& copia)
+        : linhas(copia.linhas), colunas(copia.colunas), linhaCursor(copia.linhaCursor), colunaCursor(copia.colunaCursor) {
+    data = new char[linhas * colunas];
+    memcpy(data, copia.data, linhas * colunas);
+}
+
+// Construtor de Movimentação
+Buffer::Buffer(Buffer&& copia) noexcept
+        : linhas(copia.linhas), colunas(copia.colunas), linhaCursor(copia.linhaCursor), colunaCursor(copia.colunaCursor), data(copia.data) {
+    copia.data = nullptr;
+}

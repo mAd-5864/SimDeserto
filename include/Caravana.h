@@ -22,7 +22,7 @@ protected:
 public:
     Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, int maxMoves, int linha, int coluna);
     static void resetID() { nextID = 1; }
-    virtual ~Caravana();
+    virtual ~Caravana()=default;
 
     virtual void atualizarTurno() = 0; // Método virtual puro
     virtual std::pair<int, int> autoMove(std::vector<std::unique_ptr<Caravana>> &caravanas, std::vector<Barbaro> &barbaros) = 0;
@@ -58,7 +58,6 @@ public:
     bool addTripulantes(int quantidade);
 
     bool estaNaCidade(const std::vector<Cidade>& cidades) const;
-    bool estaNaCidade(char nomeCidade, const std::vector<Cidade>& cidades) const;
 
     virtual std::pair<int, int> moveMorrer() = 0;
     virtual bool ataqueTempestade(int probabilidade) = 0;

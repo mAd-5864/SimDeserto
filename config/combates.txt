@@ -10,7 +10,7 @@ prox
 move 3 ce
 move 3 e
 move 4 bd
-comprac c c
+comprac c m
 move 5 c
 move 5 c
 prox

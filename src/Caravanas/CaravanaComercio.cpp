@@ -55,13 +55,13 @@ std::pair<int, int>CaravanaComercio::autoMove(std::vector<std::unique_ptr<Carava
     if (alidado) {
         int novaLinha = linha + (rand() % 3 - 1);
         int novaColuna = coluna + (rand() % 3 - 1);
-        distancia = abs(linhaAliado - novaLinha);
+        distancia = abs(linhaAliado - novaLinha)
                 + abs(colunaAliado - novaColuna);
 
         while (distancia>4) {
          novaLinha = linha + (rand() % 3 - 1);
          novaColuna = coluna + (rand() % 3 - 1);
-            distancia = abs(linhaAliado - novaLinha);
+            distancia = abs(linhaAliado - novaLinha)
                     + abs(colunaAliado - novaColuna);
         }
         //std::cout<<ID<<" manteve-se perto da caravana "<<alidado<<"\n";

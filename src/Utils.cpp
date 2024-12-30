@@ -113,6 +113,8 @@ void comandoProx(const vector<string> &args, Deserto &deserto) {
         return;
     }
     for (int i = 0; i < instantes; ++i) {
+        if (instantes>1)
+            cout<<"\nInstante: "<< i <<endl;
         deserto.proxInstante();
         deserto.movimentarBarbaros();
         deserto.atualizarCaravanas();

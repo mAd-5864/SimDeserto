@@ -11,7 +11,7 @@ class Tempestade {
 
 public:
     Tempestade(int linha, int coluna, int raio);
-    bool verificaDentro(int linha, int coluna);
+    bool verificaDentro(int linha, int coluna) const;
 };
 
 

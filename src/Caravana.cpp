@@ -14,11 +14,6 @@ Caravana::Caravana(int cargaMax, int aguaMax, int tripulantesMax, int tipoMov, i
     // Os valores numTripulantes, qntAgua, e qntMerc já são inicializados implicitamente como 0
 }
 
-// Destructor
-Caravana::~Caravana() {
-    // Any cleanup if necessary
-}
-
 std::string converterTipoCaravana(char tipo) {
     switch (toupper(tipo)) {
         case 'C': return "de Comercio";
@@ -49,15 +44,6 @@ bool Caravana::mover(int novaLinha, int novaColuna) {
 bool Caravana::estaNaCidade(const std::vector<Cidade>& cidades) const {
     for (const Cidade& cidade : cidades) {
         if (cidade.getLinha() == linha && cidade.getColuna() == coluna) {
-            return true;
-        }
-    }
-    return false;
-}
-// Verifica se a caravana está numa cidade específica
-bool Caravana::estaNaCidade(char nomeCidade, const std::vector<Cidade>& cidades) const {
-    for (const Cidade& cidade : cidades) {
-        if (cidade.getNome() == nomeCidade && cidade.getLinha() == linha && cidade.getColuna() == coluna) {
             return true;
         }
     }

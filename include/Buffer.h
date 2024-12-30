@@ -52,6 +52,9 @@ public:
 
     // Devolve char na posicao (l,c)
     char getChar(int linha, int ccoluna);
+
+    Buffer(const Buffer& copia);
+    Buffer(Buffer&& copia) noexcept;
 };
 
 #endif //SIMDESERTO_BUFFER_H
