@@ -2,9 +2,9 @@
 **Object-Oriented Programming (POO) 2024/2025 - DEIS/ISEC**
 
 ## Authors
-* Pedro (from comments)
-* Tiago (from comments)
-
+* Pedro Amorim
+* Tiago Oliveira
+  
 ## Description
 
 This is a C++ console application that simulates the management of caravans in a desert. The simulation is turn-based (using "instantes" or instants) and takes place on a grid-based map containing desert, mountains, and cities.
